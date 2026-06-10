@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import BentoGallery from "./BentoGallery";
+import InteractiveSelector from "./InteractiveSelector";
+import { RevealHeading } from "./reveal";
 
 // Image sets compiled from user-provided slide archives and custom images
 const SLIDER_ONE_IMAGES = [
@@ -66,6 +69,7 @@ export function InfiniteAutoplaySlider({ images, direction = "left" }: InfiniteA
   const [visibleCount, setVisibleCount] = useState(4);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Dynamic responsive viewport sizing
@@ -103,7 +107,9 @@ export function InfiniteAutoplaySlider({ images, direction = "left" }: InfiniteA
   const offsetIndex = images.length + currentIndex;
 
   // Autoplay moves strictly in the designated direction, transitioning every 2.2 seconds!
+  // Pauses while the viewer is hovering or focused inside the slider.
   useEffect(() => {
+    if (isPaused) return;
     const timer = setInterval(() => {
       setIsTransitioning(true);
       if (direction === "left") {
@@ -114,7 +120,7 @@ export function InfiniteAutoplaySlider({ images, direction = "left" }: InfiniteA
     }, 2200);
 
     return () => clearInterval(timer);
-  }, [direction]);
+  }, [direction, isPaused]);
 
   // When transition completes, snap instantly back to snap coordinates without animation
   const handleTransitionEnd = () => {
@@ -138,7 +144,15 @@ export function InfiniteAutoplaySlider({ images, direction = "left" }: InfiniteA
   };
 
   return (
-    <div ref={containerRef} className="relative w-full group overflow-hidden py-2 select-none" id="continuous-slider-container">
+    <div
+      ref={containerRef}
+      className="relative w-full group overflow-hidden py-2 select-none"
+      id="continuous-slider-container"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={() => setIsPaused(false)}
+    >
       {/* Slider View Glass Frame */}
       <div className="overflow-hidden w-full relative" id="slider-view-viewport">
         <div
@@ -162,8 +176,8 @@ export function InfiniteAutoplaySlider({ images, direction = "left" }: InfiniteA
                 id={`slider-item-card-${idx}`}
               >
                 {/* Elegant subtle stone/warm background color setup to pad mixed formats beautifully */}
-                <div 
-                  className="relative aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] w-full bg-[#f4f3ef] border border-black/[0.04] shadow-sm hover:shadow-md transition-shadow duration-300 flex items-center justify-center overflow-hidden"
+                <div
+                  className="relative aspect-[3/4] sm:aspect-[4/5] md:aspect-[3/4] w-full bg-[#f4f3ef] border border-black/[0.04] shadow-sm hover:shadow-md hover:scale-[1.02] transition duration-500 flex items-center justify-center overflow-hidden"
                   id={`image-frame-${idx}`}
                 >
                   <img
@@ -213,13 +227,11 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
   return (
     <div className="py-12 bg-[#f7f7f7] min-h-screen" id="portfolio-view-surface">
       {/* Editorial Page Header */}
-      <div className="max-w-7xl mx-auto px-6 mb-16 text-center lg:text-left transition-all" id="portfolio-page-header">
+      <div className="max-w-7xl mx-auto px-6 mb-16 text-center lg:text-left transition" id="portfolio-page-header">
         <span className="text-[10px] tracking-[0.35em] uppercase text-[#708090] font-light block mb-3">
           Curated South Island Memoirs
         </span>
-        <h2 className="font-serif text-4xl sm:text-5xl text-black font-light tracking-tight mb-4">
-          The Portfolio
-        </h2>
+        <RevealHeading as="h2" className="font-serif text-4xl sm:text-5xl text-black font-light tracking-tight mb-4" text="The Portfolio" />
         <div className="h-[1px] bg-black/10 w-24 my-6 mx-auto lg:mx-0"></div>
         <p className="text-sm font-light text-[#708090] max-w-2xl leading-relaxed">
           I plan, curate and produce weddings for couples who want their celebration to feel like a beautiful, honest conversation. Below are two archives representing the quiet craftsmanship of recent celebrations across a country I love.
@@ -235,9 +247,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
               <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#708090] block mb-2">
                 ARCHIVE ONE
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight">
-                Intimate Gatherings & Elopements
-              </h3>
+              <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Intimate Gatherings & Elopements" />
               <p className="text-[11px] tracking-widest font-mono uppercase text-black/50 mt-1">
                 South Island Love Stories
               </p>
@@ -248,9 +258,9 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
             </p>
           </div>
 
-          {/* Endless dynamic continuous slider spanning full canvas width */}
+          {/* Interactive bento gallery - click any frame to expand */}
           <div className="w-full-canvas pt-2" id="portfolio-slider-one-wrapper">
-            <InfiniteAutoplaySlider images={SLIDER_ONE_IMAGES} direction="left" />
+            <BentoGallery images={SLIDER_ONE_IMAGES} />
           </div>
         </div>
       </section>
@@ -264,9 +274,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
               <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#708090] block mb-2">
                 ARCHIVE TWO
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight">
-                Details, Details & Details
-              </h3>
+              <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Details, Details & Details" />
               <p className="text-[11px] tracking-widest font-mono uppercase text-black/50 mt-1">
                 All the touches to make it personal
               </p>
@@ -277,9 +285,9 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
             </p>
           </div>
 
-          {/* Endless dynamic continuous slider spanning full canvas width - moving to the right! */}
+          {/* Interactive selector - hover or tap a strip to expand it */}
           <div className="w-full-canvas pt-2" id="portfolio-slider-two-wrapper">
-            <InfiniteAutoplaySlider images={SLIDER_TWO_IMAGES} direction="right" />
+            <InteractiveSelector images={SLIDER_TWO_IMAGES} />
           </div>
         </div>
       </section>
@@ -288,7 +296,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
       <div className="text-center pt-12 pb-8 border-t border-black/[0.05] max-w-7xl mx-auto px-6" id="portfolio-back-cta-wrapper">
         <button
           onClick={() => onBackToHome("services")}
-          className="text-xs tracking-[0.25em] uppercase text-black font-light border border-black px-8 py-4 hover:bg-black hover:text-white transition-colors cursor-pointer"
+          className="text-xs tracking-[0.25em] uppercase text-black font-light border border-black px-8 py-4 hover:bg-black hover:text-white transition cursor-pointer"
           id="btn-back-to-planning"
         >
           View Planning Services

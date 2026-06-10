@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Strong ease-out curve shared across the site for a cohesive, intentional feel */
+  --ease-lux: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
 body {
   background-color: #f7f7f7;
   color: #708090;
@@ -30,4 +35,21 @@ html {
 .nav-link-active {
   color: #000000;
   border-bottom: 1px solid #708090;
+}
+
+/* Press feedback: every button physically responds to a press (Emil: instant confirmation the UI heard you) */
+button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Respect prefers-reduced-motion: keep things calm, drop movement (Framer handled via MotionConfig) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
