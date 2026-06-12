@@ -85,6 +85,28 @@ export const SERVICES_DATA: Service[] = [
     ctaText: "Begin a Conversation about the Wedding Navigator",
     image: "/assets/images/Service-03.jpg",
     loveNote: "“OMG - the budget now makes sense. Thank you very much for those tips.” B&S - Online Wedding Consultation, January 2026"
+  },
+  {
+    id: "design",
+    number: "04",
+    title: "DESIGN, COORDINATION & DAY OF MANAGEMENT",
+    subtitle: "For couples capable of doing the bulk of their planning but wise to engage expertise for the details and design.",
+    description: "The best pairing for a couple who have their venue and some vendors but need the guiding eye of a designer and logistics expert. I will help you pull your vision together into a cohesive overall wedding design, coordinate the details and take care of the day-of management so you can simply enjoy.",
+    details: [
+      "Styling consultation and creative direction.",
+      "Mood boards, colour palettes, layout suggestions, and styling concepts.",
+      "Sourcing of speciality rentals, floral concept collaboration, and visual flow recommendations.",
+      "Review of existing plans and enhancements to bring aesthetic cohesion.",
+      "Wedding day timeline finalisation and distribution.",
+      "Vendor reconfirmation and coordination.",
+      "Management of ceremony rehearsal (if applicable).",
+      "Complete oversight on the wedding day - setup, styling, cueing, and flow management.",
+      "Troubleshooting behind the scenes to ensure a smooth and elevated guest experience."
+    ],
+    investment: "Planning starts from [ NZD $5,300 ], with all design elements quoted separately to help with budget transparency.",
+    ctaText: "Begin a Conversation about Design & Coordination",
+    image: "/assets/images/Service-04.jpg",
+    loveNote: ""
   }
 ];
 

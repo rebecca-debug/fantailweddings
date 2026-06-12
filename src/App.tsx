@@ -18,6 +18,9 @@ import {
   FAQ
 } from "./data";
 import PortfolioView from "./components/PortfolioView";
+import JournalArticle from "./components/JournalArticle";
+import JournalIndex from "./components/JournalIndex";
+import { JOURNAL_ARTICLES, getArticleByPage, JournalPage } from "./journal";
 
 // ---- Shared motion vocabulary (one calm easing + slow, small-travel reveals) ----
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
@@ -218,7 +221,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
 
   // Navigation page views & custom modal states
-  const [currentPage, setCurrentPage] = useState<"home" | "portfolio">("home");
+  const [currentPage, setCurrentPage] = useState<"home" | "portfolio" | "journal-index" | JournalPage>("home");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isJournalOpen, setIsJournalOpen] = useState(false);
@@ -242,6 +245,15 @@ export default function App() {
       }
     }
   };
+
+  // Journal navigation — instant jump to top so the new page never flashes mid-scroll
+  const goToPage = (page: "home" | "portfolio" | "journal-index" | JournalPage) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+  const openJournalIndex = () => goToPage("journal-index");
+  const openArticle = (page: JournalPage) => goToPage(page);
+  const isJournalPage = currentPage === "journal-index" || currentPage === "journal-queenstown" || currentPage === "journal-wanaka";
 
   // Highlight the active nav item via IntersectionObserver (no scroll listener, no layout reads)
   useEffect(() => {
@@ -348,6 +360,8 @@ export default function App() {
       helpTypeValue = "Intimate Wedding (up to 60 guests)";
     } else if (serviceId === "navigator") {
       helpTypeValue = "The Wedding Navigator";
+    } else if (serviceId === "design") {
+      helpTypeValue = "Design, Coordination & Day-of Management";
     }
 
     setFormData((prev) => ({
@@ -482,10 +496,7 @@ export default function App() {
               )}
             </button>
             <button
-              onClick={() => {
-                setCurrentPage("portfolio");
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }}
+              onClick={() => goToPage("portfolio")}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
                 currentPage === "portfolio" ? "text-black" : "text-[#708090] hover:text-black"
               }`}
@@ -508,6 +519,41 @@ export default function App() {
                 <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
               )}
             </button>
+            {/* Journal dropdown */}
+            <div className="relative group/journal">
+              <button
+                onClick={openJournalIndex}
+                className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
+                  isJournalPage ? "text-black" : "text-[#708090] hover:text-black"
+                }`}
+                id="nav-journal"
+              >
+                Journal
+                {isJournalPage && (
+                  <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
+                )}
+              </button>
+              <div className="absolute right-0 top-full pt-4 opacity-0 invisible translate-y-1 group-hover/journal:opacity-100 group-hover/journal:visible group-hover/journal:translate-y-0 transition-all duration-200 z-50">
+                <div className="bg-white border border-black/10 shadow-xl py-3 min-w-[210px]">
+                  {JOURNAL_ARTICLES.map((a) => (
+                    <button
+                      key={a.page}
+                      onClick={() => openArticle(a.page)}
+                      className="block w-full text-left px-5 py-2.5 text-[10px] tracking-[0.2em] uppercase text-black/75 hover:text-black hover:bg-black/[0.04] transition"
+                    >
+                      {a.navLabel}
+                    </button>
+                  ))}
+                  <div className="h-px bg-black/10 mx-5 my-2"></div>
+                  <button
+                    onClick={openJournalIndex}
+                    className="block w-full text-left px-5 py-2.5 text-[10px] tracking-[0.2em] uppercase text-black/75 hover:text-black hover:bg-black/[0.04] transition"
+                  >
+                    All Posts
+                  </button>
+                </div>
+              </div>
+            </div>
             <button
               onClick={() => setIsLoginOpen(true)}
               className="text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer text-[#708090] hover:text-black"
@@ -755,7 +801,7 @@ export default function App() {
           <span className="text-[10px] tracking-[0.3em] uppercase text-black font-light block">
             Shapes of Help
           </span>
-          <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Three ways I can help" />
+          <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Four ways I can help" />
           <p className="text-sm font-light text-[#708090] leading-relaxed">
             Each one is its own shape of help. The right one depends on where you are coming from, how many 
             people are coming with you, and most of all, how you want the day to feel.
@@ -763,13 +809,20 @@ export default function App() {
         </div>
 
         {/* Desktop Side-by-Side summaries (as requested: "On desktop, consider three columns side by side at the top of this section, with a one-line summary in each, before the longer prose below") */}
-        <div className="hidden lg:grid grid-cols-3 gap-8 mb-24 border-b border-black/10 pb-16">
+        <div className="hidden lg:grid grid-cols-2 gap-x-12 gap-y-10 mb-24 border-b border-black/10 pb-16">
           {SERVICES_DATA.map((service) => (
             <div key={service.id} className="space-y-4 pr-4">
-              <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => document.getElementById(`service-${service.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                className="flex items-center gap-3 text-left group/jump cursor-pointer"
+                aria-label={`Jump to ${service.title}`}
+              >
                 <span className="font-serif text-xs italic text-black/50">{service.number}</span>
-                <h4 className="font-serif text-sm tracking-widest text-black font-medium">{service.title}</h4>
-              </div>
+                <h4 className="font-serif text-sm tracking-widest text-black font-medium border-b border-transparent group-hover/jump:border-black/40 transition-colors pb-0.5">
+                  {service.title}
+                </h4>
+              </button>
               <p className="text-xs text-[#708090] font-light leading-relaxed italic border-l border-black/15 pl-4 py-2">
                 {service.subtitle}
               </p>
@@ -790,7 +843,7 @@ export default function App() {
             return (
               <div
                 key={service.id}
-                className={`grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center`}
+                className={`grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center scroll-mt-28`}
                 id={`service-${service.id}`}
               >
 
@@ -1277,6 +1330,7 @@ export default function App() {
                       <option value="Elopement">Elopement</option>
                       <option value="Intimate Wedding (up to 60 guests)">Intimate Wedding (up to 60 guests)</option>
                       <option value="The Wedding Navigator">The Wedding Navigator</option>
+                      <option value="Design, Coordination & Day-of Management">Design, Coordination & Day-of Management</option>
                       <option value="Not sure yet">Not sure yet</option>
                     </select>
                     {formErrors.helpType && (
@@ -1551,8 +1605,16 @@ export default function App() {
         </div>
       </motion.section>
         </>
-      ) : (
+      ) : currentPage === "portfolio" ? (
         <PortfolioView onBackToHome={navigateTo} />
+      ) : currentPage === "journal-index" ? (
+        <JournalIndex onOpenArticle={openArticle} />
+      ) : (
+        <JournalArticle
+          article={getArticleByPage(currentPage)!}
+          onEnquire={() => navigateTo("contact")}
+          onBackToJournal={openJournalIndex}
+        />
       )}
 
       {/* 10. FOOTER ACCORDING TO SPECS */}
@@ -1605,7 +1667,7 @@ export default function App() {
               <button onClick={() => setIsLoginOpen(true)} className="hover:text-black transition text-left cursor-pointer">
                 Client Login
               </button>
-              <button onClick={() => setIsJournalOpen(true)} className="hover:text-black transition text-left cursor-pointer">
+              <button onClick={openJournalIndex} className="hover:text-black transition text-left cursor-pointer">
                 Journal
               </button>
               <button onClick={() => navigateTo("contact")} className="hover:text-black transition text-left cursor-pointer">

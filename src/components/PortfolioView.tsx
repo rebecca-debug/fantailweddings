@@ -225,7 +225,7 @@ interface PortfolioViewProps {
 
 export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
   return (
-    <div className="py-12 bg-[#f7f7f7] min-h-screen" id="portfolio-view-surface">
+    <div className="pt-28 pb-12 bg-[#f7f7f7] min-h-screen" id="portfolio-view-surface">
       {/* Editorial Page Header */}
       <div className="max-w-7xl mx-auto px-6 mb-16 text-center lg:text-left transition" id="portfolio-page-header">
         <span className="text-[10px] tracking-[0.35em] uppercase text-[#708090] font-light block mb-3">
