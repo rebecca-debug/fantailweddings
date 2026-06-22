@@ -1,54 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-// Adapted from the 21st.dev "Interactive Bento Gallery": a 2-row horizontal bento that
-// scrolls / drags sideways. Columns are uneven - some hold one full-height image, some
-// split into two stacked frames. Click any frame to expand it. Styled to Fantail's palette.
+// A single-row, full-frame editorial carousel: large landscape frames that drag / scroll
+// sideways, with the neighbouring frames peeking in from the left and right. Click any
+// frame to expand it. Styled to Fantail's palette.
 
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
-
-// Repeating rhythm of column types -> "full" = one tall image, "split" = two stacked.
-const COLUMN_PATTERN = [
-  "full",
-  "split",
-  "full",
-  "split",
-  "split",
-  "full",
-  "split",
-  "full",
-  "split",
-  "split"
-];
 
 interface BentoGalleryProps {
   images: string[];
 }
 
-type Tile = { src: string; span: string; label: number };
-
-function buildTiles(images: string[]): Tile[] {
-  const tiles: Tile[] = [];
-  let img = 0;
-  let col = 0;
-  while (img < images.length) {
-    const type = COLUMN_PATTERN[col % COLUMN_PATTERN.length];
-    if (type === "split" && img + 1 < images.length) {
-      tiles.push({ src: images[img], span: "row-span-1", label: img + 1 });
-      tiles.push({ src: images[img + 1], span: "row-span-1", label: img + 2 });
-      img += 2;
-    } else {
-      // full column (or the final leftover image)
-      tiles.push({ src: images[img], span: "row-span-2", label: img + 1 });
-      img += 1;
-    }
-    col += 1;
-  }
-  return tiles;
-}
-
 export default function BentoGallery({ images }: BentoGalleryProps) {
-  const tiles = buildTiles(images);
   const [selected, setSelected] = useState<string | null>(null);
 
   // Drag-to-scroll (works alongside native touch / trackpad scroll + scrollbar)
@@ -95,33 +58,32 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
         onPointerLeave={endDrag}
-        className="overflow-x-auto pb-3 cursor-grab active:cursor-grabbing select-none"
+        className="overflow-x-auto pb-3 cursor-grab active:cursor-grabbing select-none snap-x snap-mandatory scroll-px-6"
         style={{ scrollbarWidth: "thin" }}
       >
         <motion.div
-          className="grid grid-rows-2 grid-flow-col auto-cols-[160px] sm:auto-cols-[230px] gap-3 h-[300px] sm:h-[420px] w-max"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.05 } } }}
+          className="flex gap-4 w-max"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate="visible"
         >
-          {tiles.map((t, index) => (
+          {images.map((src, index) => (
             <motion.button
               type="button"
-              key={`${t.src}-${index}`}
-              className={`group relative overflow-hidden bg-[#f4f3ef] border border-black/[0.05] cursor-pointer ${t.span}`}
+              key={`${src}-${index}`}
+              className="group relative shrink-0 snap-center overflow-hidden bg-[#f4f3ef] border border-black/[0.05] cursor-pointer w-[88vw] sm:w-[78vw] lg:w-[66vw] max-w-[950px] h-[375px] sm:h-[525px]"
               variants={{
-                hidden: { opacity: 0, y: 24, scale: 0.96 },
+                hidden: { opacity: 0, y: 24, scale: 0.97 },
                 visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: LUX_EASE } }
               }}
               onClick={() => {
-                if (!drag.current.moved) setSelected(t.src);
+                if (!drag.current.moved) setSelected(src);
               }}
-              aria-label={`View celebration frame ${t.label}`}
+              aria-label={`View celebration frame ${index + 1}`}
             >
               <img
-                src={t.src}
-                alt={`Bespoke celebration frame ${t.label}`}
+                src={src}
+                alt={`Bespoke celebration frame ${index + 1}`}
                 loading="lazy"
                 decoding="async"
                 draggable={false}
@@ -129,9 +91,6 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-out group-hover:scale-[1.05]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-              <span className="absolute bottom-2 right-3 font-mono text-[8px] tracking-widest text-white/0 group-hover:text-white/80 transition-colors duration-500">
-                FR-{t.label.toString().padStart(2, "0")}
-              </span>
             </motion.button>
           ))}
         </motion.div>

@@ -2,62 +2,91 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import BentoGallery from "./BentoGallery";
 import InteractiveSelector from "./InteractiveSelector";
+import FilmCard from "./FilmCard";
 import { RevealHeading } from "./reveal";
 
-// Image sets compiled from user-provided slide archives and custom images
-const SLIDER_ONE_IMAGES = [
-  "/assets/images/slide_-01.jpg",
-  "/assets/images/slide-02.jpg",
-  "/assets/images/slide-02-1.jpg",
-  "/assets/images/slide-03.jpg",
-  "/assets/images/slide-04.jpg",
-  "/assets/images/slide-05.jpg",
-  "/assets/images/slide-06.jpg",
-  "/assets/images/slide-07.jpg",
-  "/assets/images/slide-08.jpg",
-  "/assets/images/slide-09.jpg",
-  "/assets/images/slide-10.jpg",
-  "/assets/images/BONNIE_JENKINS_621-BJ_9149.jpg",
-  "/assets/images/Alpine-Elopement-NZ.jpg",
-  "/assets/images/intimate-weddings.jpg",
-  "/assets/images/slide-11.jpg",
-  "/assets/images/slide-12.jpg",
-  "/assets/images/slide-13.jpg",
-  "/assets/images/slide-14.jpg",
-  "/assets/images/slide-15.jpg",
-  "/assets/images/slide-16.jpg",
-  "/assets/images/slide-17.jpg",
-  "/assets/images/slide-18.jpg",
-  "/assets/images/slide-19.jpg",
-  "/assets/images/slide-20.jpg",
-  "/assets/images/slide-21.jpg",
-  "/assets/images/reshma-richard-wedding-259.jpg"
+// Wedding films hosted on Vimeo — poster opens a modal player.
+const FILMS = [
+  {
+    vimeoId: "404481876",
+    title: "Sarah & Scott",
+    meta: "Fantail Weddings",
+    thumbnail: "/assets/images/film-sarah-scott.jpg"
+  },
+  {
+    vimeoId: "1146095080",
+    title: "Lily & Dan",
+    meta: "Fantail Weddings",
+    thumbnail: "/assets/images/film-lily-dan.jpg"
+  }
 ];
 
+// Archive One — "Intimate Gatherings & Elopements" (couple + elopement photography).
+const SLIDER_ONE_IMAGES = [
+  "/assets/images/190823_EASP_038.webp",
+  "/assets/images/444-_DSC5891.webp",
+  "/assets/images/AandJ-50.webp",
+  "/assets/images/AandJ-72.webp",
+  "/assets/images/AIC_009_websize.webp",
+  "/assets/images/Alpine-Elopement-NZ.webp",
+  "/assets/images/BONNIE_JENKINS_417-BJ_5251.webp",
+  "/assets/images/BONNIE_JENKINS_621-BJ_9149.webp",
+  "/assets/images/SaraMark_SPEdits-16_websize.webp",
+  "/assets/images/SaraMark_SPEdits-21_websize.webp",
+  "/assets/images/Service-01.webp",
+  "/assets/images/WEB_237_BJ_6688.webp",
+  "/assets/images/intimate-weddings.webp",
+  "/assets/images/reshma-richard-wedding-259.webp",
+  "/assets/images/service-02.webp",
+  "/assets/images/slide-03.webp",
+  "/assets/images/slide-04.webp",
+  "/assets/images/slide-05.webp",
+  "/assets/images/slide-06.webp",
+  "/assets/images/slide-07.webp",
+  "/assets/images/slide-08.webp",
+  "/assets/images/slide-09.webp",
+  "/assets/images/slide-15.webp",
+  "/assets/images/slide-16.webp",
+  "/assets/images/slide-17.webp",
+  "/assets/images/slide-18.webp",
+  "/assets/images/slide-19.webp",
+  "/assets/images/slide-20.webp",
+  "/assets/images/slide-21.webp",
+  "/assets/images/warm-hello.webp"
+];
+
+// Archive Two — "Details, Details & Details" (décor, styling, guests, cultural touches).
 const SLIDER_TWO_IMAGES = [
-  "/assets/images/10994068_692647977504658_6745400731444123953_n.jpg",
-  "/assets/images/12794456_692647987504657_1333425036244180943_n.jpg",
-  "/assets/images/171230_ML_WEB_442.jpg",
-  "/assets/images/180303_Alix_and_Kwan29358.jpg",
-  "/assets/images/180303_Alix_and_Kwan29376.jpg",
-  "/assets/images/180303_Alix_and_Kwan29544.jpg",
-  "/assets/images/190_BONNIE_JENKINS-WANAKA_WEDDING_6392.jpg",
-  "/assets/images/230708_AM_WEB_326.jpg",
-  "/assets/images/230708_AM_WEB_435.jpg",
-  "/assets/images/565-DSC_4811.jpg",
-  "/assets/images/A-J-713.jpg",
-  "/assets/images/AIC-17.jpg",
-  "/assets/images/AIC_NA__273_websize.jpg",
-  "/assets/images/SaraMark_SPEdits-10_websize.jpg",
-  "/assets/images/SaraMark_SPEdits-62.jpg",
-  "/assets/images/SaraMark_SPEdits-63_websize.jpg",
-  "/assets/images/Service-03.jpg",
-  "/assets/images/WEB_447_BJ_0702.jpg",
-  "/assets/images/Wanaka_Wedding_Criffel_Station_NewZealand_061.jpg",
-  "/assets/images/guests-enjoying-lunch.jpg",
-  "/assets/images/indian-culture.jpg",
-  "/assets/images/reshma-richard-wedding-383.jpg",
-  "/assets/images/your-guests.jpg"
+  "/assets/images/10994068_692647977504658_6745400731444123953_n.webp",
+  "/assets/images/12794456_692647987504657_1333425036244180943_n.webp",
+  "/assets/images/171230_ML_WEB_442.webp",
+  "/assets/images/180303_Alix_and_Kwan29358.webp",
+  "/assets/images/180303_Alix_and_Kwan29376.webp",
+  "/assets/images/180303_Alix_and_Kwan29544.webp",
+  "/assets/images/190_BONNIE_JENKINS-WANAKA_WEDDING_6392.webp",
+  "/assets/images/230708_AM_WEB_326.webp",
+  "/assets/images/230708_AM_WEB_435.webp",
+  "/assets/images/350_MR2_5369.webp",
+  "/assets/images/355_MR2_5373.webp",
+  "/assets/images/400_MRP_7536.webp",
+  "/assets/images/565-DSC_4811.webp",
+  "/assets/images/665-KeithaandDann.webp",
+  "/assets/images/AandJ-487.webp",
+  "/assets/images/AandJ-490.webp",
+  "/assets/images/AandJ-713.webp",
+  "/assets/images/AIC-17.webp",
+  "/assets/images/AIC_NA__273_websize.webp",
+  "/assets/images/EE_-738.webp",
+  "/assets/images/SaraMark_SPEdits-10_websize.webp",
+  "/assets/images/SaraMark_SPEdits-62.webp",
+  "/assets/images/SaraMark_SPEdits-63_websize.webp",
+  "/assets/images/Service-03.webp",
+  "/assets/images/WEB_447_BJ_0702.webp",
+  "/assets/images/Wanaka_Wedding_Criffel_Station_NewZealand_061.webp",
+  "/assets/images/guests-enjoying-lunch.webp",
+  "/assets/images/indian-culture.webp",
+  "/assets/images/reshma-richard-wedding-383.webp",
+  "/assets/images/your-guests.webp"
 ];
 
 interface InfiniteAutoplaySliderProps {
@@ -187,10 +216,6 @@ export function InfiniteAutoplaySlider({ images, direction = "left" }: InfiniteA
                     className="w-full h-full object-contain p-2 select-none pointer-events-none"
                     loading="lazy"
                   />
-                  {/* Premium minimal elegant identifier tag */}
-                  <span className="absolute bottom-2 right-3 font-mono text-[8px] tracking-widest text-[#708090]/80">
-                    FR-{(originalIndex + 1).toString().padStart(2, "0")}
-                  </span>
                 </div>
               </div>
             );
@@ -287,8 +312,55 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
 
           {/* Interactive selector - hover or tap a strip to expand it */}
           <div className="w-full-canvas pt-2" id="portfolio-slider-two-wrapper">
-            <InteractiveSelector images={SLIDER_TWO_IMAGES} />
+            <InteractiveSelector images={SLIDER_TWO_IMAGES} max={SLIDER_TWO_IMAGES.length} />
           </div>
+        </div>
+      </section>
+
+      {/* PORTFOLIO SECTION THREE: WEDDING FILMS */}
+      <section className="max-w-7xl mx-auto px-6 mb-24" id="portfolio-archive-films">
+        <div className="space-y-8" id="portfolio-archive-films-content">
+          <div className="max-w-3xl text-left space-y-4" id="portfolio-archive-films-intro">
+            <div>
+              <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#708090] block mb-2">
+                IN MOTION
+              </span>
+              <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Weddings, in Motion" />
+              <p className="text-[11px] tracking-widest font-mono uppercase text-black/50 mt-1">
+                Two films, two love stories
+              </p>
+            </div>
+
+            <p className="text-xs sm:text-sm font-light text-[#708090] leading-relaxed max-w-2xl">
+              Sometimes a still frame isn&apos;t quite enough. Press play on a couple of celebrations I helped bring to life: the light, the laughter, and the quiet in-between moments that make a South Island wedding feel like its own.
+            </p>
+          </div>
+
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 pt-2"
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12 } } }}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            id="portfolio-films-grid"
+          >
+            {FILMS.map((film) => (
+              <motion.div
+                key={film.vimeoId}
+                variants={{
+                  hidden: { opacity: 0, y: 28 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
+                }}
+              >
+                <FilmCard
+                  thumbnail={film.thumbnail}
+                  vimeoId={film.vimeoId}
+                  title={film.title}
+                  meta={film.meta}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 

@@ -35,12 +35,6 @@ const staggerParent = {
   visible: { transition: { staggerChildren: 0.08, delayChildren: 0.04 } }
 };
 
-// SVG stroke that draws itself in
-const drawStroke = {
-  hidden: { pathLength: 0, opacity: 0 },
-  visible: { pathLength: 1, opacity: 1, transition: { duration: 1.3, ease: LUX_EASE } }
-};
-
 // Reveal a single block as it scrolls into view (auto-disabled under reduced motion via MotionConfig)
 function Reveal({
   children,
@@ -663,40 +657,22 @@ export default function App() {
             
             {/* Left Portion: Crest & Award details */}
             <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left" id="award-left-content">
-              {/* High-fidelity Custom Vector Seal of Global Wedding Awards 2026 */}
-              <div className="shrink-0 flex items-center justify-center bg-white w-16 h-16 rounded-full border border-black/[0.03] shadow-sm" id="award-crest-container">
-                <motion.svg
-                  className="w-14 h-14 text-[#ab8e61]"
-                  viewBox="0 0 100 100"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.6 }}
-                  variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1, delayChildren: 0.3 } } }}
-                >
-                  {/* Seal outer rings */}
-                  <circle cx="50" cy="50" r="44" stroke="#ab8e61" strokeWidth="0.5" strokeDasharray="2 2" />
-                  <circle cx="50" cy="50" r="41" stroke="#ab8e61" strokeWidth="0.5" />
-
-                  {/* Traditional Laurel branch vectors - draw themselves in */}
-                  <motion.path variants={drawStroke} d="M33 65 C28 55 30 40 39 31 C35 39 35 49 39 56" stroke="#ab8e61" strokeWidth="1" strokeLinecap="round" />
-                  <motion.path variants={drawStroke} d="M29 55 C26 51 27 45 32 40" stroke="#ab8e61" strokeWidth="0.75" />
-                  <motion.path variants={drawStroke} d="M30 45 C27 41 29 36 34 32" stroke="#ab8e61" strokeWidth="0.75" />
-
-                  <motion.path variants={drawStroke} d="M67 65 C72 55 70 40 61 31 C65 39 65 49 61 56" stroke="#ab8e61" strokeWidth="1" strokeLinecap="round" />
-                  <motion.path variants={drawStroke} d="M71 55 C74 51 73 45 68 40" stroke="#ab8e61" strokeWidth="0.75" />
-                  <motion.path variants={drawStroke} d="M70 45 C73 41 71 36 66 32" stroke="#ab8e61" strokeWidth="0.75" />
-
-                  {/* Typography details */}
-                  <text x="50" y="37" textAnchor="middle" fill="#ab8e61" fontSize="6" fontFamily="sans-serif" letterSpacing="0.8" fontWeight="bold">LUXlife</text>
-                  <text x="50" y="47" textAnchor="middle" fill="#ab8e61" fontSize="4.5" fontFamily="sans-serif" letterSpacing="0.5">GLOBAL</text>
-                  <text x="50" y="54" textAnchor="middle" fill="#ab8e61" fontSize="4.5" fontFamily="sans-serif" letterSpacing="0.5">WEDDING</text>
-                  <text x="50" y="61" textAnchor="middle" fill="#ab8e61" fontSize="4.5" fontFamily="sans-serif" letterSpacing="0.5">AWARDS</text>
-                  <text x="50" y="74" textAnchor="middle" fill="#ab8e61" fontSize="8.5" fontFamily="serif" fontWeight="bold">2026</text>
-                </motion.svg>
-              </div>
+              {/* Official Global Wedding Awards badge */}
+              <motion.div
+                className="shrink-0 flex items-center justify-center"
+                id="award-crest-container"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              >
+                <img
+                  src="/assets/images/global-wedding-awards-logo.png"
+                  alt="LUXlife Magazine Global Wedding Awards 2026 winner"
+                  className="w-32 h-32 md:w-40 md:h-40 object-contain"
+                  loading="lazy"
+                />
+              </motion.div>
 
               {/* Award Description details */}
               <div className="space-y-1.5" id="award-texts-container">
@@ -704,7 +680,7 @@ export default function App() {
                   LUXlife Magazine Global Wedding Awards
                 </span>
                 <h3 className="font-serif text-[15px] sm:text-base md:text-lg text-[#ab8e61] font-normal leading-relaxed max-w-xl">
-                  Luxury Destination Wedding Planning Specialists of the Year 2026 – New Zealand
+                  Luxury Destination Wedding Planning Specialists of the Year 2026, New Zealand
                 </h3>
               </div>
             </div>
@@ -1688,7 +1664,7 @@ export default function App() {
                 </a>
                 <span className="hidden lg:inline text-black/10">|</span>
                 <a href="tel:+64274672126" className="hover:text-black transition underline-offset-4 hover:underline font-light text-black/90">
-                  +64.274.672.126
+                  +64 274 672 126
                 </a>
               </div>
               <div className="flex flex-wrap gap-3 justify-center md:justify-start pt-1.5 border-t border-black/[0.04] mt-1">
@@ -1885,7 +1861,7 @@ export default function App() {
                   "The monthly letter is where I share these entries early. It goes out once a month on the full moon. No sales, just paper thoughts."
                 </p>
                 <p className="text-[10px] uppercase font-mono tracking-wider text-[#a57d02]/85 text-right">
-                  — Rebecca
+                  Rebecca
                 </p>
               </div>
 

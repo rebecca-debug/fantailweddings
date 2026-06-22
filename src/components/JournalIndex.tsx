@@ -12,7 +12,7 @@ interface JournalIndexProps {
 export default function JournalIndex({ onOpenArticle }: JournalIndexProps) {
   useEffect(() => {
     const prev = document.title;
-    document.title = "The Journal | Fantail Weddings — South Island Wedding Guides";
+    document.title = "The Journal | Fantail Weddings | South Island Wedding Guides";
     return () => {
       document.title = prev;
     };
@@ -32,7 +32,7 @@ export default function JournalIndex({ onOpenArticle }: JournalIndexProps) {
         />
         <div className="h-[1px] bg-black/10 w-24 my-6 mx-auto lg:mx-0"></div>
         <p className="text-sm font-light text-[#708090] max-w-2xl leading-relaxed">
-          Quiet guides to marrying across the South Island — the venues I love, how the seasons feel,
+          Quiet guides to marrying across the South Island: the venues I love, how the seasons feel,
           and the logistics worth knowing before you arrive. More guides are on the way.
         </p>
       </div>

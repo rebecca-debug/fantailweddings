@@ -43,7 +43,7 @@ const queenstown: JournalArticleData = {
   navLabel: "Queenstown Weddings",
   metaTitle: "Queenstown Wedding Venues & Destination Weddings | Fantail Weddings",
   metaDescription:
-    "A guide to Queenstown weddings — iconic venues, the four seasons, and boutique planning for couples marrying in New Zealand's most cinematic alpine destination.",
+    "A guide to Queenstown weddings: iconic venues, the four seasons, and boutique planning for couples marrying in New Zealand's most cinematic alpine destination.",
   eyebrow: "Luxury New Zealand Weddings",
   title: "Queenstown Weddings",
   subtitle: "Destination Weddings, New Zealand",
@@ -113,7 +113,7 @@ const wanaka: JournalArticleData = {
   navLabel: "Wānaka Weddings",
   metaTitle: "Wānaka Wedding Venues & Destination Weddings | Fantail Weddings",
   metaDescription:
-    "A guide to Wānaka weddings — lakeside and high-country venues, the four seasons, and boutique planning in the quieter heart of New Zealand's Southern Lakes.",
+    "A guide to Wānaka weddings: lakeside and high-country venues, the four seasons, and boutique planning in the quieter heart of New Zealand's Southern Lakes.",
   eyebrow: "Luxury New Zealand Weddings",
   title: "Wānaka Weddings",
   subtitle: "Destination Weddings, New Zealand",

@@ -45,15 +45,6 @@ export default function InteractiveSelector({ images, max = 7 }: InteractiveSele
                   isActive ? "bg-black/10" : "bg-black/30"
                 }`}
               />
-              <span
-                className={`absolute font-mono uppercase tracking-widest text-white text-[10px] transition-all duration-500 ${
-                  isActive
-                    ? "bottom-4 left-1/2 -translate-x-1/2 rotate-0"
-                    : "bottom-16 left-1/2 -translate-x-1/2 rotate-90 whitespace-nowrap"
-                }`}
-              >
-                FR-{(index + 1).toString().padStart(2, "0")}
-              </span>
             </button>
           );
         })}
