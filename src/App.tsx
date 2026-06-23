@@ -1140,6 +1140,7 @@ export default function App() {
                     alt={point.title}
                     loading="lazy"
                     referrerPolicy="no-referrer"
+                    style={{ objectPosition: point.imagePosition || "center" }}
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                   />
                 </SpotlightCard>

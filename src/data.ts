@@ -24,6 +24,8 @@ export interface TimelinePoint {
   title: string;
   description: string;
   image: string;
+  /** CSS object-position for framing the photo so faces aren't cropped. */
+  imagePosition?: string;
 }
 
 export const SERVICES_DATA: Service[] = [
@@ -116,35 +118,40 @@ export const TIMELINE_DATA: TimelinePoint[] = [
     step: "01",
     title: "The first conversation",
     description: "You send me a note from anywhere in the world. I read it myself. We schedule a call within a week, working with your time zone, not mine. I want to hear your story. Where you met. Why Aotearoa. What you have already imagined and what is still blank space. There is no script.",
-    image: "/assets/images/slide-05.jpg"
+    image: "/assets/images/slide-05.jpg",
+    imagePosition: "28% 50%"
   },
   {
     id: "timeline-2",
     step: "02",
     title: "The proposal",
     description: "Within five days, I send you a personalised proposal. A piece of writing shaped around what you told me, with the right service shape, a recommended approach, a transparent investment, and the next step clearly marked. A Loom video walks you through it.",
-    image: "/assets/images/slide-06.jpg"
+    image: "/assets/images/slide-06.jpg",
+    imagePosition: "center 58%"
   },
   {
     id: "timeline-3",
     step: "03",
     title: "The welcome",
     description: "Once we are working together, I will send you a Welcome Guide. Part roadmap, part reference document. Written in plain English, you can read with a glass of wine instead of a highlighter.",
-    image: "/assets/images/slide-07.jpg"
+    image: "/assets/images/slide-07.jpg",
+    imagePosition: "center 80%"
   },
   {
     id: "timeline-4",
     step: "04",
     title: "The planning months",
     description: "Voice notes after every vendor conversation. Loom videos are best when something is shown rather than told. Email check-ins at each milestone. A private planning portal you can open at 2 am if you want to.",
-    image: "/assets/images/slide-08.jpg"
+    image: "/assets/images/slide-08.jpg",
+    imagePosition: "center 55%"
   },
   {
     id: "timeline-5",
     step: "05",
     title: "The celebration",
     description: "By the time the day arrives, every detail has been considered, refined, and prepared. I am quietly present from morning until I turn the lights off. You should barely see me at all. That is the point.",
-    image: "/assets/images/slide-12.jpg"
+    image: "/assets/images/slide-12.jpg",
+    imagePosition: "center 18%"
   }
 ];
 
