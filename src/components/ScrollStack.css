@@ -2,6 +2,25 @@
    Card visuals (bg, border, radius, shadow) are applied per-item via Tailwind
    `itemClassName`; this file only carries layout + the transform plumbing. */
 
+/* Lenis: while smooth scroll is active, native CSS smooth-scroll MUST be off or the
+   two fight and the scroll judders. These classes are added to <html> by Lenis. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
 .scroll-stack-scroller {
   position: relative;
   width: 100%;

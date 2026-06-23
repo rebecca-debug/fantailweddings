@@ -1110,7 +1110,7 @@ export default function App() {
 
         {/* Scroll-stack deck of the five planning phases (React Bits ScrollStack) */}
         <ScrollStack
-          className="max-w-4xl"
+          className="max-w-4xl mx-auto"
           useWindowScroll
           itemDistance={120}
           itemStackDistance={26}
