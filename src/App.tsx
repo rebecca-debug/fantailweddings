@@ -7,7 +7,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { Award, Plus, Minus, Menu, X } from "lucide-react";
 import { RevealHeading } from "./components/reveal";
-import { RevealImage, SpotlightCard } from "./components/reveal";
+import { RevealImage } from "./components/reveal";
+import ScrollStack from "./components/ScrollStack";
 import {
   SERVICES_DATA,
   TIMELINE_DATA,
@@ -1107,60 +1108,8 @@ export default function App() {
           </p>
         </div>
 
-        {/* Soft horizontal/vertical line timeline layout with 5 points and photos */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-5 gap-8 lg:gap-12 relative"
-          variants={staggerParent}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          {/* Timeline background join line (desktop only) - draws across as the row enters */}
-          <motion.div
-            className="hidden md:block absolute top-[120px] left-8 right-8 h-[1px] bg-black/10 -z-10 origin-left"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 1.1, ease: LUX_EASE }}
-          />
-
-          {TIMELINE_DATA.map((point) => (
-            <motion.div key={point.id} variants={revealItem} className="space-y-6 bg-white p-6 border border-black/[0.05] flex flex-col justify-between">
-
-              <div className="space-y-4">
-                {/* Step indicator */}
-                <div className="flex items-baseline justify-between">
-                  <span className="font-serif text-3xl italic text-black/15 font-light">
-                    {point.step}
-                  </span>
-                  <span className="text-[9px] tracking-widest text-[#708090] font-mono">
-                    PHASE {point.step}
-                  </span>
-                </div>
-
-                {/* Supporting Portrait Aspect photograph */}
-                <SpotlightCard className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50">
-                  <img
-                    src={point.image}
-                    alt={point.title}
-                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                    id={`timeline-img-${point.id}`}
-                  />
-                </SpotlightCard>
-
-                <h4 className="font-serif text-base text-black font-normal italic">
-                  {point.title}
-                </h4>
-
-                <p className="text-xs text-[#708090] font-light leading-relaxed">
-                  {point.description}
-                </p>
-              </div>
-
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Scroll-stack deck of the five planning phases */}
+        <ScrollStack items={TIMELINE_DATA} />
       </section>
 
       {/* Thin black border divider */}
