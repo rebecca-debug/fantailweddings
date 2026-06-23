@@ -151,7 +151,7 @@ export const TIMELINE_DATA: TimelinePoint[] = [
     title: "The celebration",
     description: "By the time the day arrives, every detail has been considered, refined, and prepared. I am quietly present from morning until I turn the lights off. You should barely see me at all. That is the point.",
     image: "/assets/images/slide-12.jpg",
-    imagePosition: "center 18%"
+    imagePosition: "center 0%"
   }
 ];
 
