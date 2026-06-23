@@ -15,9 +15,9 @@ interface BentoGalleryProps {
 export default function BentoGallery({ images }: BentoGalleryProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Drag-to-scroll with pointer capture (works alongside native touch / trackpad / scrollbar)
+  // Drag-to-scroll (works alongside native touch / trackpad / scrollbar)
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false, id: -1 });
+  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false });
 
   useEffect(() => {
     if (!selected) return;
@@ -32,45 +32,55 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
     };
   }, [selected]);
 
-  const onPointerDown = (e: React.PointerEvent) => {
+  // Mouse drag-to-scroll. pointerdown on the strip, but move/up listen on window so the
+  // drag keeps tracking even when the cursor leaves the strip. Touch is left to native
+  // scrolling. A dominant vertical wheel scrolls the strip horizontally for mouse users.
+  useEffect(() => {
     const el = scrollerRef.current;
     if (!el) return;
-    drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false, id: e.pointerId };
-    try {
-      el.setPointerCapture(e.pointerId);
-    } catch {
-      /* no-op */
-    }
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    const el = scrollerRef.current;
-    if (!drag.current.down || !el) return;
-    const dx = e.clientX - drag.current.startX;
-    if (Math.abs(dx) > 4) drag.current.moved = true;
-    el.scrollLeft = drag.current.startLeft - dx;
-  };
-  const endDrag = (e: React.PointerEvent) => {
-    const el = scrollerRef.current;
-    if (el && drag.current.id !== -1) {
-      try {
-        el.releasePointerCapture(drag.current.id);
-      } catch {
-        /* no-op */
-      }
-    }
-    drag.current.down = false;
-    drag.current.id = -1;
-  };
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return;
+      drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false };
+      el.style.cursor = "grabbing";
+    };
+    const onMove = (e: PointerEvent) => {
+      if (!drag.current.down) return;
+      const dx = e.clientX - drag.current.startX;
+      if (Math.abs(dx) > 3) drag.current.moved = true;
+      el.scrollLeft = drag.current.startLeft - dx;
+    };
+    const onUp = () => {
+      if (!drag.current.down) return;
+      drag.current.down = false;
+      el.style.cursor = "";
+    };
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+      if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return; // let the page scroll at the ends
+      el.scrollLeft += e.deltaY;
+      e.preventDefault();
+    };
+    el.addEventListener("pointerdown", onDown);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      el.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      el.removeEventListener("wheel", onWheel);
+    };
+  }, []);
 
   return (
     <>
       <div
         ref={scrollerRef}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        className="overflow-x-auto overflow-y-hidden pb-3 cursor-grab active:cursor-grabbing select-none snap-x snap-proximity"
+        className="overflow-x-auto overflow-y-hidden pb-3 cursor-grab active:cursor-grabbing select-none"
         style={{ scrollbarWidth: "thin", touchAction: "pan-x" }}
       >
         <motion.div

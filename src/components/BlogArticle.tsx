@@ -116,7 +116,15 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
           className="max-w-5xl mx-auto px-6"
         >
           <div className="relative aspect-[16/9] w-full overflow-hidden rounded-sm bg-gray-100 shadow-sm">
-            <img src={post.hero} alt={post.title} className="absolute inset-0 w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <motion.img
+              src={post.hero}
+              alt={post.title}
+              className="absolute inset-0 w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+              initial={{ scale: 1.04 }}
+              animate={{ scale: 1.12 }}
+              transition={{ duration: 16, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+            />
           </div>
         </motion.div>
       )}
