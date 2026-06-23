@@ -88,7 +88,7 @@ function PrimaryCTA({ className = "" }: { className?: string }) {
       href={STRIPE_URL}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group inline-flex items-center justify-center gap-3 bg-black text-white px-8 py-4 text-[11px] sm:text-xs tracking-[0.22em] uppercase font-light hover:bg-neutral-900 transition active:scale-[0.99] duration-300 ${className}`}
+      className={`group inline-flex items-center justify-center gap-3 bg-[#f3eee2] text-[#412c00] px-8 py-4 text-[11px] sm:text-xs tracking-[0.22em] uppercase font-medium shadow-xl shadow-black/25 hover:bg-white transition active:scale-[0.99] duration-300 ${className}`}
     >
       Click Here To Book The Wedding Navigator - NZD $425 Today for the deposit
       <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={1.5} />
@@ -115,7 +115,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
   return (
     <div className="bg-[#f7f7f7] text-black">
       {/* HERO */}
-      <section className="relative min-h-[88dvh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[64vh] sm:h-[72vh] min-h-[540px] max-h-[760px] flex items-center justify-center overflow-hidden">
         <motion.img
           src="/assets/images/wedding-navigator-hero.webp"
           alt="A couple holding hands on their wedding day"
@@ -125,22 +125,33 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           animate={{ scale: 1 }}
           transition={{ duration: 1.6, ease: LUX_EASE }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/35 to-black/60" />
-        <div className="relative z-10 max-w-3xl mx-auto px-6 py-28 text-center text-white">
-          <span className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-white/80 font-light block mb-6">
+        {/* Base wash + focused vignette behind the text for legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/70" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 72% 62% at 50% 46%, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 56%, rgba(0,0,0,0) 100%)"
+          }}
+        />
+        <div
+          className="relative z-10 max-w-2xl mx-auto px-6 py-14 text-center text-white"
+          style={{ textShadow: "0 2px 20px rgba(0,0,0,0.55)" }}
+        >
+          <span className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-white/85 font-light block mb-5">
             The Wedding Navigator by Fantail Weddings
           </span>
           <RevealHeading
             as="h1"
-            className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light leading-[1.12] tracking-tight mb-8"
+            className="font-serif text-3xl sm:text-5xl font-light leading-[1.12] tracking-tight mb-6"
             text="You just don't want to get it wrong."
             amount={0.3}
           />
-          <p className="text-sm sm:text-base font-light text-white/85 leading-[1.9] max-w-2xl mx-auto mb-4">
+          <p className="text-sm sm:text-base font-light text-white/90 leading-[1.85] max-w-xl mx-auto mb-3">
             You're organised. You've done the research. You actually enjoy the planning, mostly. You don't need
             someone to run the whole show for you.
           </p>
-          <p className="text-sm sm:text-base font-light text-white/85 leading-[1.9] max-w-2xl mx-auto mb-10">
+          <p className="text-sm sm:text-base font-light text-white/90 leading-[1.85] max-w-xl mx-auto mb-9">
             What you need is someone who's done this a hundred times to hand you the map, stand beside you for a
             moment, and send you on your way with everything you need.
           </p>
