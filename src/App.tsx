@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { Award, Plus, Minus, Menu, X } from "lucide-react";
 import { RevealHeading } from "./components/reveal";
-import { RevealImage } from "./components/reveal";
+import { RevealImage, SpotlightCard } from "./components/reveal";
 import {
   SERVICES_DATA,
   TIMELINE_DATA,
@@ -988,6 +988,7 @@ export default function App() {
                     alt={service.title}
                     id={`service-image-${service.id}`}
                     wrapClassName="relative aspect-[3/4] w-full overflow-hidden bg-gray-100"
+                    spotlight
                   />
                 </div>
 
@@ -1138,15 +1139,15 @@ export default function App() {
                 </div>
 
                 {/* Supporting Portrait Aspect photograph */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50">
+                <SpotlightCard className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50">
                   <img
                     src={point.image}
                     alt={point.title}
-                    className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
+                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                     id={`timeline-img-${point.id}`}
                   />
-                </div>
+                </SpotlightCard>
 
                 <h4 className="font-serif text-base text-black font-normal italic">
                   {point.title}
@@ -1216,12 +1217,14 @@ export default function App() {
               alt="Rebecca - Creator and Planner"
               wrapClassName="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm"
               id="about-founder-img"
+              spotlight
             />
             <RevealImage
               src="/assets/images/Jasper_and_Rebecca.jpg"
               alt="Jasper & Rebecca"
               wrapClassName="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm"
               id="about-jasper-rebecca-img"
+              spotlight
             />
           </div>
 
