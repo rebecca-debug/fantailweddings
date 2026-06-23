@@ -9,6 +9,7 @@ import { Award, Plus, Minus, Menu, X } from "lucide-react";
 import { RevealHeading } from "./components/reveal";
 import { RevealImage, SpotlightCard } from "./components/reveal";
 import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
+import { useLenis } from "./components/SmoothScroll";
 import {
   SERVICES_DATA,
   TIMELINE_DATA,
@@ -224,6 +225,7 @@ export default function App() {
   const [isJournalOpen, setIsJournalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const lenis = useLenis();
   const contactFormRef = useRef<HTMLDivElement>(null);
 
   // ---- Lightweight URL router: real paths that mirror the previous website's slugs ----
@@ -283,7 +285,8 @@ export default function App() {
     }
     setCurrentPage(page);
     setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "auto" });
+    if (lenis) lenis.scrollTo(0, { immediate: true });
+    else window.scrollTo({ top: 0, behavior: "auto" });
   };
 
   // Keep the page in sync with browser back/forward.
@@ -312,13 +315,17 @@ export default function App() {
   // Smooth in-page section navigation (home sections)
   const navigateTo = (sectionId: string) => {
     setIsMobileMenuOpen(false);
+    const doScroll = () => {
+      const el = document.getElementById(sectionId);
+      if (!el) return;
+      if (lenis) lenis.scrollTo(el, { offset: -80, duration: 1.1 });
+      else el.scrollIntoView({ behavior: "smooth" });
+    };
     if (currentPage !== "home") {
       navigate("home");
-      setTimeout(() => {
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
-      }, 160);
+      setTimeout(doScroll, 180);
     } else {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      doScroll();
     }
   };
 
@@ -378,6 +385,7 @@ export default function App() {
 
     const previouslyFocused = document.activeElement as HTMLElement | null;
     document.body.style.overflow = "hidden";
+    lenis?.stop();
 
     const closeAll = () => {
       setIsLoginOpen(false);
@@ -422,10 +430,11 @@ export default function App() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      lenis?.start();
       window.clearTimeout(focusTimer);
       previouslyFocused?.focus?.();
     };
-  }, [isLoginOpen, isJournalOpen]);
+  }, [isLoginOpen, isJournalOpen, lenis]);
 
   // Handle service CTA clicks - scroll, select, and highlight
   const handleServiceCTA = (serviceId: string) => {
