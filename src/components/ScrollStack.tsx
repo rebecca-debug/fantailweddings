@@ -93,8 +93,17 @@ const ScrollStack = ({
   const getElementOffset = useCallback(
     (element: HTMLElement) => {
       if (useWindowScroll) {
-        const rect = element.getBoundingClientRect();
-        return rect.top + window.scrollY;
+        // Sum offsetTop up the offsetParent chain to get the element's document-top.
+        // Unlike getBoundingClientRect(), offsetTop is immune to the translateY transform
+        // we apply for pinning — using the rect here makes that transform feed back on the
+        // measurement and the pinned (top) card judders.
+        let top = 0;
+        let node: HTMLElement | null = element;
+        while (node) {
+          top += node.offsetTop;
+          node = node.offsetParent as HTMLElement | null;
+        }
+        return top;
       } else {
         return element.offsetTop;
       }
