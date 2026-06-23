@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-// A single-row, full-frame editorial carousel: large landscape frames that drag / scroll
-// sideways, with the neighbouring frames peeking in from the left and right. Click any
-// frame to expand it. Styled to Fantail's palette.
+// A single-row editorial filmstrip: frames share a uniform height and take their natural
+// width, so portraits and landscapes both show in full — nothing is ever cropped. The row
+// drags / scrolls sideways with the neighbouring frames peeking in. Click any frame to
+// expand it. Styled to Fantail's palette.
 
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -14,9 +15,9 @@ interface BentoGalleryProps {
 export default function BentoGallery({ images }: BentoGalleryProps) {
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Drag-to-scroll (works alongside native touch / trackpad scroll + scrollbar)
+  // Drag-to-scroll with pointer capture (works alongside native touch / trackpad / scrollbar)
   const scrollerRef = useRef<HTMLDivElement>(null);
-  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false });
+  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false, id: -1 });
 
   useEffect(() => {
     if (!selected) return;
@@ -32,22 +33,33 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
   }, [selected]);
 
   const onPointerDown = (e: React.PointerEvent) => {
-    if (!scrollerRef.current) return;
-    drag.current = {
-      down: true,
-      startX: e.clientX,
-      startLeft: scrollerRef.current.scrollLeft,
-      moved: false
-    };
+    const el = scrollerRef.current;
+    if (!el) return;
+    drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false, id: e.pointerId };
+    try {
+      el.setPointerCapture(e.pointerId);
+    } catch {
+      /* no-op */
+    }
   };
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!drag.current.down || !scrollerRef.current) return;
+    const el = scrollerRef.current;
+    if (!drag.current.down || !el) return;
     const dx = e.clientX - drag.current.startX;
     if (Math.abs(dx) > 4) drag.current.moved = true;
-    scrollerRef.current.scrollLeft = drag.current.startLeft - dx;
+    el.scrollLeft = drag.current.startLeft - dx;
   };
-  const endDrag = () => {
+  const endDrag = (e: React.PointerEvent) => {
+    const el = scrollerRef.current;
+    if (el && drag.current.id !== -1) {
+      try {
+        el.releasePointerCapture(drag.current.id);
+      } catch {
+        /* no-op */
+      }
+    }
     drag.current.down = false;
+    drag.current.id = -1;
   };
 
   return (
@@ -57,12 +69,12 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endDrag}
-        onPointerLeave={endDrag}
-        className="overflow-x-auto pb-3 cursor-grab active:cursor-grabbing select-none snap-x snap-mandatory scroll-px-6"
-        style={{ scrollbarWidth: "thin" }}
+        onPointerCancel={endDrag}
+        className="overflow-x-auto overflow-y-hidden pb-3 cursor-grab active:cursor-grabbing select-none snap-x snap-proximity"
+        style={{ scrollbarWidth: "thin", touchAction: "pan-x" }}
       >
         <motion.div
-          className="flex gap-4 w-max"
+          className="flex gap-4 w-max items-stretch"
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }}
           initial="hidden"
           animate="visible"
@@ -71,7 +83,7 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
             <motion.button
               type="button"
               key={`${src}-${index}`}
-              className="group relative shrink-0 snap-center overflow-hidden bg-[#f4f3ef] border border-black/[0.05] cursor-pointer w-[88vw] sm:w-[78vw] lg:w-[66vw] max-w-[950px] h-[375px] sm:h-[525px]"
+              className="group relative shrink-0 snap-center overflow-hidden bg-[#f4f3ef] border border-black/[0.05] cursor-pointer h-[58vw] max-h-[420px] sm:h-[560px] min-w-[220px]"
               variants={{
                 hidden: { opacity: 0, y: 24, scale: 0.97 },
                 visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: LUX_EASE } }
@@ -88,9 +100,9 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
                 decoding="async"
                 draggable={false}
                 referrerPolicy="no-referrer"
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                className="block h-full w-auto max-w-none object-cover pointer-events-none transition-transform duration-700 ease-out group-hover:scale-[1.04]"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             </motion.button>
           ))}
         </motion.div>

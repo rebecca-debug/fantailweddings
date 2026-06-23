@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { Award, Plus, Minus } from "lucide-react";
+import { Award, Plus, Minus, Menu, X } from "lucide-react";
 import { RevealHeading } from "./components/reveal";
 import { RevealImage } from "./components/reveal";
 import {
@@ -21,6 +21,9 @@ import PortfolioView from "./components/PortfolioView";
 import JournalArticle from "./components/JournalArticle";
 import JournalIndex from "./components/JournalIndex";
 import { JOURNAL_ARTICLES, getArticleByPage, JournalPage } from "./journal";
+import { JOURNAL_POSTS, POST_PATHS, getPostByPath } from "./journalPosts";
+import BlogArticle from "./components/BlogArticle";
+import WeddingNavigator from "./components/WeddingNavigator";
 
 // ---- Shared motion vocabulary (one calm easing + slow, small-travel reveals) ----
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
@@ -215,39 +218,78 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("hero");
 
   // Navigation page views & custom modal states
-  const [currentPage, setCurrentPage] = useState<"home" | "portfolio" | "journal-index" | JournalPage>("home");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [isJournalOpen, setIsJournalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const contactFormRef = useRef<HTMLDivElement>(null);
 
-  // Smooth multi-page section navigation helper
+  // ---- Lightweight URL router: real paths that mirror the previous website's slugs ----
+  const PAGE_PATHS: Record<string, string> = {
+    home: "/",
+    portfolio: "/portfolio/",
+    "journal-index": "/journal/",
+    "wedding-navigator": "/the-wedding-navigator/",
+    "journal-queenstown": "/queenstown-wedding-planner/",
+    "journal-wanaka": "/nz-wanaka-wedding-planner/"
+  };
+  const pathForPage = (page: string): string =>
+    PAGE_PATHS[page] || (page.startsWith("/") ? page : "/");
+  const pageForPath = (pathname: string): string => {
+    let p = pathname || "/";
+    if (p.length > 1 && !p.endsWith("/")) p += "/";
+    const hit = Object.keys(PAGE_PATHS).find((k) => PAGE_PATHS[k] === p);
+    if (hit) return hit;
+    if (POST_PATHS.includes(p)) return p;
+    return "home";
+  };
+
+  const [currentPage, setCurrentPage] = useState<string>(() =>
+    typeof window !== "undefined" ? pageForPath(window.location.pathname) : "home"
+  );
+
+  // Navigate to a page id or URL path; pushes real history so the address bar matches the old slugs.
+  const navigate = (target: string) => {
+    const page = target.startsWith("/") ? pageForPath(target) : target;
+    const path = pathForPage(page);
+    if (typeof window !== "undefined" && window.location.pathname !== path) {
+      window.history.pushState({}, "", path);
+    }
+    setCurrentPage(page);
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+
+  // Keep the page in sync with browser back/forward.
+  useEffect(() => {
+    const onPop = () => setCurrentPage(pageForPath(window.location.pathname));
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Smooth in-page section navigation (home sections)
   const navigateTo = (sectionId: string) => {
+    setIsMobileMenuOpen(false);
     if (currentPage !== "home") {
-      setCurrentPage("home");
+      navigate("home");
       setTimeout(() => {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 150);
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      }, 160);
     } else {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  // Journal navigation — instant jump to top so the new page never flashes mid-scroll
-  const goToPage = (page: "home" | "portfolio" | "journal-index" | JournalPage) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "auto" });
-  };
-  const openJournalIndex = () => goToPage("journal-index");
-  const openArticle = (page: JournalPage) => goToPage(page);
-  const isJournalPage = currentPage === "journal-index" || currentPage === "journal-queenstown" || currentPage === "journal-wanaka";
+  const goToPage = (page: string) => navigate(page);
+  const openJournalIndex = () => navigate("journal-index");
+  const openArticle = (page: string) => navigate(page);
+  const isJournalPage =
+    currentPage === "journal-index" ||
+    currentPage === "journal-queenstown" ||
+    currentPage === "journal-wanaka" ||
+    POST_PATHS.includes(currentPage);
 
   // Highlight the active nav item via IntersectionObserver (no scroll listener, no layout reads)
   useEffect(() => {
@@ -347,6 +389,11 @@ export default function App() {
 
   // Handle service CTA clicks - scroll, select, and highlight
   const handleServiceCTA = (serviceId: string) => {
+    // The Wedding Navigator has its own landing/booking page rather than the contact form.
+    if (serviceId === "navigator") {
+      navigate("wedding-navigator");
+      return;
+    }
     let helpTypeValue = "";
     if (serviceId === "elopement") {
       helpTypeValue = "Elopement";
@@ -454,17 +501,16 @@ export default function App() {
             href="#hero"
             onClick={(e) => {
               e.preventDefault();
-              setCurrentPage("home");
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              navigate("home");
             }}
-            className="font-serif text-sm tracking-[0.25em] text-black font-semibold hover:opacity-80 transition-opacity"
+            className="font-serif text-[13px] sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] text-black font-semibold hover:opacity-80 transition-opacity whitespace-nowrap"
             id="logo-link"
           >
             FANTAIL WEDDINGS
           </a>
 
-          {/* Nav Links - Right aligned, small, capitalized, widely spaced */}
-          <nav className="flex items-center gap-6 md:gap-10">
+          {/* Nav Links - Right aligned, small, capitalized, widely spaced (desktop) */}
+          <nav className="hidden lg:flex items-center gap-7">
             <button
               onClick={() => navigateTo("story")}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
@@ -486,6 +532,18 @@ export default function App() {
             >
               Services
               {currentPage === "home" && activeSection === "services" && (
+                <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
+              )}
+            </button>
+            <button
+              onClick={() => navigate("wedding-navigator")}
+              className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
+                currentPage === "wedding-navigator" ? "text-black" : "text-[#708090] hover:text-black"
+              }`}
+              id="nav-wedding-navigator"
+            >
+              The Wedding Navigator
+              {currentPage === "wedding-navigator" && (
                 <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
               )}
             </button>
@@ -556,7 +614,68 @@ export default function App() {
               Client Login
             </button>
           </nav>
+
+          {/* Mobile hamburger */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((v) => !v)}
+            className="lg:hidden -mr-1 p-2 text-black"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-5 h-5" strokeWidth={1.5} />}
+          </button>
         </div>
+
+        {/* Mobile menu panel */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: LUX_EASE }}
+              className="lg:hidden overflow-hidden border-t border-black/[0.06] bg-[#f7f7f7]"
+            >
+              <div className="px-6 py-3 flex flex-col max-h-[75dvh] overflow-y-auto">
+                {[
+                  { label: "Story", fn: () => navigateTo("story") },
+                  { label: "Services", fn: () => navigateTo("services") },
+                  { label: "The Wedding Navigator", fn: () => navigate("wedding-navigator") },
+                  { label: "Portfolio", fn: () => goToPage("portfolio") },
+                  { label: "FAQ", fn: () => navigateTo("faq") },
+                  { label: "Journal", fn: () => openJournalIndex() }
+                ].map((item) => (
+                  <button
+                    key={item.label}
+                    onClick={item.fn}
+                    className="text-left py-3 border-b border-black/[0.06] text-[11px] tracking-[0.25em] uppercase text-black/75 hover:text-black transition"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+                {JOURNAL_ARTICLES.map((a) => (
+                  <button
+                    key={a.page}
+                    onClick={() => openArticle(a.page)}
+                    className="text-left py-2.5 pl-4 border-b border-black/[0.06] text-[10px] tracking-[0.2em] uppercase text-black/50 hover:text-black transition"
+                  >
+                    {a.navLabel}
+                  </button>
+                ))}
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    setIsLoginOpen(true);
+                  }}
+                  className="text-left py-3 text-[11px] tracking-[0.25em] uppercase text-black/75 hover:text-black transition"
+                >
+                  Client Login
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* SPACE FOR FIXED NAV */}
@@ -806,7 +925,7 @@ export default function App() {
                 onClick={() => handleServiceCTA(service.id)}
                 className="text-[10px] tracking-widest uppercase text-black font-medium hover:opacity-75 transition text-left block"
               >
-                Inquire now →
+                {service.id === "navigator" ? "Book The Wedding Navigator Consultation" : "Inquire now"} →
               </button>
             </div>
           ))}
@@ -830,11 +949,7 @@ export default function App() {
                     alt={service.title}
                     id={`service-image-${service.id}`}
                     wrapClassName="relative aspect-[3/4] w-full overflow-hidden bg-gray-100"
-                  >
-                    <div className="absolute top-4 left-4 bg-[#f7f7f7] px-3 py-1 border border-black/10 text-[10px] tracking-widest uppercase font-light text-black z-10">
-                      {service.number}
-                    </div>
-                  </RevealImage>
+                  />
                 </div>
 
                 {/* Content description column */}
@@ -923,7 +1038,7 @@ export default function App() {
                       className="group text-[10px] tracking-[0.25em] uppercase text-black border-b border-black pb-1 inline-flex items-center hover:opacity-75 transition text-left font-light"
                       id={`cta-button-${service.id}`}
                     >
-                      {service.ctaText} <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                      {service.id === "navigator" ? "Book The Wedding Navigator Consultation" : service.ctaText} <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                     </button>
                   </div>
 
@@ -1583,11 +1698,19 @@ export default function App() {
         </>
       ) : currentPage === "portfolio" ? (
         <PortfolioView onBackToHome={navigateTo} />
+      ) : currentPage === "wedding-navigator" ? (
+        <WeddingNavigator onNavigate={navigate} onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "journal-index" ? (
-        <JournalIndex onOpenArticle={openArticle} />
+        <JournalIndex onOpenArticle={openArticle} onOpenPost={navigate} />
+      ) : POST_PATHS.includes(currentPage) ? (
+        <BlogArticle
+          post={getPostByPath(currentPage)!}
+          onNavigate={navigate}
+          onEnquire={() => navigateTo("contact")}
+        />
       ) : (
         <JournalArticle
-          article={getArticleByPage(currentPage)!}
+          article={getArticleByPage(currentPage as JournalPage)!}
           onEnquire={() => navigateTo("contact")}
           onBackToJournal={openJournalIndex}
         />
@@ -1628,14 +1751,14 @@ export default function App() {
               <button onClick={() => navigateTo("services")} className="hover:text-black transition text-left cursor-pointer">
                 Services
               </button>
-              <button 
-                onClick={() => {
-                  setCurrentPage("portfolio");
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }} 
+              <button
+                onClick={() => navigate("portfolio")}
                 className="hover:text-black transition text-left cursor-pointer"
               >
                 Portfolio
+              </button>
+              <button onClick={() => navigate("wedding-navigator")} className="hover:text-black transition text-left cursor-pointer">
+                The Wedding Navigator
               </button>
               <button onClick={() => navigateTo("faq")} className="hover:text-black transition text-left cursor-pointer">
                 FAQ

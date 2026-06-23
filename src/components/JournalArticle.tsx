@@ -208,8 +208,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
           className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10"
           variants={staggerParent}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          animate="visible"
         >
           {article.venues.items.map((v, i) => (
             <motion.div key={v.name} variants={revealItem} className="flex gap-5 items-start border-b border-black/[0.06] pb-6">
