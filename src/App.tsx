@@ -249,8 +249,32 @@ export default function App() {
     typeof window !== "undefined" ? pageForPath(window.location.pathname) : "home"
   );
 
+  // Old standalone pages from the previous site that are now just sections on the home page.
+  const SECTION_REDIRECTS: Record<string, string> = {
+    "/connect/": "contact",
+    "/contact/": "contact",
+    "/investment/": "services"
+  };
+  const normPath = (p: string): string => {
+    let s = (p || "/").split("#")[0].split("?")[0];
+    if (s.length > 1 && !s.endsWith("/")) s += "/";
+    return s;
+  };
+  const redirectSectionFor = (target: string): string | null => {
+    if (target.includes("/cdn-cgi/l/email-protection")) return "contact";
+    return SECTION_REDIRECTS[normPath(target)] || null;
+  };
+
   // Navigate to a page id or URL path; pushes real history so the address bar matches the old slugs.
   const navigate = (target: string) => {
+    // Old pages that became home-page sections → go home and smooth-scroll there.
+    if (target.startsWith("/")) {
+      const section = redirectSectionFor(target);
+      if (section) {
+        navigateTo(section);
+        return;
+      }
+    }
     const page = target.startsWith("/") ? pageForPath(target) : target;
     const path = pathForPage(page);
     if (typeof window !== "undefined" && window.location.pathname !== path) {
@@ -266,6 +290,21 @@ export default function App() {
     const onPop = () => setCurrentPage(pageForPath(window.location.pathname));
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Direct visits to old standalone pages (e.g. /connect/, /investment/) land on the
+  // matching home-page section, preserving old inbound links and SEO.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const section = redirectSectionFor(window.location.pathname);
+    if (!section) return;
+    window.history.replaceState({}, "", "/");
+    setCurrentPage("home");
+    const t = setTimeout(() => {
+      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+    }, 280);
+    return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
