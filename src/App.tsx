@@ -621,7 +621,7 @@ export default function App() {
               )}
             </button>
             {/* Journal dropdown */}
-            <div className="relative group/journal">
+            <div className="relative group/journal flex items-center">
               <button
                 onClick={openJournalIndex}
                 className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
