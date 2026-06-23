@@ -7,8 +7,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { Award, Plus, Minus, Menu, X } from "lucide-react";
 import { RevealHeading } from "./components/reveal";
-import { RevealImage } from "./components/reveal";
-import ScrollStack from "./components/ScrollStack";
+import { RevealImage, SpotlightCard } from "./components/reveal";
+import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
 import {
   SERVICES_DATA,
   TIMELINE_DATA,
@@ -1108,8 +1108,46 @@ export default function App() {
           </p>
         </div>
 
-        {/* Scroll-stack deck of the five planning phases */}
-        <ScrollStack items={TIMELINE_DATA} />
+        {/* Scroll-stack deck of the five planning phases (React Bits ScrollStack) */}
+        <ScrollStack
+          className="max-w-4xl"
+          useWindowScroll
+          itemDistance={120}
+          itemStackDistance={26}
+          stackPosition="16%"
+          scaleEndPosition="8%"
+          baseScale={0.9}
+          itemScale={0.025}
+        >
+          {TIMELINE_DATA.map((point) => (
+            <ScrollStackItem
+              key={point.id}
+              itemClassName="overflow-hidden rounded-xl border border-black/[0.08] bg-[#fbfbf9] shadow-[0_24px_60px_-30px_rgba(0,0,0,0.5)]"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 min-h-[320px]">
+                <SpotlightCard className="relative aspect-[16/11] md:aspect-auto overflow-hidden bg-gray-100">
+                  <img
+                    src={point.image}
+                    alt={point.title}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  />
+                </SpotlightCard>
+                <div className="p-8 sm:p-12 flex flex-col justify-center">
+                  <div className="flex items-baseline justify-between mb-6">
+                    <span className="font-serif text-4xl italic text-black/15 font-light leading-none">{point.step}</span>
+                    <span className="text-[9px] tracking-widest text-[#708090] font-mono">PHASE {point.step}</span>
+                  </div>
+                  <h3 className="font-serif text-2xl sm:text-3xl text-black font-light italic tracking-tight mb-4 leading-snug">
+                    {point.title}
+                  </h3>
+                  <p className="text-sm text-[#708090] font-light leading-relaxed">{point.description}</p>
+                </div>
+              </div>
+            </ScrollStackItem>
+          ))}
+        </ScrollStack>
       </section>
 
       {/* Thin black border divider */}
