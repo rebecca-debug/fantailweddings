@@ -12,48 +12,112 @@ interface BlogArticleProps {
 }
 
 function Block({ block }: { block: PostBlock }) {
-  if (block.type === "h") {
-    return (
-      <h2 className="font-serif text-2xl sm:text-3xl text-black font-light tracking-tight mt-14 mb-5 leading-snug">
-        {block.text}
-      </h2>
-    );
+  switch (block.type) {
+    case "h":
+      return (
+        <h2 className="font-serif text-2xl sm:text-3xl text-black font-light tracking-tight mt-16 mb-5 leading-snug">
+          {block.text}
+        </h2>
+      );
+    case "lede":
+      return <p className="text-lg sm:text-xl text-[#4a5360] font-light leading-[1.7] mb-7">{block.text}</p>;
+    case "p":
+      return block.html ? (
+        <p
+          className="text-[15px] sm:text-base text-[#5b6470] font-light leading-[1.85] mb-6"
+          dangerouslySetInnerHTML={{ __html: block.html }}
+        />
+      ) : (
+        <p className="text-[15px] sm:text-base text-[#5b6470] font-light leading-[1.85] mb-6">{block.text}</p>
+      );
+    case "ul":
+      return (
+        <ul className="mb-6 space-y-3">
+          {(block.items || []).map((it, i) => (
+            <li key={i} className="relative pl-6 text-[15px] sm:text-base text-[#5b6470] font-light leading-[1.8]">
+              <span className="absolute left-0 top-[0.7em] h-[5px] w-[5px] rounded-full bg-[#997700]" />
+              {it}
+            </li>
+          ))}
+        </ul>
+      );
+    case "statements":
+      return (
+        <ul className="my-8 space-y-5">
+          {(block.items || []).map((it, i) => (
+            <li key={i} className="relative pl-7 text-base sm:text-[17px] text-[#4a5360] font-light leading-[1.7]">
+              <span className="absolute left-0 top-[0.7em] h-[1px] w-4 bg-[#997700]" />
+              {it}
+            </li>
+          ))}
+        </ul>
+      );
+    case "quote":
+      return (
+        <blockquote className="my-10 border-l-2 border-[#997700]/40 pl-6 py-1 font-serif text-xl sm:text-2xl italic text-black/75 leading-relaxed">
+          {block.text}
+        </blockquote>
+      );
+    case "pullquote":
+      return (
+        <figure className="my-12 sm:my-14 text-center max-w-2xl mx-auto">
+          <span className="block w-10 h-[1px] bg-[#997700]/50 mx-auto mb-6" />
+          <blockquote className="font-serif text-2xl sm:text-3xl italic text-black/80 leading-snug">
+            {block.text}
+          </blockquote>
+          <span className="block w-10 h-[1px] bg-[#997700]/50 mx-auto mt-6" />
+        </figure>
+      );
+    case "callout":
+      return (
+        <aside className="my-10 bg-[#f3eee2]/60 border-l-2 border-[#997700] px-6 sm:px-8 py-6 sm:py-7">
+          {block.label && (
+            <div className="text-[10px] tracking-[0.25em] uppercase text-[#997700] font-medium mb-3">{block.label}</div>
+          )}
+          <p className="font-serif text-lg sm:text-xl italic text-black/80 leading-relaxed">{block.text}</p>
+        </aside>
+      );
+    case "steps":
+      return (
+        <div className="my-10 grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {(block.steps || []).map((st, i) => (
+            <div key={i} className="bg-white border border-black/[0.07] p-6 sm:p-7 flex flex-col">
+              <span className="font-serif text-2xl italic text-[#997700]/70 font-light leading-none mb-3">
+                {st.n || (i + 1).toString().padStart(2, "0")}
+              </span>
+              <h4 className="font-serif text-lg text-black font-normal mb-2 leading-snug">{st.title}</h4>
+              <p className="text-sm text-[#5b6470] font-light leading-relaxed">{st.body}</p>
+            </div>
+          ))}
+        </div>
+      );
+    case "columns":
+      return (
+        <div className="my-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {(block.columns || []).map((col, ci) => (
+            <div key={ci} className="bg-white border border-black/[0.07] p-6 sm:p-8">
+              <h4 className="font-serif text-lg sm:text-xl italic text-black font-normal mb-5">{col.title}</h4>
+              <ul className="space-y-3.5">
+                {col.items.map((it, i) => (
+                  <li key={i} className="relative pl-6 text-sm sm:text-[15px] text-[#5b6470] font-light leading-relaxed">
+                    <span className="absolute left-0 top-[0.55em] h-[5px] w-[5px] rounded-full bg-[#997700]/70" />
+                    {it}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      );
+    case "img":
+      return block.src ? (
+        <figure className="my-10 overflow-hidden rounded-sm bg-gray-100">
+          <img src={block.src} alt={block.alt || ""} loading="lazy" referrerPolicy="no-referrer" className="w-full h-auto" />
+        </figure>
+      ) : null;
+    default:
+      return null;
   }
-  if (block.type === "p") {
-    return (
-      <p
-        className="text-[15px] sm:text-base text-[#5b6470] font-light leading-[1.85] mb-6"
-        dangerouslySetInnerHTML={{ __html: block.html || "" }}
-      />
-    );
-  }
-  if (block.type === "ul") {
-    return (
-      <ul className="mb-6 space-y-3">
-        {(block.items || []).map((it, i) => (
-          <li key={i} className="relative pl-6 text-[15px] sm:text-base text-[#5b6470] font-light leading-[1.8]">
-            <span className="absolute left-0 top-[0.7em] h-[5px] w-[5px] rounded-full bg-[#997700]" />
-            {it}
-          </li>
-        ))}
-      </ul>
-    );
-  }
-  if (block.type === "quote") {
-    return (
-      <blockquote className="my-10 border-l-2 border-[#997700]/40 pl-6 py-1 font-serif text-xl sm:text-2xl italic text-black/75 leading-relaxed">
-        {block.text}
-      </blockquote>
-    );
-  }
-  if (block.type === "img" && block.src) {
-    return (
-      <figure className="my-10 overflow-hidden rounded-sm bg-gray-100">
-        <img src={block.src} alt={block.alt || ""} loading="lazy" referrerPolicy="no-referrer" className="w-full h-auto" />
-      </figure>
-    );
-  }
-  return null;
 }
 
 export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticleProps) {
@@ -105,6 +169,16 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
           text={post.title}
           amount={0.4}
         />
+        {post.subtitle && (
+          <motion.p
+            className="mt-6 font-serif text-lg sm:text-xl italic text-[#708090] font-light leading-relaxed max-w-2xl mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5, ease: LUX_EASE }}
+          >
+            {post.subtitle}
+          </motion.p>
+        )}
       </header>
 
       {/* Hero */}

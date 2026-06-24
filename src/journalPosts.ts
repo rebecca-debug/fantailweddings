@@ -1,22 +1,38 @@
 import data from "./journalPosts.json";
+import { NEW_POSTS } from "./journalPostsNew";
 
-// Journal posts migrated from the previous Fantail Weddings website. Each keeps its original
-// URL path so existing inbound links and SEO carry across to the new site.
+// Journal posts. The 15 migrated from the previous website keep their original URL paths so
+// inbound links / SEO carry across; the newer cornerstone posts are authored here. Both render
+// through the same BlogArticle template.
+
+export interface PostStep {
+  n?: string;
+  title: string;
+  body: string;
+}
+export interface PostColumn {
+  title: string;
+  items: string[];
+}
 
 export interface PostBlock {
-  type: "h" | "p" | "ul" | "quote" | "img";
+  type: "h" | "p" | "lede" | "ul" | "quote" | "pullquote" | "statements" | "callout" | "steps" | "columns" | "img";
   text?: string;
   html?: string;
   items?: string[];
   src?: string;
   alt?: string;
+  label?: string;
+  steps?: PostStep[];
+  columns?: PostColumn[];
 }
 
 export interface JournalPost {
-  path: string;        // original URL path, e.g. "/celebration/seasonal-weddings-new-zealand/"
+  path: string;        // URL path, e.g. "/celebration/seasonal-weddings-new-zealand/"
   slug: string;
   category: string;
   title: string;
+  subtitle?: string;
   date: string;        // ISO date
   dateDisplay: string; // e.g. "October 2024"
   hero: string | null;
@@ -24,7 +40,10 @@ export interface JournalPost {
   blocks: PostBlock[];
 }
 
-export const JOURNAL_POSTS: JournalPost[] = data as JournalPost[];
+// Newest first.
+export const JOURNAL_POSTS: JournalPost[] = [...NEW_POSTS, ...(data as JournalPost[])].sort((a, b) =>
+  a.date < b.date ? 1 : a.date > b.date ? -1 : 0
+);
 
 export const POST_PATHS: string[] = JOURNAL_POSTS.map((p) => p.path);
 
