@@ -778,12 +778,14 @@ export default function App() {
         <div className="mt-8 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start pb-12">
           <div className="lg:col-span-8 space-y-6 text-sm text-[#708090] leading-relaxed font-light font-sans">
             <p className="text-base sm:text-lg text-[#556270] leading-relaxed">
-              I plan a small number of weddings each year on the South Island of Aotearoa, New Zealand.
-              Elopements. Intimate weddings of up to 60 guests. And for couples planning their own wedding
-              here, an online consultancy that hands you the map instead of running the journey for you.
+              Thank you for being here, I am Rebecca, and I plan a small number of weddings each year on the
+              South Island of Aotearoa, New Zealand. Elopements. Intimate weddings of up to 60 guests. For
+              couples planning their own wedding here, an online consultancy that hands you the map instead of
+              running the journey for you. And, when a celebration calls for it, full design, coordination and
+              day-of management.
             </p>
             <p className="text-black/85 font-normal tracking-wide">
-              Three different shapes of help. One person. Real care.
+              Four different shapes of help. One person. Real care.
             </p>
           </div>
           <div className="lg:col-span-4 lg:text-right lg:pt-3">
