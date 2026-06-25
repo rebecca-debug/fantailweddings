@@ -777,7 +777,7 @@ export default function App() {
         {/* Copy Paragraph and CTA Sitting Below the Full Frame Image */}
         <div className="mt-8 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start pb-12">
           <div className="lg:col-span-8 space-y-6 text-sm text-[#708090] leading-relaxed font-light font-sans">
-            <p className="text-base sm:text-lg text-[#556270] leading-relaxed">
+            <p className="text-sm text-[#708090] leading-relaxed font-light">
               Thank you for being here, I am Rebecca, and I plan a small number of weddings each year on the
               South Island of Aotearoa, New Zealand. Elopements. Intimate weddings of up to 60 guests. For
               couples planning their own wedding here, an online consultancy that hands you the map instead of
