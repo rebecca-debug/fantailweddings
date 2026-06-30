@@ -6,6 +6,19 @@
 		<title>Fantail Weddings | Boutique Wedding Planning</title>
 	</head>
 	<body>
+		<!-- Hidden static form so Netlify detects the "contact" form at build time (the visible
+		     form is React-rendered and submits to it via AJAX). Field names mirror the live form. -->
+		<form name="contact" netlify hidden>
+			<input type="text" name="names" />
+			<input type="email" name="email" />
+			<input type="text" name="location" />
+			<input type="text" name="helpType" />
+			<input type="text" name="dateTiming" />
+			<input type="text" name="guestCount" />
+			<input type="text" name="regionDrawn" />
+			<textarea name="story"></textarea>
+			<input type="text" name="source" />
+		</form>
 		<div id="root"></div>
 		<script type="module" src="/src/main.tsx"></script>
 	</body>

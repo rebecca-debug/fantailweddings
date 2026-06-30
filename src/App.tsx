@@ -207,6 +207,7 @@ export default function App() {
 
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   // Newsletter state
@@ -504,29 +505,42 @@ export default function App() {
     return Object.keys(errors).length === 0;
   };
 
-  // Form submission
+  // Form submission — posts to Netlify Forms (form "contact" is registered via the hidden
+  // static form in index.html; the dashboard sends the enquiry on to Rebecca by email).
   const handleSubmitContactForm = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setSubmitting(true);
-    // Simulate real server route post /api/contact or delay
-    setTimeout(() => {
-      setSubmitting(false);
-      setFormSubmitted(true);
-      // Clean form on success
-      setFormData({
-        names: "",
-        email: "",
-        location: "",
-        helpType: "",
-        dateTiming: "",
-        guestCount: "",
-        regionDrawn: "",
-        story: "",
-        source: ""
+    setSubmitError(null);
+    const body = new URLSearchParams({ "form-name": "contact", ...formData }).toString();
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        setSubmitting(false);
+        setFormSubmitted(true);
+        setFormData({
+          names: "",
+          email: "",
+          location: "",
+          helpType: "",
+          dateTiming: "",
+          guestCount: "",
+          regionDrawn: "",
+          story: "",
+          source: ""
+        });
+      })
+      .catch(() => {
+        setSubmitting(false);
+        setSubmitError(
+          "Sorry, something went wrong sending your message. Please email rebecca@fantailweddings.com directly and I'll get straight back to you."
+        );
       });
-    }, 1200);
   };
 
   // Newsletter submission
@@ -1372,6 +1386,9 @@ export default function App() {
               {!formSubmitted ? (
                 <motion.form
                   key="contact-form"
+                  name="contact"
+                  method="POST"
+                  data-netlify="true"
                   onSubmit={handleSubmitContactForm}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -1379,7 +1396,8 @@ export default function App() {
                   className="space-y-8"
                   id="actual-contact-form"
                 >
-                  
+                  <input type="hidden" name="form-name" value="contact" />
+
                   {/* Row 1: Names */}
                   <div className="space-y-2">
                     <label htmlFor="names" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
@@ -1571,6 +1589,9 @@ export default function App() {
 
                   {/* Actions Submit */}
                   <div className="pt-6">
+                    {submitError && (
+                      <p className="mb-4 text-xs text-red-700 font-light leading-relaxed">{submitError}</p>
+                    )}
                     <button
                       type="submit"
                       disabled={submitting}
