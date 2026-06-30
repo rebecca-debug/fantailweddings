@@ -513,7 +513,12 @@ export default function App() {
 
     setSubmitting(true);
     setSubmitError(null);
-    const body = new URLSearchParams({ "form-name": "contact", ...formData }).toString();
+    // Netlify uses the `subject` field as the email subject line, so we can include the names.
+    const body = new URLSearchParams({
+      "form-name": "contact",
+      subject: `New wedding enquiry from ${formData.names.trim() || "the Fantail website"}`,
+      ...formData
+    }).toString();
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
