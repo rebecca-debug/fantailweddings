@@ -146,16 +146,24 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
     }
   };
 
+  // Real <a> link that routes client-side on plain click, but lets modifier-clicks open a new tab.
+  const navClick = (path: string) => (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    onNavigate(path);
+  };
+
   return (
     <article className="pt-16 md:pt-20 bg-[#f7f7f7]">
       {/* Breadcrumb */}
       <div className="max-w-3xl mx-auto px-6 pt-8">
-        <button
-          onClick={() => onNavigate("/journal/")}
+        <a
+          href="/journal/"
+          onClick={navClick("/journal/")}
           className="group text-[10px] tracking-[0.25em] uppercase text-[#708090] hover:text-black transition inline-flex items-center"
         >
           <span className="mr-2 group-hover:-translate-x-1 transition-transform duration-300">&larr;</span> The Journal
-        </button>
+        </a>
       </div>
 
       {/* Title block */}
@@ -228,26 +236,32 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
       {/* Prev / Next */}
       <nav className="border-t border-black/10 bg-white">
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2">
-          <button
-            onClick={() => prev && onNavigate(prev.path)}
-            disabled={!prev}
-            className="group text-left px-6 sm:px-10 py-10 border-b sm:border-b-0 sm:border-r border-black/10 hover:bg-[#f7f7f7] transition disabled:opacity-30 disabled:pointer-events-none"
+          <a
+            href={prev ? prev.path : undefined}
+            onClick={prev ? navClick(prev.path) : undefined}
+            aria-disabled={!prev}
+            className={`group text-left px-6 sm:px-10 py-10 border-b sm:border-b-0 sm:border-r border-black/10 transition ${
+              prev ? "hover:bg-[#f7f7f7]" : "opacity-30 pointer-events-none"
+            }`}
           >
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#708090] block mb-2">&larr; Older</span>
             <span className="font-serif text-base sm:text-lg text-black font-light leading-snug line-clamp-2">
               {prev ? prev.title : "—"}
             </span>
-          </button>
-          <button
-            onClick={() => next && onNavigate(next.path)}
-            disabled={!next}
-            className="group text-right px-6 sm:px-10 py-10 hover:bg-[#f7f7f7] transition disabled:opacity-30 disabled:pointer-events-none"
+          </a>
+          <a
+            href={next ? next.path : undefined}
+            onClick={next ? navClick(next.path) : undefined}
+            aria-disabled={!next}
+            className={`group text-right px-6 sm:px-10 py-10 transition ${
+              next ? "hover:bg-[#f7f7f7]" : "opacity-30 pointer-events-none"
+            }`}
           >
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#708090] block mb-2">Newer &rarr;</span>
             <span className="font-serif text-base sm:text-lg text-black font-light leading-snug line-clamp-2">
               {next ? next.title : "—"}
             </span>
-          </button>
+          </a>
         </div>
       </nav>
     </article>

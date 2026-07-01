@@ -55,12 +55,17 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
     <article className="pt-16 md:pt-20">
       {/* Breadcrumb back to Journal */}
       <div className="max-w-7xl mx-auto px-6 pt-6">
-        <button
-          onClick={onBackToJournal}
+        <a
+          href="/journal/"
+          onClick={(e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+            e.preventDefault();
+            onBackToJournal();
+          }}
           className="group text-[10px] tracking-[0.25em] uppercase text-[#708090] hover:text-black transition inline-flex items-center"
         >
           <span className="mr-2 group-hover:-translate-x-1 transition-transform duration-300">&larr;</span> The Journal
-        </button>
+        </a>
       </div>
 
       {/* HERO */}

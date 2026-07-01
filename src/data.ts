@@ -9,6 +9,8 @@ export interface Service {
   investment: string;
   ctaText: string;
   image: string;
+  /** Descriptive alt text for the service photo (SEO + screen readers). */
+  imageAlt?: string;
   loveNote: string;
 }
 
@@ -49,6 +51,7 @@ export const SERVICES_DATA: Service[] = [
     investment: "Planning starts from [ NZD $4,300 ]. Vendors and on-the-day costs are quoted separately, so the budget stays transparent.",
     ctaText: "Begin a Conversation about an Elopement",
     image: "/assets/images/Service-01.webp",
+    imageAlt: "An eloping couple walk hand in hand through alpine grass beside a lake, South Island mountains glowing behind them at golden hour.",
     loveNote: "“Thank you for creating this itinerary for us, it was so perfectly everything we wanted without knowing it….. Driving into ‘The Hermitage’ with the top down was a dream, and that celebrant was a hoot…..” M&J - Elopement, April 2026"
   },
   {
@@ -70,6 +73,7 @@ export const SERVICES_DATA: Service[] = [
     investment: "Planning starts from [ NZD $8,200 ]. Most couples invest a total of [ NZD $65,000 to $230,000] across vendors and the celebration itself. For reference, exclusive South Island wedding venues alone typically range from NZD $10,000 to $25,000+, depending on season and inclusions.",
     ctaText: "Begin a Conversation about an Intimate Wedding",
     image: "/assets/images/service-02.webp",
+    imageAlt: "Newlyweds walk through a shower of petal confetti thrown by guests at a lakeside South Island wedding, mountains behind.",
     loveNote: "“Rebecca planned a beautiful wedding that was beloved by our guests as well as us. Recurrent compliments have been on the food (Rebecca somehow found an incredible chef, plucked him from obscurity, and brought him to our wedding, who prepared four incredible meals), the venue, which we would never have found on our own and required complex private negotiations to book, and a boat adventure across a lake in Wanaka. We appreciated her versatility and rapid responsiveness to changing weather conditions... .” M&S - Intimate Wedding, January 2025"
   },
   {
@@ -86,6 +90,7 @@ export const SERVICES_DATA: Service[] = [
     investment: "[ NZD $850.00 +gst ]. Paid in two parts, half at booking, half before the second follow-up call. If you start with the Navigator and decide within the first month to switch to full-service planning instead, the fee credits transfer.",
     ctaText: "Begin a Conversation about the Wedding Navigator",
     image: "/assets/images/Service-03.webp",
+    imageAlt: "A colourful styled wedding tablescape with scalloped placemats, floral-rimmed plates, striped glassware and garden flowers.",
     loveNote: "“OMG - the budget now makes sense. Thank you very much for those tips.” B&S - Online Wedding Consultation, January 2026"
   },
   {
@@ -108,6 +113,7 @@ export const SERVICES_DATA: Service[] = [
     investment: "Planning starts from [ NZD $5,300 ], with all design elements quoted separately to help with budget transparency.",
     ctaText: "Begin a Conversation about Design & Coordination",
     image: "/assets/images/Service-04.webp",
+    imageAlt: "A styled wedding place setting with a hand-illustrated menu card, striped linen napkin folded like a rose, and olive-branch detailing.",
     loveNote: ""
   }
 ];

@@ -138,58 +138,8 @@ export default function App() {
       "destination wedding New Zealand, South Island wedding planner, Wanaka wedding planner, Queenstown wedding planner, intimate wedding New Zealand, boutique wedding planner, NZ elopement planner, online wedding planner New Zealand, wedding planning consultant NZ, concierge wedding planning";
     document.head.appendChild(metaKeywords);
 
-    // Set LocalBusiness JSON-LD schema
-    const schemaId = "local-business-jsonld";
-    let schemaScript = document.getElementById(schemaId) as HTMLScriptElement;
-    if (!schemaScript) {
-      schemaScript = document.createElement("script");
-      schemaScript.id = schemaId;
-      schemaScript.type = "application/ld+json";
-      document.head.appendChild(schemaScript);
-    }
-    schemaScript.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Fantail Weddings",
-      "image": "https://fantailweddings.co.nz/assets/images/slide_-01.jpg",
-      "@id": "https://fantailweddings.co.nz/#localbusiness",
-      "url": "https://fantailweddings.co.nz",
-      "telephone": "+64274672126",
-      "email": "rebecca@fantailweddings.com",
-      "priceRange": "$$",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Wanaka",
-        "addressRegion": "Otago / wider South Island",
-        "addressCountry": "NZ"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": -44.7032,
-        "longitude": 169.1321
-      },
-      "areaServed": [
-        {
-          "@type": "AdministrativeArea",
-          "name": "South Island, New Zealand"
-        },
-        {
-          "@type": "AdministrativeArea",
-          "name": "Wanaka"
-        },
-        {
-          "@type": "AdministrativeArea",
-          "name": "Queenstown"
-        }
-      ],
-      "description": "Bespoke wedding planning, curated elopements, intimate celebrations up to 60 guests, and online consultancy services across the scenic South Island of New Zealand.",
-      "sameAs": [
-        "https://www.instagram.com/fantail_weddings/",
-        "https://www.facebook.com/FantailWeddings",
-        "https://nz.pinterest.com/fantailwed/",
-        "https://www.youtube.com/@Fantailweddings"
-      ]
-    });
+    // Business / Person / WebSite JSON-LD now lives statically in index.html (crawler-visible
+    // without JS). Per-route schema (Article, Service, Breadcrumb) is injected by each page below.
   }, []);
 
   // Form states
@@ -333,6 +283,15 @@ export default function App() {
   const goToPage = (page: string) => navigate(page);
   const openJournalIndex = () => navigate("journal-index");
   const openArticle = (page: string) => navigate(page);
+
+  // Real <a href> links that route client-side on plain click, but let the browser handle
+  // modifier-clicks (open-in-new-tab) — so internal links are crawlable and behave natively.
+  const hrefForPage = (page: string) => pathForPage(page);
+  const spaNav = (e: React.MouseEvent, run: () => void) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    e.preventDefault();
+    run();
+  };
   const isJournalPage =
     currentPage === "journal-index" ||
     currentPage === "journal-queenstown" ||
@@ -579,8 +538,9 @@ export default function App() {
 
           {/* Nav Links - Right aligned, small, capitalized, widely spaced (desktop) */}
           <nav className="hidden lg:flex items-center gap-7">
-            <button
-              onClick={() => navigateTo("story")}
+            <a
+              href="/#story"
+              onClick={(e) => spaNav(e, () => navigateTo("story"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
                 currentPage === "home" && activeSection === "story" ? "text-black" : "text-[#708090] hover:text-black"
               }`}
@@ -590,9 +550,10 @@ export default function App() {
               {currentPage === "home" && activeSection === "story" && (
                 <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
               )}
-            </button>
-            <button
-              onClick={() => navigateTo("services")}
+            </a>
+            <a
+              href="/#services"
+              onClick={(e) => spaNav(e, () => navigateTo("services"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
                 currentPage === "home" && activeSection === "services" ? "text-black" : "text-[#708090] hover:text-black"
               }`}
@@ -602,9 +563,10 @@ export default function App() {
               {currentPage === "home" && activeSection === "services" && (
                 <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
               )}
-            </button>
-            <button
-              onClick={() => navigate("wedding-navigator")}
+            </a>
+            <a
+              href={hrefForPage("wedding-navigator")}
+              onClick={(e) => spaNav(e, () => navigate("wedding-navigator"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
                 currentPage === "wedding-navigator" ? "text-black" : "text-[#708090] hover:text-black"
               }`}
@@ -614,9 +576,10 @@ export default function App() {
               {currentPage === "wedding-navigator" && (
                 <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
               )}
-            </button>
-            <button
-              onClick={() => goToPage("portfolio")}
+            </a>
+            <a
+              href={hrefForPage("portfolio")}
+              onClick={(e) => spaNav(e, () => goToPage("portfolio"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
                 currentPage === "portfolio" ? "text-black" : "text-[#708090] hover:text-black"
               }`}
@@ -626,9 +589,10 @@ export default function App() {
               {currentPage === "portfolio" && (
                 <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
               )}
-            </button>
-            <button
-              onClick={() => navigateTo("faq")}
+            </a>
+            <a
+              href="/#faq"
+              onClick={(e) => spaNav(e, () => navigateTo("faq"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
                 currentPage === "home" && activeSection === "faq" ? "text-black" : "text-[#708090] hover:text-black"
               }`}
@@ -638,11 +602,12 @@ export default function App() {
               {currentPage === "home" && activeSection === "faq" && (
                 <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
               )}
-            </button>
+            </a>
             {/* Journal dropdown */}
             <div className="relative group/journal flex items-center">
-              <button
-                onClick={openJournalIndex}
+              <a
+                href={hrefForPage("journal-index")}
+                onClick={(e) => spaNav(e, openJournalIndex)}
                 className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
                   isJournalPage ? "text-black" : "text-[#708090] hover:text-black"
                 }`}
@@ -652,25 +617,27 @@ export default function App() {
                 {isJournalPage && (
                   <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
                 )}
-              </button>
+              </a>
               <div className="absolute right-0 top-full pt-4 opacity-0 invisible translate-y-1 group-hover/journal:opacity-100 group-hover/journal:visible group-hover/journal:translate-y-0 transition-all duration-200 z-50">
                 <div className="bg-white border border-black/10 shadow-xl py-3 min-w-[210px]">
                   {JOURNAL_ARTICLES.map((a) => (
-                    <button
+                    <a
                       key={a.page}
-                      onClick={() => openArticle(a.page)}
+                      href={hrefForPage(a.page)}
+                      onClick={(e) => spaNav(e, () => openArticle(a.page))}
                       className="block w-full text-left px-5 py-2.5 text-[10px] tracking-[0.2em] uppercase text-black/75 hover:text-black hover:bg-black/[0.04] transition"
                     >
                       {a.navLabel}
-                    </button>
+                    </a>
                   ))}
                   <div className="h-px bg-black/10 mx-5 my-2"></div>
-                  <button
-                    onClick={openJournalIndex}
+                  <a
+                    href={hrefForPage("journal-index")}
+                    onClick={(e) => spaNav(e, openJournalIndex)}
                     className="block w-full text-left px-5 py-2.5 text-[10px] tracking-[0.2em] uppercase text-black/75 hover:text-black hover:bg-black/[0.04] transition"
                   >
                     All Posts
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -1019,7 +986,7 @@ export default function App() {
                 <div className={`col-span-1 lg:col-span-6 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
                   <RevealImage
                     src={service.image}
-                    alt={service.title}
+                    alt={service.imageAlt || service.title}
                     id={`service-image-${service.id}`}
                     wrapClassName="relative aspect-[3/4] w-full overflow-hidden bg-gray-100"
                     spotlight
@@ -1771,7 +1738,7 @@ export default function App() {
       ) : currentPage === "wedding-navigator" ? (
         <WeddingNavigator onNavigate={navigate} onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "journal-index" ? (
-        <JournalIndex onOpenArticle={openArticle} onOpenPost={navigate} />
+        <JournalIndex onOpenArticle={openArticle} onOpenPost={navigate} hrefFor={hrefForPage} />
       ) : POST_PATHS.includes(currentPage) ? (
         <BlogArticle
           post={getPostByPath(currentPage)!}
@@ -1817,33 +1784,34 @@ export default function App() {
               Navigation Guide
             </h4>
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-light text-[#708090]">
-              <button onClick={() => navigateTo("story")} className="hover:text-black transition text-left cursor-pointer">
+              <a href="/#story" onClick={(e) => spaNav(e, () => navigateTo("story"))} className="hover:text-black transition text-left cursor-pointer">
                 Story
-              </button>
-              <button onClick={() => navigateTo("services")} className="hover:text-black transition text-left cursor-pointer">
+              </a>
+              <a href="/#services" onClick={(e) => spaNav(e, () => navigateTo("services"))} className="hover:text-black transition text-left cursor-pointer">
                 Services
-              </button>
-              <button
-                onClick={() => navigate("portfolio")}
+              </a>
+              <a
+                href={hrefForPage("portfolio")}
+                onClick={(e) => spaNav(e, () => navigate("portfolio"))}
                 className="hover:text-black transition text-left cursor-pointer"
               >
                 Portfolio
-              </button>
-              <button onClick={() => navigate("wedding-navigator")} className="hover:text-black transition text-left cursor-pointer">
+              </a>
+              <a href={hrefForPage("wedding-navigator")} onClick={(e) => spaNav(e, () => navigate("wedding-navigator"))} className="hover:text-black transition text-left cursor-pointer">
                 The Wedding Navigator
-              </button>
-              <button onClick={() => navigateTo("faq")} className="hover:text-black transition text-left cursor-pointer">
+              </a>
+              <a href="/#faq" onClick={(e) => spaNav(e, () => navigateTo("faq"))} className="hover:text-black transition text-left cursor-pointer">
                 FAQ
-              </button>
+              </a>
               <button onClick={() => setIsLoginOpen(true)} className="hover:text-black transition text-left cursor-pointer">
                 Client Login
               </button>
-              <button onClick={openJournalIndex} className="hover:text-black transition text-left cursor-pointer">
+              <a href={hrefForPage("journal-index")} onClick={(e) => spaNav(e, openJournalIndex)} className="hover:text-black transition text-left cursor-pointer">
                 Journal
-              </button>
-              <button onClick={() => navigateTo("contact")} className="hover:text-black transition text-left cursor-pointer">
+              </a>
+              <a href="/#contact" onClick={(e) => spaNav(e, () => navigateTo("contact"))} className="hover:text-black transition text-left cursor-pointer">
                 Contact
-              </button>
+              </a>
             </div>
           </div>
 

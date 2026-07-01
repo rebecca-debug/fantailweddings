@@ -6,9 +6,17 @@ import { JOURNAL_POSTS } from "../journalPosts";
 interface JournalIndexProps {
   onOpenArticle: (page: JournalPage) => void;
   onOpenPost: (path: string) => void;
+  hrefFor: (pageOrPath: string) => string;
 }
 
-export default function JournalIndex({ onOpenArticle, onOpenPost }: JournalIndexProps) {
+// Real <a> link that routes client-side on plain click but lets modifier-clicks open a new tab.
+const spaNav = (e: React.MouseEvent, run: () => void) => {
+  if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+  e.preventDefault();
+  run();
+};
+
+export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: JournalIndexProps) {
   const [filter, setFilter] = useState<string>("All");
 
   useEffect(() => {
@@ -56,11 +64,11 @@ export default function JournalIndex({ onOpenArticle, onOpenPost }: JournalIndex
         </span>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {JOURNAL_ARTICLES.map((article) => (
-            <button
+            <a
               key={article.page}
-              type="button"
-              onClick={() => onOpenArticle(article.page)}
-              className="group text-left"
+              href={hrefFor(article.page)}
+              onClick={(e) => spaNav(e, () => onOpenArticle(article.page))}
+              className="group text-left block"
               aria-label={`Read the ${article.navLabel} guide`}
             >
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100 mb-5">
@@ -83,7 +91,7 @@ export default function JournalIndex({ onOpenArticle, onOpenPost }: JournalIndex
                 Read the guide
                 <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">&rarr;</span>
               </span>
-            </button>
+            </a>
           ))}
         </div>
       </div>
@@ -112,10 +120,10 @@ export default function JournalIndex({ onOpenArticle, onOpenPost }: JournalIndex
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
           {posts.map((p) => (
-            <button
+            <a
               key={p.path}
-              type="button"
-              onClick={() => onOpenPost(p.path)}
+              href={hrefFor(p.path)}
+              onClick={(e) => spaNav(e, () => onOpenPost(p.path))}
               className="group text-left flex flex-col"
               aria-label={`Read: ${p.title}`}
             >
@@ -137,7 +145,7 @@ export default function JournalIndex({ onOpenArticle, onOpenPost }: JournalIndex
                 {p.title}
               </h3>
               <p className="text-xs text-[#708090] font-light leading-relaxed line-clamp-3">{p.excerpt}</p>
-            </button>
+            </a>
           ))}
         </div>
       </div>

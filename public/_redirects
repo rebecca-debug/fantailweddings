@@ -1,1 +1,9 @@
+# Canonicalise: 301 the no-trailing-slash form to the trailing-slash form
+/portfolio                  /portfolio/                  301!
+/the-wedding-navigator      /the-wedding-navigator/      301!
+/journal                    /journal/                    301!
+/queenstown-wedding-planner /queenstown-wedding-planner/ 301!
+/nz-wanaka-wedding-planner  /nz-wanaka-wedding-planner/  301!
+
+# SPA fallback — every other path is handled by the client router
 /*  /index.html  200
