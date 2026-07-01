@@ -40,7 +40,26 @@ function criticalCss(): Plugin {
 export default defineConfig({
   plugins: [react(), criticalCss()],
   appType: 'spa',
-  build: { sourcemap: true },
+  build: {
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        // Split the big libraries into their own chunks so they download in
+        // parallel and stay cached across deploys (they change far less often
+        // than app code). Keep react + react-dom together — they must not split.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (id.includes('react-dom') || id.includes('/react/') || id.includes('/scheduler/')) {
+            return 'react-vendor';
+          }
+          if (id.includes('/motion') || id.includes('framer-motion')) return 'motion-vendor';
+          if (id.includes('/lenis')) return 'lenis-vendor';
+          if (id.includes('lucide-react')) return 'icons-vendor';
+          return 'vendor';
+        }
+      }
+    }
+  },
   server: {
     port: 3000,
     host: '0.0.0.0'
