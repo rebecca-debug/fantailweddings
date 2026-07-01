@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 import { Award, Plus, Minus, Menu, X } from "lucide-react";
 import { RevealHeading } from "./components/reveal";
@@ -19,13 +19,13 @@ import {
   TimelinePoint,
   FAQ
 } from "./data";
-import PortfolioView from "./components/PortfolioView";
-import JournalArticle from "./components/JournalArticle";
-import JournalIndex from "./components/JournalIndex";
+const PortfolioView = lazy(() => import("./components/PortfolioView"));
+const JournalArticle = lazy(() => import("./components/JournalArticle"));
+const JournalIndex = lazy(() => import("./components/JournalIndex"));
 import { JOURNAL_ARTICLES, getArticleByPage, JournalPage } from "./journal";
 import { JOURNAL_POSTS, POST_PATHS, getPostByPath } from "./journalPosts";
-import BlogArticle from "./components/BlogArticle";
-import WeddingNavigator from "./components/WeddingNavigator";
+const BlogArticle = lazy(() => import("./components/BlogArticle"));
+const WeddingNavigator = lazy(() => import("./components/WeddingNavigator"));
 
 // ---- Shared motion vocabulary (one calm easing + slow, small-travel reveals) ----
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
@@ -749,6 +749,8 @@ export default function App() {
       {/* SPACE FOR FIXED NAV */}
       <div className="h-10" id="hero"></div>
 
+      <main>
+      <Suspense fallback={<div className="min-h-[70dvh]" aria-hidden="true" />}>
       {currentPage === "home" ? (
         <>
           {/* 2. HERO SECTION */}
@@ -761,11 +763,12 @@ export default function App() {
           className="relative h-[70dvh] md:h-[82dvh] w-full overflow-hidden bg-gray-100 rounded-sm shadow-sm"
         >
           <motion.img
-            src="/assets/images/Welcome-Hero.jpg"
+            src="/assets/images/Welcome-Hero.webp"
             alt="Hands on an open notebook with soft New Zealand afternoon light cascading through a window"
             className="object-cover w-full h-full"
             referrerPolicy="no-referrer"
             id="hero-img"
+            fetchPriority="high"
             initial={{ scale: 1.04 }}
             animate={{ scale: 1.12 }}
             transition={{ duration: 16, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
@@ -856,7 +859,7 @@ export default function App() {
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
               >
                 <img
-                  src="/assets/images/global-wedding-awards-logo.png"
+                  src="/assets/images/global-wedding-awards-logo.webp"
                   alt="LUXlife Magazine Global Wedding Awards 2026 winner"
                   className="w-32 h-32 md:w-40 md:h-40 object-contain"
                   loading="lazy"
@@ -868,9 +871,9 @@ export default function App() {
                 <span className="text-[9px] tracking-[0.35em] uppercase text-[#708090] font-mono block">
                   LUXlife Magazine Global Wedding Awards
                 </span>
-                <h3 className="font-serif text-[15px] sm:text-base md:text-lg text-[#ab8e61] font-normal leading-relaxed max-w-xl">
+                <h2 className="font-serif text-[15px] sm:text-base md:text-lg text-[#ab8e61] font-normal leading-relaxed max-w-xl">
                   Luxury Destination Wedding Planning Specialists of the Year 2026, New Zealand
-                </h3>
+                </h2>
               </div>
             </div>
 
@@ -984,9 +987,9 @@ export default function App() {
                 aria-label={`Jump to ${service.title}`}
               >
                 <span className="font-serif text-xs italic text-black/50">{service.number}</span>
-                <h4 className="font-serif text-sm tracking-widest text-black font-medium border-b border-transparent group-hover/jump:border-black/40 transition-colors pb-0.5">
+                <h3 className="font-serif text-sm tracking-widest text-black font-medium border-b border-transparent group-hover/jump:border-black/40 transition-colors pb-0.5">
                   {service.title}
-                </h4>
+                </h3>
               </button>
               <p className="text-xs text-[#708090] font-light leading-relaxed italic border-l border-black/15 pl-4 py-2">
                 {service.subtitle}
@@ -1079,9 +1082,9 @@ export default function App() {
 
                   {/* Included items */}
                   <div className="space-y-4 border-t border-black/10 pt-8">
-                    <h5 className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold">
+                    <h4 className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold">
                       What is included
-                    </h5>
+                    </h4>
                     <ul className="space-y-3 text-xs text-[#708090] font-light leading-relaxed pl-1">
                       {service.details.map((detail, dIdx) => (
                         <li key={dIdx} className="flex gap-3 align-top">
@@ -1678,7 +1681,7 @@ export default function App() {
           {/* Column A: Instagram */}
           <div className="space-y-4 md:border-r border-black/10 md:pr-8 last:border-none">
             <span className="text-[10px] tracking-widest uppercase font-mono text-[#708090]">Instagram</span>
-            <RevealHeading as="h4" className="font-serif text-lg text-black italic" text="On Instagram" amount={0.6} />
+            <RevealHeading as="h3" className="font-serif text-lg text-black italic" text="On Instagram" amount={0.6} />
             <p className="text-xs font-light text-[#708090] leading-relaxed">
               @fantail_weddings, behind-the-scenes from the planning desk, vendor love, and the slow build-up of 
               every Fantail celebration.
@@ -1698,7 +1701,7 @@ export default function App() {
           {/* Column B: Pinterest */}
           <div className="space-y-4 md:border-r border-black/10 md:px-8 last:border-none">
             <span className="text-[10px] tracking-widest uppercase font-mono text-[#708090]">Pinterest</span>
-            <RevealHeading as="h4" className="font-serif text-lg text-black italic" text="On Pinterest" amount={0.6} />
+            <RevealHeading as="h3" className="font-serif text-lg text-black italic" text="On Pinterest" amount={0.6} />
             <p className="text-xs font-light text-[#708090] leading-relaxed">
               @fantailwed, with South Island wedding inspiration sorted by region, season, and feeling.
             </p>
@@ -1717,7 +1720,7 @@ export default function App() {
           {/* Column C: Inbox Newsletter Subscription */}
           <div className="space-y-4 md:pl-8 last:border-none">
             <span className="text-[10px] tracking-widest uppercase font-mono text-[#708090]">Newsletter</span>
-            <RevealHeading as="h4" className="font-serif text-lg text-black italic" text="In your inbox" amount={0.6} />
+            <RevealHeading as="h3" className="font-serif text-lg text-black italic" text="In your inbox" amount={0.6} />
             <p className="text-xs font-light text-[#708090] leading-relaxed">
               The Fantail Letter, a quiet email I send once a month. A piece of writing, a vendor I am loving, 
               and the thing I am thinking about most. No sales. No pressure.
@@ -1782,6 +1785,8 @@ export default function App() {
           onBackToJournal={openJournalIndex}
         />
       )}
+      </Suspense>
+      </main>
 
       {/* 10. FOOTER ACCORDING TO SPECS */}
       <motion.footer

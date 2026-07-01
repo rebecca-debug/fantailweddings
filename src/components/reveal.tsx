@@ -44,6 +44,8 @@ export function RevealHeading({
     }
   };
   const MotionTag = (motion as any)[as];
+  // aria-label is only valid on headings; on a span/p it is prohibited ARIA.
+  const isHeading = /^h[1-6]$/.test(as);
   return (
     <MotionTag
       className={className}
@@ -51,7 +53,7 @@ export function RevealHeading({
       initial="hidden"
       whileInView="visible"
       viewport={{ once, amount }}
-      aria-label={text}
+      aria-label={isHeading ? text : undefined}
     >
       {words.map((w, i) => (
         <motion.span
@@ -59,7 +61,7 @@ export function RevealHeading({
           variants={word}
           className="inline-block"
           style={{ whiteSpace: "pre" }}
-          aria-hidden="true"
+          aria-hidden={isHeading ? true : undefined}
         >
           {w}
           {i < words.length - 1 ? " " : ""}

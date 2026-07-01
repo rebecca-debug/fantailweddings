@@ -53,6 +53,8 @@ const ScrollStack = ({
   const scrollerRef = useRef<HTMLDivElement>(null);
   const stackCompletedRef = useRef(false);
   const cardsRef = useRef<HTMLElement[]>([]);
+  const cardOffsetsRef = useRef<number[]>([]);
+  const endOffsetRef = useRef(0);
   const lastTransformsRef = useRef(new Map<number, Transform>());
   const isUpdatingRef = useRef(false);
   const lenis = useLenis();
@@ -97,6 +99,16 @@ const ScrollStack = ({
     [useWindowScroll]
   );
 
+  // Measure the cards' document offsets once (and on resize) rather than every scroll frame,
+  // which avoids forced reflows while scrolling.
+  const measure = useCallback(() => {
+    cardOffsetsRef.current = cardsRef.current.map((c) => getElementOffset(c));
+    const endEl = useWindowScroll
+      ? (document.querySelector(".scroll-stack-end") as HTMLElement | null)
+      : (scrollerRef.current?.querySelector(".scroll-stack-end") as HTMLElement | null);
+    endOffsetRef.current = endEl ? getElementOffset(endEl) : 0;
+  }, [getElementOffset, useWindowScroll]);
+
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
 
@@ -106,16 +118,12 @@ const ScrollStack = ({
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
 
-    const endElement = useWindowScroll
-      ? (document.querySelector(".scroll-stack-end") as HTMLElement | null)
-      : (scrollerRef.current?.querySelector(".scroll-stack-end") as HTMLElement | null);
-
-    const endElementTop = endElement ? getElementOffset(endElement) : 0;
+    const endElementTop = endOffsetRef.current;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      const cardTop = getElementOffset(card);
+      const cardTop = cardOffsetsRef.current[i] ?? getElementOffset(card);
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
@@ -243,13 +251,18 @@ const ScrollStack = ({
       window.addEventListener("scroll", handleScroll, { passive: true });
       detach = () => window.removeEventListener("scroll", handleScroll);
     }
-    window.addEventListener("resize", handleScroll);
+    const onResize = () => {
+      measure();
+      handleScroll();
+    };
+    window.addEventListener("resize", onResize);
 
+    measure();
     updateCardTransforms();
 
     return () => {
       detach();
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("resize", onResize);
       stackCompletedRef.current = false;
       cardsRef.current = [];
       transformsCache.clear();
@@ -268,7 +281,8 @@ const ScrollStack = ({
     onStackComplete,
     lenis,
     handleScroll,
-    updateCardTransforms
+    updateCardTransforms,
+    measure
   ]);
 
   return (
