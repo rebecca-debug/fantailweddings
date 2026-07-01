@@ -158,6 +158,8 @@ export function RevealImage({
         src={src}
         alt={alt}
         id={id}
+        loading="lazy"
+        decoding="async"
         referrerPolicy="no-referrer"
         className="absolute inset-0 w-full h-full object-cover"
         initial={{ opacity: 0, scale: 1.08, y: 24, filter: "blur(10px)" }}
