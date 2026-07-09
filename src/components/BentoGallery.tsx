@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 // A single-row editorial filmstrip: frames share a uniform height and take their natural
-// width, so portraits and landscapes both show in full — nothing is ever cropped. The row
+// width, so portraits and landscapes both show in full - nothing is ever cropped. The row
 // drags / scrolls sideways with the neighbouring frames peeking in. Click any frame to
 // expand it. Styled to Fantail's palette.
 
@@ -117,7 +117,7 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
           ))}
         </motion.div>
       </div>
-      <p className="mt-2 text-[10px] tracking-[0.25em] uppercase font-mono text-[#708090]/70 select-none">
+      <p className="mt-2 text-[10px] tracking-[0.25em] uppercase font-mono text-[#5c6672]/70 select-none">
         Drag or scroll to explore more &rarr;
       </p>
 

@@ -19,6 +19,9 @@ const ROOT = process.cwd();
 const DIST = path.join(ROOT, "dist");
 const ORIGIN = "https://fantailweddings.co.nz";
 const HOME_IMG = "/assets/images/Welcome-Hero.webp";
+// Branded banner used as the default social-share image on non-article pages
+// (articles/guides share their own hero photo instead).
+const OG_BANNER = "/assets/images/og-banner.png";
 
 // ---- load the site's data (TS + JSON) via a one-off esbuild bundle ----
 async function loadData() {
@@ -88,7 +91,7 @@ const navigatorService = () => ({
   "@context": "https://schema.org",
   "@type": "Service",
   "@id": ORIGIN + "/#service-navigator",
-  name: "The Wedding Navigator — Online Wedding Consultancy",
+  name: "The Wedding Navigator: Online Wedding Consultancy",
   description:
     "Three live consultancy calls with Rebecca plus a personalised planning toolkit for New Zealand couples planning their own wedding.",
   provider: { "@type": "ProfessionalService", "@id": ORIGIN + "/#business", name: "Fantail Weddings" },
@@ -111,7 +114,8 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     priority: 0.9,
     title: "Portfolio | Fantail Weddings",
     desc: "A selection of South Island New Zealand weddings and elopements planned by Fantail Weddings.",
-    image: HOME_IMG,
+    image: OG_BANNER,
+    preload: false, // page renders its own lazy gallery; nothing to preload
     jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "Portfolio", path: "/portfolio/" }])]
   });
 
@@ -119,8 +123,9 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     path: "/journal/",
     priority: 0.9,
     title: "The Journal | Fantail Weddings | South Island Wedding Guides",
-    desc: "Guides and stories on planning a South Island New Zealand wedding — venues, elopements, and destination-wedding advice from Fantail Weddings.",
-    image: HOME_IMG,
+    desc: "Guides and stories on planning a South Island New Zealand wedding: venues, elopements, and destination-wedding advice from Fantail Weddings.",
+    image: OG_BANNER,
+    preload: false,
     jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "The Journal", path: "/journal/" }])]
   });
 
@@ -136,10 +141,9 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     ]
   });
 
-  // Location guides — map journal.ts slugs to their live routes
-  const guideRoute = { "queenstown-weddings": "/queenstown-wedding-planner/", "wanaka-weddings": "/nz-wanaka-wedding-planner/" };
+  // Location guides - each guide carries its live route in journal.ts
   for (const a of JOURNAL_ARTICLES) {
-    const p = guideRoute[a.slug];
+    const p = a.route;
     if (!p) continue;
     routes.push({
       path: p,
@@ -197,10 +201,13 @@ function renderHead(shell, r) {
   rep(/<meta name="twitter:title" content="[\s\S]*?">/, `<meta name="twitter:title" content="${escAttr(r.title)}">`);
   rep(/<meta name="twitter:description" content="[\s\S]*?">/, `<meta name="twitter:description" content="${escAttr(r.desc)}">`);
   rep(/<meta name="twitter:image" content="[\s\S]*?">/, `<meta name="twitter:image" content="${img}">`);
-  // Per-route LCP hero preload (inner pages have their own hero, not the homepage's)
+  // Per-route LCP hero preload (inner pages have their own hero, not the homepage's).
+  // Routes with preload:false render no eager hero, so the tag is dropped entirely.
   rep(
-    /<link rel="preload" as="image" href="[\s\S]*?" fetchpriority="high">/,
-    `<link rel="preload" as="image" href="${escAttr(r.image)}" fetchpriority="high">`
+    /[\t ]*<link rel="preload" as="image" href="[\s\S]*?" fetchpriority="high">\n?/,
+    r.preload === false
+      ? ""
+      : `\t\t<link rel="preload" as="image" href="${escAttr(r.image)}" fetchpriority="high">\n`
   );
   // Inject per-route structured data just before </head> (site-level @graph stays too)
   const blocks = (r.jsonld || [])
@@ -213,7 +220,7 @@ function renderHead(shell, r) {
 // ---- llms-full.txt from the same data ----
 function renderLlmsFull({ SERVICES_DATA, FAQ_DATA, JOURNAL_ARTICLES, JOURNAL_POSTS }) {
   const L = [];
-  L.push("# Fantail Weddings — Full Content\n");
+  L.push("# Fantail Weddings: Full Content\n");
   L.push(
     "Boutique, founder-led wedding planning for elopements and intimate weddings across the South Island of Aotearoa, New Zealand. Founder: Rebecca Brosnahan (15+ years). Contact: rebecca@fantailweddings.com, +64 274 672 126.\n"
   );
@@ -234,8 +241,15 @@ function renderLlmsFull({ SERVICES_DATA, FAQ_DATA, JOURNAL_ARTICLES, JOURNAL_POS
   L.push("## Location guides\n");
   for (const a of JOURNAL_ARTICLES) {
     L.push(`### ${a.metaTitle}`);
-    L.push(`${abs(a.slug === "queenstown-weddings" ? "/queenstown-wedding-planner/" : "/nz-wanaka-wedding-planner/")}`);
+    L.push(abs(a.route));
     L.push(`${a.metaDescription}\n`);
+    L.push(a.intro.body + "\n");
+    for (const v of a.venues.items) L.push(`- ${v.name}: ${v.text}`);
+    L.push("");
+    for (const f of a.faqs) {
+      L.push(`Q: ${f.q}`);
+      L.push(`A: ${f.a}\n`);
+    }
   }
   L.push("## Journal\n");
   for (const p of JOURNAL_POSTS) {
@@ -282,7 +296,7 @@ async function main() {
 }
 
 // IndexNow: notify Bing/Copilot of the live URLs. Only on Netlify deploys, and fully
-// best-effort — any failure is swallowed so it can never break a build.
+// best-effort - any failure is swallowed so it can never break a build.
 async function pingIndexNow(routes) {
   if (!process.env.NETLIFY) return;
   const key = "b7f3c1a94e2d4f8ab5c60e1927d83a46";
@@ -304,7 +318,7 @@ async function pingIndexNow(routes) {
     clearTimeout(t);
     console.log(`seo-build: IndexNow submitted ${urlList.length} urls (${res.status})`);
   } catch (e) {
-    console.log("seo-build: IndexNow ping skipped —", e?.message || e);
+    console.log("seo-build: IndexNow ping skipped -", e?.message || e);
   }
 }
 

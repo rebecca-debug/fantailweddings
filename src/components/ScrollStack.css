@@ -1,4 +1,4 @@
-/* React Bits ScrollStack — adapted for window-scroll embedding + Fantail theme.
+/* React Bits ScrollStack - adapted for window-scroll embedding + Fantail theme.
    Card visuals (bg, border, radius, shadow) are applied per-item via Tailwind
    `itemClassName`; this file only carries layout + the transform plumbing.
    (Lenis classes live globally in index.css.) */

@@ -10,7 +10,7 @@
 
 body {
   background-color: #f7f7f7;
-  color: #708090;
+  color: #5c6672;
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -47,7 +47,7 @@ body {
 /* Focus and active classes */
 .nav-link-active {
   color: #000000;
-  border-bottom: 1px solid #708090;
+  border-bottom: 1px solid #5c6672;
 }
 
 /* Press feedback: every button physically responds to a press (Emil: instant confirmation the UI heard you) */

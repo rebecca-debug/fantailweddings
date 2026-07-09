@@ -176,8 +176,8 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
         </figure>
       </section>
 
-      {/* WHAT'S INCLUDED — THREE CALLS */}
-      <section className="py-20 px-6 bg-white border-y border-black/[0.06]">
+      {/* WHAT'S INCLUDED - THREE CALLS (white cards on the page grey, like the guide pages) */}
+      <section className="py-20 px-6 border-y border-black/[0.06]">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mb-16">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">What's included</span>
@@ -187,7 +187,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
             {CALLS.map((c) => (
-              <div key={c.n} className="bg-[#f7f7f7] border border-black/[0.06] p-8 flex flex-col">
+              <div key={c.n} className="bg-white border border-black/[0.05] p-8 flex flex-col">
                 <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#997700] mb-4">{c.n}</span>
                 <h3 className="font-serif text-xl text-black font-normal mb-1">{c.title}</h3>
                 <span className="font-serif text-sm italic text-black/45 mb-5">{c.dur}</span>

@@ -5,7 +5,7 @@ import InteractiveSelector from "./InteractiveSelector";
 import FilmCard from "./FilmCard";
 import { RevealHeading } from "./reveal";
 
-// Wedding films hosted on Vimeo — poster opens a modal player.
+// Wedding films hosted on Vimeo - poster opens a modal player.
 const FILMS = [
   {
     vimeoId: "404481876",
@@ -21,7 +21,7 @@ const FILMS = [
   }
 ];
 
-// Archive One — "Intimate Gatherings & Elopements" (couple + elopement photography).
+// Archive One - "Intimate Gatherings & Elopements" (couple + elopement photography).
 const SLIDER_ONE_IMAGES = [
   "/assets/images/190823_EASP_038.webp",
   "/assets/images/444-_DSC5891.webp",
@@ -55,7 +55,7 @@ const SLIDER_ONE_IMAGES = [
   "/assets/images/warm-hello.webp"
 ];
 
-// Archive Two — "Details, Details & Details" (décor, styling, guests, cultural touches).
+// Archive Two - "Details, Details & Details" (décor, styling, guests, cultural touches).
 const SLIDER_TWO_IMAGES = [
   "/assets/images/10994068_692647977504658_6745400731444123953_n.webp",
   "/assets/images/12794456_692647987504657_1333425036244180943_n.webp",
@@ -253,12 +253,12 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
     <div className="pt-28 pb-12 bg-[#f7f7f7] min-h-screen" id="portfolio-view-surface">
       {/* Editorial Page Header */}
       <div className="max-w-7xl mx-auto px-6 mb-16 text-center lg:text-left transition" id="portfolio-page-header">
-        <span className="text-[10px] tracking-[0.35em] uppercase text-[#708090] font-light block mb-3">
+        <span className="text-[10px] tracking-[0.35em] uppercase text-[#5c6672] font-light block mb-3">
           Curated South Island Memoirs
         </span>
         <RevealHeading as="h2" className="font-serif text-4xl sm:text-5xl text-black font-light tracking-tight mb-4" text="The Portfolio" />
         <div className="h-[1px] bg-black/10 w-24 my-6 mx-auto lg:mx-0"></div>
-        <p className="text-sm font-light text-[#708090] max-w-2xl leading-relaxed">
+        <p className="text-[15px] font-light text-[#5c6672] max-w-2xl leading-relaxed">
           I plan, curate and produce weddings for couples who want their celebration to feel like a beautiful, honest conversation. Below are two archives representing the quiet craftsmanship of recent celebrations across a country I love.
         </p>
       </div>
@@ -269,7 +269,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
           {/* Header block adjusted to match wide canvas */}
           <div className="max-w-3xl text-left space-y-4" id="portfolio-archive-one-intro">
             <div>
-              <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#708090] block mb-2">
+              <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#5c6672] block mb-2">
                 ARCHIVE ONE
               </span>
               <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Intimate Gatherings & Elopements" />
@@ -278,7 +278,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
               </p>
             </div>
             
-            <p className="text-xs sm:text-sm font-light text-[#708090] leading-relaxed max-w-2xl">
+            <p className="text-[13px] sm:text-[15px] font-light text-[#5c6672] leading-relaxed max-w-2xl">
               Quiet details, honest laughter, and couples that romantically put themselves and their guests first. These celebrations are small, capacity-limited, and deeply felt.
             </p>
           </div>
@@ -296,7 +296,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
           {/* Header block adjusted to match wide canvas */}
           <div className="max-w-3xl text-left space-y-4" id="portfolio-archive-two-intro">
             <div>
-              <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#708090] block mb-2">
+              <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#5c6672] block mb-2">
                 ARCHIVE TWO
               </span>
               <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Details, Details & Details" />
@@ -305,7 +305,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
               </p>
             </div>
             
-            <p className="text-xs sm:text-sm font-light text-[#708090] leading-relaxed max-w-2xl">
+            <p className="text-[13px] sm:text-[15px] font-light text-[#5c6672] leading-relaxed max-w-2xl">
               A record of moments that come together after refinement in a planning process, etched in love. These represent the essence of deep presence, rooted in a country I love.
             </p>
           </div>
@@ -322,7 +322,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
         <div className="space-y-8" id="portfolio-archive-films-content">
           <div className="max-w-3xl text-left space-y-4" id="portfolio-archive-films-intro">
             <div>
-              <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#708090] block mb-2">
+              <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#5c6672] block mb-2">
                 IN MOTION
               </span>
               <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Weddings, in Motion" />
@@ -331,7 +331,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
               </p>
             </div>
 
-            <p className="text-xs sm:text-sm font-light text-[#708090] leading-relaxed max-w-2xl">
+            <p className="text-[13px] sm:text-[15px] font-light text-[#5c6672] leading-relaxed max-w-2xl">
               Sometimes a still frame isn&apos;t quite enough. Press play on a couple of celebrations I helped bring to life: the light, the laughter, and the quiet in-between moments that make a South Island wedding feel like its own.
             </p>
           </div>

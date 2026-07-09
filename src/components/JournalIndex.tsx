@@ -42,7 +42,7 @@ export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: Jou
     <div className="pt-28 pb-12 bg-[#f7f7f7] min-h-[100dvh]">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 mb-14 text-center lg:text-left">
-        <span className="text-[10px] tracking-[0.35em] uppercase text-[#708090] font-light block mb-3">
+        <span className="text-[10px] tracking-[0.35em] uppercase text-[#5c6672] font-light block mb-3">
           Field Notes from the South Island
         </span>
         <RevealHeading
@@ -51,7 +51,7 @@ export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: Jou
           text="The Journal"
         />
         <div className="h-[1px] bg-black/10 w-24 my-6 mx-auto lg:mx-0"></div>
-        <p className="text-sm font-light text-[#708090] max-w-2xl leading-relaxed">
+        <p className="text-[15px] font-light text-[#5c6672] max-w-2xl leading-relaxed">
           Quiet guides to marrying across the South Island: the venues I love, how the seasons feel, and the
           logistics worth knowing before you arrive.
         </p>
@@ -62,7 +62,7 @@ export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: Jou
         <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-7">
           Featured Location Guides
         </span>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
           {JOURNAL_ARTICLES.map((article) => (
             <a
               key={article.page}
@@ -71,10 +71,10 @@ export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: Jou
               className="group text-left block"
               aria-label={`Read the ${article.navLabel} guide`}
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100 mb-5">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100 mb-4">
                 <img
                   src={article.heroImage}
-                  alt={article.title}
+                  alt={article.heroImageAlt || article.title}
                   loading="lazy"
                   referrerPolicy="no-referrer"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
@@ -83,10 +83,10 @@ export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: Jou
                   Guide
                 </span>
               </div>
-              <h3 className="font-serif text-2xl sm:text-3xl text-black font-light tracking-tight mb-2">
+              <h3 className="font-serif text-xl sm:text-2xl text-black font-light tracking-tight mb-2">
                 {article.navLabel}
               </h3>
-              <p className="text-sm text-[#708090] font-light leading-relaxed max-w-md mb-3">{article.cardSummary}</p>
+              <p className="text-[13px] text-[#5c6672] font-light leading-relaxed line-clamp-3 mb-3">{article.cardSummary}</p>
               <span className="text-[10px] tracking-[0.25em] uppercase text-black border-b border-black pb-1 inline-flex items-center font-light group-hover:opacity-70 transition">
                 Read the guide
                 <span className="ml-2 group-hover:translate-x-1 transition-transform duration-300">&rarr;</span>
@@ -109,7 +109,7 @@ export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: Jou
                 className={`px-3 py-1.5 text-[10px] tracking-[0.15em] uppercase border transition ${
                   filter === c
                     ? "bg-black text-white border-black"
-                    : "bg-transparent text-[#708090] border-black/15 hover:border-black/40 hover:text-black"
+                    : "bg-transparent text-[#5c6672] border-black/15 hover:border-black/40 hover:text-black"
                 }`}
               >
                 {c}
@@ -144,7 +144,7 @@ export default function JournalIndex({ onOpenArticle, onOpenPost, hrefFor }: Jou
               <h3 className="font-serif text-lg sm:text-xl text-black font-normal tracking-tight leading-snug mb-2 group-hover:text-black/70 transition">
                 {p.title}
               </h3>
-              <p className="text-xs text-[#708090] font-light leading-relaxed line-clamp-3">{p.excerpt}</p>
+              <p className="text-[13px] text-[#5c6672] font-light leading-relaxed line-clamp-3">{p.excerpt}</p>
             </a>
           ))}
         </div>

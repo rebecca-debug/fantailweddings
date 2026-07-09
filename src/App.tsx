@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
-import { Award, Plus, Minus, Menu, X } from "lucide-react";
+import { Award, Plus, Minus, Menu, X, Instagram, Facebook, Youtube } from "lucide-react";
 import { RevealHeading } from "./components/reveal";
 import { RevealImage, SpotlightCard } from "./components/reveal";
 import ScrollStack, { ScrollStackItem } from "./components/ScrollStack";
@@ -103,11 +103,94 @@ function ParallaxImage({
         alt={alt}
         id={id}
         style={{ y }}
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-[112%] -top-[6%] object-cover"
         referrerPolicy="no-referrer"
       />
       {children}
     </div>
+  );
+}
+
+// Pinterest mark drawn in lucide's stroke style (lucide ships no Pinterest icon).
+function PinterestIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M8.8 20.2 12.2 11" />
+      <path d="M10.5 8.2a3.3 3.3 0 1 1 2.6 5.4c-1 .1-2-.2-2.6-.9" />
+    </svg>
+  );
+}
+
+// Footer social link: brand glyph that floats almost imperceptibly (staggered) and
+// warms to black on hover. Icon-only, so the accessible name lives on the link.
+function SocialIcon({
+  href,
+  label,
+  index,
+  children
+}: {
+  href: string;
+  label: string;
+  index: number;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      title={label}
+      className="text-[#5c6672] hover:text-black transition-colors duration-300 inline-flex"
+      animate={{ y: [0, -2.5, 0] }}
+      transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: index * 0.7 }}
+    >
+      {children}
+    </motion.a>
+  );
+}
+
+// A full-bleed photographic pause between home sections: the image fades up as it scrolls
+// into view, drifts gently with the scroll (parallax), and breathes with a slow Ken Burns
+// zoom like the hero. `position` frames the photo so its subjects never crop out.
+function FullBleedBreak({ src, alt, position = "center" }: { src: string; alt: string; position?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-4%", "4%"]);
+  return (
+    <motion.section
+      ref={ref}
+      className="relative w-full h-[64dvh] md:h-[88dvh] overflow-hidden"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <motion.img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        style={{ y, objectPosition: position }}
+        className="absolute inset-0 w-full h-[112%] -top-[6%] object-cover"
+        initial={{ scale: 1.05 }}
+        animate={{ scale: 1.13 }}
+        transition={{ duration: 18, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+      />
+    </motion.section>
   );
 }
 
@@ -180,13 +263,13 @@ export default function App() {
   const contactFormRef = useRef<HTMLDivElement>(null);
 
   // ---- Lightweight URL router: real paths that mirror the previous website's slugs ----
+  // Location-guide routes come from journal.ts (each guide carries its own `route`).
   const PAGE_PATHS: Record<string, string> = {
     home: "/",
     portfolio: "/portfolio/",
     "journal-index": "/journal/",
     "wedding-navigator": "/the-wedding-navigator/",
-    "journal-queenstown": "/queenstown-wedding-planner/",
-    "journal-wanaka": "/nz-wanaka-wedding-planner/"
+    ...Object.fromEntries(JOURNAL_ARTICLES.map((a) => [a.page, a.route]))
   };
   const pathForPage = (page: string): string =>
     PAGE_PATHS[page] || (page.startsWith("/") ? page : "/");
@@ -266,17 +349,39 @@ export default function App() {
   // Smooth in-page section navigation (home sections)
   const navigateTo = (sectionId: string) => {
     setIsMobileMenuOpen(false);
-    const doScroll = () => {
+    const doScroll = (immediate: boolean) => {
       const el = document.getElementById(sectionId);
       if (!el) return;
-      if (lenis) lenis.scrollTo(el, { offset: -80, duration: 1.1 });
-      else el.scrollIntoView({ behavior: "smooth" });
+      if (immediate) {
+        // Arriving from another page: land directly on the section (no fly-through),
+        // bypassing any animation so the destination is guaranteed.
+        const top = el.getBoundingClientRect().top + window.scrollY - 80;
+        if (lenis) lenis.scrollTo(top, { immediate: true });
+        window.scrollTo({ top, behavior: "auto" });
+      } else if (lenis) {
+        lenis.scrollTo(el, { offset: -80, duration: 1.1 });
+      } else {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     };
     if (currentPage !== "home") {
       navigate("home");
-      setTimeout(doScroll, 180);
+      // The home sections only exist after the lazy route unmounts and home re-renders,
+      // which can outlast any fixed delay. Poll (timer-based, so it also works in
+      // rAF-throttled tabs) until the target is in the DOM, let layout settle one tick,
+      // then jump straight to it.
+      let tries = 0;
+      const attempt = () => {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          setTimeout(() => doScroll(true), 40);
+          return;
+        }
+        if (++tries < 150) setTimeout(attempt, 16);
+      };
+      setTimeout(attempt, 0);
     } else {
-      doScroll();
+      doScroll(false);
     }
   };
 
@@ -285,7 +390,7 @@ export default function App() {
   const openArticle = (page: string) => navigate(page);
 
   // Real <a href> links that route client-side on plain click, but let the browser handle
-  // modifier-clicks (open-in-new-tab) — so internal links are crawlable and behave natively.
+  // modifier-clicks (open-in-new-tab) - so internal links are crawlable and behave natively.
   const hrefForPage = (page: string) => pathForPage(page);
   const spaNav = (e: React.MouseEvent, run: () => void) => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
@@ -294,8 +399,7 @@ export default function App() {
   };
   const isJournalPage =
     currentPage === "journal-index" ||
-    currentPage === "journal-queenstown" ||
-    currentPage === "journal-wanaka" ||
+    JOURNAL_ARTICLES.some((a) => a.page === currentPage) ||
     POST_PATHS.includes(currentPage);
 
   // Highlight the active nav item via IntersectionObserver (no scroll listener, no layout reads)
@@ -464,7 +568,7 @@ export default function App() {
     return Object.keys(errors).length === 0;
   };
 
-  // Form submission — posts to Netlify Forms (form "contact" is registered via the hidden
+  // Form submission - posts to Netlify Forms (form "contact" is registered via the hidden
   // static form in index.html; the dashboard sends the enquiry on to Rebecca by email).
   const handleSubmitContactForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -518,7 +622,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-[#f7f7f7] text-[#708090] selection:bg-[#a57d02]/10 selection:text-black">
+    <div className="min-h-[100dvh] bg-[#f7f7f7] text-[#5c6672] selection:bg-[#a57d02]/10 selection:text-black">
       
       {/* 1. SLIM MINIMAL FIXED NAVIGATION */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#f7f7f7]/95 backdrop-blur-sm border-b border-black/[0.08] transition duration-300">
@@ -539,10 +643,10 @@ export default function App() {
           {/* Nav Links - Right aligned, small, capitalized, widely spaced (desktop) */}
           <nav className="hidden lg:flex items-center gap-7">
             <a
-              href="/#story"
-              onClick={(e) => spaNav(e, () => navigateTo("story"))}
+              href="/"
+              onClick={(e) => spaNav(e, () => navigate("home"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
-                currentPage === "home" && activeSection === "story" ? "text-black" : "text-[#708090] hover:text-black"
+                currentPage === "home" && activeSection === "story" ? "text-black" : "text-[#5c6672] hover:text-black"
               }`}
               id="nav-story"
             >
@@ -555,7 +659,7 @@ export default function App() {
               href="/#services"
               onClick={(e) => spaNav(e, () => navigateTo("services"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
-                currentPage === "home" && activeSection === "services" ? "text-black" : "text-[#708090] hover:text-black"
+                currentPage === "home" && activeSection === "services" ? "text-black" : "text-[#5c6672] hover:text-black"
               }`}
               id="nav-services"
             >
@@ -568,7 +672,7 @@ export default function App() {
               href={hrefForPage("wedding-navigator")}
               onClick={(e) => spaNav(e, () => navigate("wedding-navigator"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
-                currentPage === "wedding-navigator" ? "text-black" : "text-[#708090] hover:text-black"
+                currentPage === "wedding-navigator" ? "text-black" : "text-[#5c6672] hover:text-black"
               }`}
               id="nav-wedding-navigator"
             >
@@ -581,7 +685,7 @@ export default function App() {
               href={hrefForPage("portfolio")}
               onClick={(e) => spaNav(e, () => goToPage("portfolio"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
-                currentPage === "portfolio" ? "text-black" : "text-[#708090] hover:text-black"
+                currentPage === "portfolio" ? "text-black" : "text-[#5c6672] hover:text-black"
               }`}
               id="nav-portfolio"
             >
@@ -594,7 +698,7 @@ export default function App() {
               href="/#faq"
               onClick={(e) => spaNav(e, () => navigateTo("faq"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
-                currentPage === "home" && activeSection === "faq" ? "text-black" : "text-[#708090] hover:text-black"
+                currentPage === "home" && activeSection === "faq" ? "text-black" : "text-[#5c6672] hover:text-black"
               }`}
               id="nav-faq"
             >
@@ -609,7 +713,7 @@ export default function App() {
                 href={hrefForPage("journal-index")}
                 onClick={(e) => spaNav(e, openJournalIndex)}
                 className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
-                  isJournalPage ? "text-black" : "text-[#708090] hover:text-black"
+                  isJournalPage ? "text-black" : "text-[#5c6672] hover:text-black"
                 }`}
                 id="nav-journal"
               >
@@ -643,7 +747,7 @@ export default function App() {
             </div>
             <button
               onClick={() => setIsLoginOpen(true)}
-              className="text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer text-[#708090] hover:text-black"
+              className="text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer text-[#5c6672] hover:text-black"
               id="nav-client-login"
             >
               Client Login
@@ -674,7 +778,7 @@ export default function App() {
             >
               <div className="px-6 py-3 flex flex-col max-h-[75dvh] overflow-y-auto">
                 {[
-                  { label: "Story", fn: () => navigateTo("story") },
+                  { label: "Story", fn: () => navigate("home") },
                   { label: "Services", fn: () => navigateTo("services") },
                   { label: "The Wedding Navigator", fn: () => navigate("wedding-navigator") },
                   { label: "Portfolio", fn: () => goToPage("portfolio") },
@@ -744,7 +848,7 @@ export default function App() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent"></div>
 
           {/* Left aligned text overlay, 2/3rd of the way down of the image - Digital Serenity reveal */}
-          <div className="absolute left-6 md:left-14 bottom-[12%] md:bottom-[18%] max-w-2xl text-white space-y-3">
+          <div className="absolute left-6 md:left-14 right-6 bottom-[12%] md:bottom-[18%] text-white space-y-3">
             <RevealHeading
               as="span"
               className="text-[10px] md:text-xs tracking-[0.35em] uppercase text-white/90 font-light block"
@@ -753,20 +857,34 @@ export default function App() {
               stagger={0.04}
               amount={0.4}
             />
-            <RevealHeading
-              as="h1"
-              className="font-serif text-4xl sm:text-5xl lg:text-7xl text-white font-light leading-[1.1] tracking-tight"
-              text="Hello, and Welcome"
-              delay={0.95}
-              amount={0.4}
-            />
+            {/* One seamless h1 for SEO: greeting line small, brand line dominant */}
+            <h1 aria-label="Hello, and Welcome to Fantail Weddings New Zealand" className="space-y-2">
+              <RevealHeading
+                as="span"
+                className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-white/95 font-light leading-[1.15] tracking-tight block"
+                text="Hello, and Welcome"
+                delay={0.95}
+                amount={0.4}
+              />
+              {/* Fluid size so the whole brand line holds on ONE line from sm upward
+                  (caps at the old 7xl); phones are too narrow for 31 chars, so they wrap. */}
+              <RevealHeading
+                as="span"
+                className="font-serif text-[2rem] sm:text-[min(5.2vw,4.5rem)] sm:whitespace-nowrap text-white font-light leading-[1.08] tracking-tight block"
+                text="to Fantail Weddings New Zealand"
+                delay={1.2}
+                stagger={0.07}
+                amount={0.4}
+                effect="slide"
+              />
+            </h1>
           </div>
         </motion.div>
 
         {/* Copy Paragraph and CTA Sitting Below the Full Frame Image */}
         <div className="mt-8 md:mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start pb-12">
-          <div className="lg:col-span-8 space-y-6 text-sm text-[#708090] leading-relaxed font-light font-sans">
-            <p className="text-sm text-[#708090] leading-relaxed font-light">
+          <div className="lg:col-span-8 space-y-6 text-[15px] text-[#5c6672] leading-relaxed font-light font-sans">
+            <p className="text-[15px] text-[#5c6672] leading-relaxed font-light">
               Thank you for being here, I am Rebecca, and I plan a small number of weddings each year on the
               South Island of Aotearoa, New Zealand. Elopements. Intimate weddings of up to 60 guests. For
               couples planning their own wedding here, an online consultancy that hands you the map instead of
@@ -835,7 +953,7 @@ export default function App() {
 
               {/* Award Description details */}
               <div className="space-y-1.5" id="award-texts-container">
-                <span className="text-[9px] tracking-[0.35em] uppercase text-[#708090] font-mono block">
+                <span className="text-[9px] tracking-[0.35em] uppercase text-[#5c6672] font-mono block">
                   LUXlife Magazine Global Wedding Awards
                 </span>
                 <h2 className="font-serif text-[15px] sm:text-base md:text-lg text-[#ab8e61] font-normal leading-relaxed max-w-xl">
@@ -881,7 +999,7 @@ export default function App() {
               The Philosophy
             </span>
             <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight leading-snug" text="Story" />
-            <p className="text-[11px] tracking-widest font-light uppercase text-[#708090]">
+            <p className="text-[11px] tracking-widest font-light uppercase text-[#5c6672]">
               how i got here & how we work
             </p>
           </div>
@@ -892,7 +1010,7 @@ export default function App() {
             {/* Part 1: How I got here */}
             <div className="space-y-6">
               <RevealHeading as="h3" className="font-serif text-2xl text-black font-normal italic" text="How I got here" amount={0.6} />
-              <div className="space-y-6 text-sm text-[#708090] font-light leading-relaxed">
+              <div className="space-y-6 text-[15px] text-[#5c6672] font-light leading-relaxed">
                 <p>
                   I built this work the way I want to live my life. Small. Considered. Deeply present. Rooted in a country I love.
                 </p>
@@ -908,7 +1026,7 @@ export default function App() {
             {/* Part 2: How I work */}
             <div className="space-y-6 border-t border-black/10 pt-12">
               <RevealHeading as="h3" className="font-serif text-2xl text-black font-normal italic" text="How I work" amount={0.6} />
-              <div className="space-y-6 text-sm text-[#708090] font-light leading-relaxed">
+              <div className="space-y-6 text-[15px] text-[#5c6672] font-light leading-relaxed">
                 <p>
                   A small handful of weddings each year. Not because of false scarcity. Because I am one human, and I want to give you all of me when your turn comes.
                 </p>
@@ -925,8 +1043,12 @@ export default function App() {
         </div>
       </motion.section>
 
-      {/* Thin black border divider */}
-      <DrawDivider />
+      {/* Full-bleed photographic pause: story → services */}
+      <FullBleedBreak
+        src="/assets/images/home-break-ceremony.webp"
+        alt="Two brides exchange vows beside a South Island lake, framed by tall poplars and soft lupin florals"
+        position="center 46%"
+      />
 
       {/* 4. SERVICES SECTION (#services) */}
       <section className="py-24 px-6 max-w-7xl mx-auto" id="services">
@@ -937,7 +1059,7 @@ export default function App() {
             Shapes of Help
           </span>
           <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Four ways I can help" />
-          <p className="text-sm font-light text-[#708090] leading-relaxed">
+          <p className="text-[15px] font-light text-[#5c6672] leading-relaxed">
             Each one is its own shape of help. The right one depends on where you are coming from, how many 
             people are coming with you, and most of all, how you want the day to feel.
           </p>
@@ -958,7 +1080,7 @@ export default function App() {
                   {service.title}
                 </h3>
               </button>
-              <p className="text-xs text-[#708090] font-light leading-relaxed italic border-l border-black/15 pl-4 py-2">
+              <p className="text-[13px] text-[#5c6672] font-light leading-relaxed italic border-l border-black/15 pl-4 py-2">
                 {service.subtitle}
               </p>
               <button
@@ -1012,7 +1134,7 @@ export default function App() {
                   </div>
 
                   {/* Body description */}
-                  <p className="text-sm font-sans font-light text-[#708090] leading-relaxed">
+                  <p className="text-[15px] font-sans font-light text-[#5c6672] leading-relaxed">
                     {service.description}
                   </p>
 
@@ -1025,7 +1147,7 @@ export default function App() {
 
                   {/* Small special cap notes */}
                   {service.id === "intimate" && (
-                    <div className="bg-[#f2f2f2] p-6 border-l-2 border-black/20 text-xs text-[#708090] space-y-2 font-light leading-relaxed">
+                    <div className="bg-[#f2f2f2] p-6 border-l-2 border-black/20 text-[13px] text-[#5c6672] space-y-2 font-light leading-relaxed">
                       <p className="text-black/80 font-medium font-serif italic text-sm">A small note on guest counts.</p>
                       <p>
                         My intimate wedding service caps at 60, on purpose. Above 60, a celebration shifts from 
@@ -1036,7 +1158,7 @@ export default function App() {
                   )}
 
                   {service.id === "navigator" && (
-                    <div className="bg-[#f2f2f2] p-6 border-l-2 border-black/20 text-xs text-[#708090] space-y-2 font-light leading-relaxed">
+                    <div className="bg-[#f2f2f2] p-6 border-l-2 border-black/20 text-[13px] text-[#5c6672] space-y-2 font-light leading-relaxed">
                       <p className="text-black/80 font-medium font-serif italic text-sm">An honest note about where I can help most.</p>
                       <p>
                         My vendor knowledge is strongest in the South Island, particularly Central Otago, Wānaka, 
@@ -1052,7 +1174,7 @@ export default function App() {
                     <h4 className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold">
                       What is included
                     </h4>
-                    <ul className="space-y-3 text-xs text-[#708090] font-light leading-relaxed pl-1">
+                    <ul className="space-y-3 text-[13px] text-[#5c6672] font-light leading-relaxed pl-1">
                       {service.details.map((detail, dIdx) => (
                         <li key={dIdx} className="flex gap-3 align-top">
                           <span className="text-black/40 font-mono mt-0.5">•</span>
@@ -1092,8 +1214,12 @@ export default function App() {
 
       </section>
 
-      {/* Thin black border divider */}
-      <DrawDivider />
+      {/* Full-bleed photographic pause: services → planning year */}
+      <FullBleedBreak
+        src="/assets/images/home-break-party.webp"
+        alt="A wedding party walks arm in arm through vineyard rows above a lake, mountains rising behind them"
+        position="center 38%"
+      />
 
       {/* 5. TIMELINE SECTION: HOW THE PLANNING YEAR LOOKS (#timeline) */}
       <section className="py-24 px-6 max-w-7xl mx-auto id-target" id="timeline">
@@ -1102,7 +1228,7 @@ export default function App() {
             The Journey
           </span>
           <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="How the planning year looks" />
-          <p className="text-sm font-light text-[#708090] leading-relaxed">
+          <p className="text-[15px] font-light text-[#5c6672] leading-relaxed">
             Applies to elopements and intimate weddings. The Wedding Navigator has its own structure of live calls 
             and follow-up milestones we lay out together.
           </p>
@@ -1138,12 +1264,12 @@ export default function App() {
                 <div className="p-8 sm:p-12 flex flex-col justify-center">
                   <div className="flex items-baseline justify-between mb-6">
                     <span className="font-serif text-4xl italic text-black/15 font-light leading-none">{point.step}</span>
-                    <span className="text-[9px] tracking-widest text-[#708090] font-mono">PHASE {point.step}</span>
+                    <span className="text-[9px] tracking-widest text-[#5c6672] font-mono">PHASE {point.step}</span>
                   </div>
                   <h3 className="font-serif text-2xl sm:text-3xl text-black font-light italic tracking-tight mb-4 leading-snug">
                     {point.title}
                   </h3>
-                  <p className="text-sm text-[#708090] font-light leading-relaxed">{point.description}</p>
+                  <p className="text-[15px] text-[#5c6672] font-light leading-relaxed">{point.description}</p>
                 </div>
               </div>
             </ScrollStackItem>
@@ -1151,8 +1277,12 @@ export default function App() {
         </ScrollStack>
       </section>
 
-      {/* Thin black border divider */}
-      <DrawDivider />
+      {/* Full-bleed photographic pause: planning year → about me */}
+      <FullBleedBreak
+        src="/assets/images/home-break-dusk.webp"
+        alt="A newly married couple sit close together in long grass at dusk, looking out over a still lake and mountains"
+        position="center 58%"
+      />
 
       {/* 6. A FEW THINGS ABOUT ME / HUMAN TOUCH PROFILE SECTION */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
@@ -1165,7 +1295,7 @@ export default function App() {
                 The Planner
               </span>
               <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight pb-2 border-b border-black/10 m-0" text="A few things you might want to know about me" />
-              <p className="text-xs italic text-[#708090] font-serif font-light">
+              <p className="text-[13px] italic text-[#5c6672] font-serif font-light">
                 A short list-as-portrait, to trace the real human on the other side of your plans.
               </p>
             </div>
@@ -1186,7 +1316,7 @@ export default function App() {
                     <span className="font-mono text-[10px] text-black/30 mt-1">
                       {(index + 1).toString().padStart(2, "0")}
                     </span>
-                    <p className="text-xs text-[#708090] font-light leading-relaxed">
+                    <p className="text-[13px] text-[#5c6672] font-light leading-relaxed">
                       <strong className="text-black font-normal text-sm font-serif block sm:inline mr-1">
                         {highlight}.
                       </strong>
@@ -1232,7 +1362,7 @@ export default function App() {
               Inquire Deeper
             </span>
             <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Frequently Asked Questions" />
-            <p className="text-xs font-light text-[#708090] leading-relaxed">
+            <p className="text-[13px] font-light text-[#5c6672] leading-relaxed">
               The questions couples ask me most about planning a wedding in Aotearoa New Zealand.
             </p>
             <div className="pt-6 hidden lg:block">
@@ -1295,7 +1425,7 @@ export default function App() {
                         role="region"
                         aria-labelledby={`faq-trigger-${faq.id}`}
                       >
-                        <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-[#708090] font-light leading-relaxed font-sans border-t border-black/[0.04]">
+                        <div className="px-6 pb-6 pt-1 text-[13px] sm:text-[15px] text-[#5c6672] font-light leading-relaxed font-sans border-t border-black/[0.04]">
                           {faq.answer}
                         </div>
                       </motion.div>
@@ -1349,7 +1479,7 @@ export default function App() {
               Begin your plans
             </span>
             <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Shall we begin?" />
-            <p className="text-xs sm:text-sm font-light text-[#708090] leading-relaxed max-w-lg mx-auto">
+            <p className="text-[13px] sm:text-[15px] font-light text-[#5c6672] leading-relaxed max-w-lg mx-auto">
               Tell me a little about the two of you. Where you are in the planning. What feels most uncertain 
               right now. I read every enquiry myself. There is no script. Just a conversation.
             </p>
@@ -1378,7 +1508,7 @@ export default function App() {
                     <label htmlFor="names" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       01. Your names *
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic">
+                    <p className="text-[10px] text-[#5c6672] font-light italic">
                       Yours and your partner's first names.
                     </p>
                     <input
@@ -1401,7 +1531,7 @@ export default function App() {
                     <label htmlFor="email" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       02. The best email to reach you *
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic">
+                    <p className="text-[10px] text-[#5c6672] font-light italic">
                       I will write back personally within two working days.
                     </p>
                     <input
@@ -1424,7 +1554,7 @@ export default function App() {
                     <label htmlFor="location" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       03. Where in the world are you?
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic">
+                    <p className="text-[10px] text-[#5c6672] font-light italic">
                       City and country is plenty. It helps me know the time zone we are working with.
                     </p>
                     <input
@@ -1468,7 +1598,7 @@ export default function App() {
                     <label htmlFor="dateTiming" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       05. Your date, or rough timing
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic">
+                    <p className="text-[10px] text-[#5c6672] font-light italic">
                       A specific date, a season, or "not yet." All are fine.
                     </p>
                     <input
@@ -1487,7 +1617,7 @@ export default function App() {
                     <label htmlFor="guestCount" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       06. Roughly how many guests?
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic">
+                    <p className="text-[10px] text-[#5c6672] font-light italic">
                       A number, a range, or "we have no idea." Every answer is welcome.
                     </p>
                     <input
@@ -1506,7 +1636,7 @@ export default function App() {
                     <label htmlFor="regionDrawn" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       07. Where in Aotearoa are you drawn to?
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic">
+                    <p className="text-[10px] text-[#5c6672] font-light italic">
                       A South Island region, a specific landscape, or "help me decide."
                     </p>
                     <input
@@ -1525,7 +1655,7 @@ export default function App() {
                     <label htmlFor="story" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       08. Tell me your story, the parts you want me to know *
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic leading-relaxed">
+                    <p className="text-[10px] text-[#5c6672] font-light italic leading-relaxed">
                       How you met. Why Aotearoa. What made you start thinking about a wedding here. Take your 
                       time. There is no word limit.
                     </p>
@@ -1549,7 +1679,7 @@ export default function App() {
                     <label htmlFor="source" className="block text-[11px] tracking-widest font-semibold text-black uppercase">
                       09. How did you hear about Fantail?
                     </label>
-                    <p className="text-[10px] text-[#708090] font-light italic">
+                    <p className="text-[10px] text-[#5c6672] font-light italic">
                       A friend? Pinterest? Instagram? Just curious.
                     </p>
                     <input
@@ -1594,11 +1724,11 @@ export default function App() {
                     <h3 className="font-serif text-2xl text-black font-light">
                       Your note is sitting in my inbox now.
                     </h3>
-                    <p className="text-xs sm:text-sm font-light text-[#708090] leading-relaxed max-w-lg mx-auto">
+                    <p className="text-[13px] sm:text-[15px] font-light text-[#5c6672] leading-relaxed max-w-lg mx-auto">
                       I will read it personally, probably tomorrow morning, with a cup of tea before the day gets 
                       busy. I will write back within two working days.
                     </p>
-                    <p className="text-xs font-light text-[#708090] leading-relaxed max-w-lg mx-auto">
+                    <p className="text-[13px] font-light text-[#5c6672] leading-relaxed max-w-lg mx-auto">
                       In the meantime, you might enjoy a wander through my Pinterest, where I keep my favourite 
                       South Island moments.
                     </p>
@@ -1619,7 +1749,7 @@ export default function App() {
                   <div className="pt-10 border-t border-black/10">
                     <button
                       onClick={() => setFormSubmitted(false)}
-                      className="text-[9px] tracking-widest text-[#708090] uppercase hover:text-black font-mono transition"
+                      className="text-[9px] tracking-widest text-[#5c6672] uppercase hover:text-black font-mono transition"
                     >
                       Submit another inquiry
                     </button>
@@ -1647,9 +1777,9 @@ export default function App() {
           
           {/* Column A: Instagram */}
           <div className="space-y-4 md:border-r border-black/10 md:pr-8 last:border-none">
-            <span className="text-[10px] tracking-widest uppercase font-mono text-[#708090]">Instagram</span>
+            <span className="text-[10px] tracking-widest uppercase font-mono text-[#5c6672]">Instagram</span>
             <RevealHeading as="h3" className="font-serif text-lg text-black italic" text="On Instagram" amount={0.6} />
-            <p className="text-xs font-light text-[#708090] leading-relaxed">
+            <p className="text-[13px] font-light text-[#5c6672] leading-relaxed">
               @fantail_weddings, behind-the-scenes from the planning desk, vendor love, and the slow build-up of 
               every Fantail celebration.
             </p>
@@ -1667,9 +1797,9 @@ export default function App() {
 
           {/* Column B: Pinterest */}
           <div className="space-y-4 md:border-r border-black/10 md:px-8 last:border-none">
-            <span className="text-[10px] tracking-widest uppercase font-mono text-[#708090]">Pinterest</span>
+            <span className="text-[10px] tracking-widest uppercase font-mono text-[#5c6672]">Pinterest</span>
             <RevealHeading as="h3" className="font-serif text-lg text-black italic" text="On Pinterest" amount={0.6} />
-            <p className="text-xs font-light text-[#708090] leading-relaxed">
+            <p className="text-[13px] font-light text-[#5c6672] leading-relaxed">
               @fantailwed, with South Island wedding inspiration sorted by region, season, and feeling.
             </p>
             <div className="pt-2">
@@ -1686,9 +1816,9 @@ export default function App() {
 
           {/* Column C: Inbox Newsletter Subscription */}
           <div className="space-y-4 md:pl-8 last:border-none">
-            <span className="text-[10px] tracking-widest uppercase font-mono text-[#708090]">Newsletter</span>
+            <span className="text-[10px] tracking-widest uppercase font-mono text-[#5c6672]">Newsletter</span>
             <RevealHeading as="h3" className="font-serif text-lg text-black italic" text="In your inbox" amount={0.6} />
-            <p className="text-xs font-light text-[#708090] leading-relaxed">
+            <p className="text-[13px] font-light text-[#5c6672] leading-relaxed">
               The Fantail Letter, a quiet email I send once a month. A piece of writing, a vendor I am loving, 
               and the thing I am thinking about most. No sales. No pressure.
             </p>
@@ -1770,10 +1900,10 @@ export default function App() {
             <h3 className="font-serif text-sm tracking-[0.2em] uppercase text-black font-semibold">
               Fantail Weddings
             </h3>
-            <p className="text-[11px] tracking-widest text-[#708090] font-light uppercase leading-relaxed">
+            <p className="text-[11px] tracking-widest text-[#5c6672] font-light uppercase leading-relaxed">
               Boutique Wedding Planning & Online Wedding Planning Consultation
             </p>
-            <p className="text-[10px] text-[#708090]/80 font-light">
+            <p className="text-[10px] text-[#5c6672]/80 font-light">
               South Island, Aotearoa New Zealand
             </p>
           </div>
@@ -1783,8 +1913,8 @@ export default function App() {
             <h4 className="text-[10px] tracking-[0.2em] uppercase text-black font-medium">
               Navigation Guide
             </h4>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-light text-[#708090]">
-              <a href="/#story" onClick={(e) => spaNav(e, () => navigateTo("story"))} className="hover:text-black transition text-left cursor-pointer">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[13px] font-light text-[#5c6672]">
+              <a href="/" onClick={(e) => spaNav(e, () => navigate("home"))} className="hover:text-black transition text-left cursor-pointer">
                 Story
               </a>
               <a href="/#services" onClick={(e) => spaNav(e, () => navigateTo("services"))} className="hover:text-black transition text-left cursor-pointer">
@@ -1820,7 +1950,7 @@ export default function App() {
             <h4 className="text-[10px] tracking-[0.2em] uppercase text-black font-medium">
               Coordinates
             </h4>
-            <div className="flex flex-col gap-2.5 text-xs font-light text-[#708090]">
+            <div className="flex flex-col gap-2.5 text-[13px] font-light text-[#5c6672]">
               <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-2 sm:gap-4 md:gap-2 lg:gap-4 justify-center md:justify-start">
                 <a href="mailto:rebecca@fantailweddings.com" className="hover:text-black transition underline-offset-4 hover:underline">
                   rebecca@fantailweddings.com
@@ -1830,22 +1960,19 @@ export default function App() {
                   +64 274 672 126
                 </a>
               </div>
-              <div className="flex flex-wrap gap-3 justify-center md:justify-start pt-1.5 border-t border-black/[0.04] mt-1">
-                <a href="https://www.instagram.com/fantail_weddings/" target="_blank" rel="noopener noreferrer" className="hover:text-black transition underline-offset-4 hover:underline">
-                  Instagram
-                </a>
-                <span className="text-black/10">·</span>
-                <a href="https://www.facebook.com/FantailWeddings" target="_blank" rel="noopener noreferrer" className="hover:text-black transition underline-offset-4 hover:underline">
-                  Facebook
-                </a>
-                <span className="text-black/10">·</span>
-                <a href="https://nz.pinterest.com/fantailwed/" target="_blank" rel="noopener noreferrer" className="hover:text-black transition underline-offset-4 hover:underline">
-                  Pinterest
-                </a>
-                <span className="text-black/10">·</span>
-                <a href="https://www.youtube.com/@Fantailweddings" target="_blank" rel="noopener noreferrer" className="hover:text-black transition underline-offset-4 hover:underline">
-                  YouTube
-                </a>
+              <div className="flex items-center gap-5 justify-center md:justify-start pt-3 border-t border-black/[0.04] mt-1">
+                <SocialIcon href="https://www.instagram.com/fantail_weddings/" label="Fantail Weddings on Instagram" index={0}>
+                  <Instagram className="w-[18px] h-[18px]" strokeWidth={1.6} aria-hidden="true" />
+                </SocialIcon>
+                <SocialIcon href="https://www.facebook.com/FantailWeddings" label="Fantail Weddings on Facebook" index={1}>
+                  <Facebook className="w-[18px] h-[18px]" strokeWidth={1.6} aria-hidden="true" />
+                </SocialIcon>
+                <SocialIcon href="https://nz.pinterest.com/fantailwed/" label="Fantail Weddings on Pinterest" index={2}>
+                  <PinterestIcon className="w-[18px] h-[18px]" />
+                </SocialIcon>
+                <SocialIcon href="https://www.youtube.com/@Fantailweddings" label="Fantail Weddings on YouTube" index={3}>
+                  <Youtube className="w-[19px] h-[19px]" strokeWidth={1.6} aria-hidden="true" />
+                </SocialIcon>
               </div>
             </div>
           </div>
@@ -1907,7 +2034,7 @@ export default function App() {
                 <h3 id="login-modal-title" className="font-serif text-2xl text-black font-light">
                   Client Workspace
                 </h3>
-                <p className="text-xs font-light text-[#708090] leading-relaxed">
+                <p className="text-[13px] font-light text-[#5c6672] leading-relaxed">
                   Welcome back. Please access your designated workspace via Bloom or enter your unique local access code below.
                 </p>
               </div>
@@ -1925,7 +2052,7 @@ export default function App() {
 
                 <div className="relative flex py-2 items-center">
                   <div className="flex-grow border-t border-black/10"></div>
-                  <span className="flex-shrink mx-4 text-[9px] tracking-widest font-mono uppercase text-[#708090]">
+                  <span className="flex-shrink mx-4 text-[9px] tracking-widest font-mono uppercase text-[#5c6672]">
                     or enter access code
                   </span>
                   <div className="flex-grow border-t border-black/10"></div>
@@ -1965,7 +2092,7 @@ export default function App() {
               </div>
               
               <div className="text-center pt-2 font-sans">
-                <p className="text-[9px] font-mono uppercase text-[#708090]">
+                <p className="text-[9px] font-mono uppercase text-[#5c6672]">
                   powered by 8twenty creative
                 </p>
               </div>
@@ -2014,7 +2141,7 @@ export default function App() {
                 <h3 id="journal-modal-title" className="font-serif text-2xl text-black font-light">
                   Journal Reflections
                 </h3>
-                <p className="text-xs font-light text-[#708090] leading-relaxed font-sans">
+                <p className="text-[13px] font-light text-[#5c6672] leading-relaxed font-sans">
                   Quiet reflections, wedding field notes, and landscape features from around the South Island are launching in late 2026.
                 </p>
               </div>

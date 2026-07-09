@@ -62,7 +62,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
             e.preventDefault();
             onBackToJournal();
           }}
-          className="group text-[10px] tracking-[0.25em] uppercase text-[#708090] hover:text-black transition inline-flex items-center"
+          className="group text-[10px] tracking-[0.25em] uppercase text-[#5c6672] hover:text-black transition inline-flex items-center"
         >
           <span className="mr-2 group-hover:-translate-x-1 transition-transform duration-300">&larr;</span> The Journal
         </a>
@@ -78,7 +78,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
         >
           <motion.img
             src={article.heroImage}
-            alt={article.title}
+            alt={article.heroImageAlt || article.title}
             className="object-cover w-full h-full"
             referrerPolicy="no-referrer"
             initial={{ scale: 1.04 }}
@@ -129,7 +129,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
           className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight mb-8"
           text={article.intro.heading}
         />
-        <p className="text-base text-[#708090] font-light leading-relaxed">{article.intro.body}</p>
+        <p className="text-base text-[#5c6672] font-light leading-relaxed">{article.intro.body}</p>
       </motion.section>
 
       <Divider />
@@ -140,7 +140,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
           <div className="col-span-1 lg:col-span-6">
             <RevealImage
               src={article.why.image}
-              alt={article.why.heading}
+              alt={article.why.imageAlt || article.why.heading}
               wrapClassName="relative aspect-[4/5] w-full overflow-hidden bg-gray-100 rounded-sm shadow-sm"
             />
           </div>
@@ -159,7 +159,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
               className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight"
               text={article.why.heading}
             />
-            <p className="text-sm text-[#708090] font-light leading-relaxed">{article.why.body}</p>
+            <p className="text-[15px] text-[#5c6672] font-light leading-relaxed">{article.why.body}</p>
           </motion.div>
         </div>
       </section>
@@ -175,7 +175,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
             className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight"
             text="Four seasons, four moods"
           />
-          <p className="text-sm font-light text-[#708090] leading-relaxed">{article.seasons.intro}</p>
+          <p className="text-[15px] font-light text-[#5c6672] leading-relaxed">{article.seasons.intro}</p>
         </div>
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10"
@@ -188,11 +188,11 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
             <motion.div key={s.name} variants={revealItem} className="space-y-3 bg-white p-6 border border-black/[0.05]">
               <span className="font-serif text-3xl italic text-black/15 font-light block">{(i + 1).toString().padStart(2, "0")}</span>
               <h4 className="font-serif text-lg text-black font-normal italic">{s.name}</h4>
-              <p className="text-xs text-[#708090] font-light leading-relaxed">{s.text}</p>
+              <p className="text-[13px] text-[#5c6672] font-light leading-relaxed">{s.text}</p>
             </motion.div>
           ))}
         </motion.div>
-        <p className="text-sm font-light text-[#708090] leading-relaxed max-w-3xl mt-12 italic">
+        <p className="text-[15px] font-light text-[#5c6672] leading-relaxed max-w-3xl mt-12 italic">
           {article.seasons.outro}
         </p>
       </section>
@@ -232,7 +232,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
                 ) : (
                   <h4 className="font-serif text-lg text-black font-normal">{v.name}</h4>
                 )}
-                <p className="text-xs text-[#708090] font-light leading-relaxed">{v.text}</p>
+                <p className="text-[13px] text-[#5c6672] font-light leading-relaxed">{v.text}</p>
               </div>
             </motion.div>
           ))}
@@ -287,7 +287,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
                         transition={{ duration: 0.35, ease: "easeInOut" }}
                         role="region"
                       >
-                        <div className="px-6 pb-6 pt-1 text-xs sm:text-sm text-[#708090] font-light leading-relaxed border-t border-black/[0.04]">
+                        <div className="px-6 pb-6 pt-1 text-[13px] sm:text-[15px] text-[#5c6672] font-light leading-relaxed border-t border-black/[0.04]">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -316,7 +316,7 @@ export default function JournalArticle({ article, onEnquire, onBackToJournal }: 
           className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight mb-6"
           text={article.closing.heading}
         />
-        <p className="text-sm sm:text-base font-light text-[#708090] leading-relaxed max-w-xl mx-auto mb-10">
+        <p className="text-[15px] sm:text-base font-light text-[#5c6672] leading-relaxed max-w-xl mx-auto mb-10">
           {article.closing.body}
         </p>
         <button

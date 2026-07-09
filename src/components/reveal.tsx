@@ -14,6 +14,8 @@ interface RevealHeadingProps {
   stagger?: number;
   once?: boolean;
   amount?: number;
+  /** "blur" (default) rises + unblurs; "slide" glides in from the side, no blur. */
+  effect?: "blur" | "slide";
 }
 
 /**
@@ -27,22 +29,33 @@ export function RevealHeading({
   delay = 0,
   stagger = 0.09,
   once = true,
-  amount = 0.5
+  amount = 0.5,
+  effect = "blur"
 }: RevealHeadingProps) {
   const words = text.split(" ");
   const container = {
     hidden: {},
     visible: { transition: { staggerChildren: stagger, delayChildren: delay } }
   };
-  const word = {
-    hidden: { opacity: 0, y: 16, filter: "blur(8px)" },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.8, ease: LUX_EASE }
-    }
-  };
+  const word =
+    effect === "slide"
+      ? {
+          hidden: { opacity: 0, x: 28 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.9, ease: LUX_EASE }
+          }
+        }
+      : {
+          hidden: { opacity: 0, y: 16, filter: "blur(8px)" },
+          visible: {
+            opacity: 1,
+            y: 0,
+            filter: "blur(0px)",
+            transition: { duration: 0.8, ease: LUX_EASE }
+          }
+        };
   const MotionTag = (motion as any)[as];
   // aria-label is only valid on headings; on a span/p it is prohibited ARIA.
   const isHeading = /^h[1-6]$/.test(as);

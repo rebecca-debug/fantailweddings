@@ -116,7 +116,7 @@ export default function FilmCard({ thumbnail, vimeoId, title, meta }: FilmCardPr
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
 
-          {/* Muted, looping background preview — fades in over the poster once playing */}
+          {/* Muted, looping background preview - fades in over the poster once playing */}
           {inView && !prefersReduced && (
             <div
               aria-hidden="true"

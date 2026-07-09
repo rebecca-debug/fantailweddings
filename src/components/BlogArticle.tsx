@@ -160,7 +160,7 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
         <a
           href="/journal/"
           onClick={navClick("/journal/")}
-          className="group text-[10px] tracking-[0.25em] uppercase text-[#708090] hover:text-black transition inline-flex items-center"
+          className="group text-[10px] tracking-[0.25em] uppercase text-[#5c6672] hover:text-black transition inline-flex items-center"
         >
           <span className="mr-2 group-hover:-translate-x-1 transition-transform duration-300">&larr;</span> The Journal
         </a>
@@ -179,7 +179,7 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
         />
         {post.subtitle && (
           <motion.p
-            className="mt-6 font-serif text-lg sm:text-xl italic text-[#708090] font-light leading-relaxed max-w-2xl mx-auto"
+            className="mt-6 font-serif text-lg sm:text-xl italic text-[#5c6672] font-light leading-relaxed max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.5, ease: LUX_EASE }}
@@ -244,9 +244,9 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
               prev ? "hover:bg-[#f7f7f7]" : "opacity-30 pointer-events-none"
             }`}
           >
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#708090] block mb-2">&larr; Older</span>
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#5c6672] block mb-2">&larr; Older</span>
             <span className="font-serif text-base sm:text-lg text-black font-light leading-snug line-clamp-2">
-              {prev ? prev.title : "—"}
+              {prev ? prev.title : "·"}
             </span>
           </a>
           <a
@@ -257,9 +257,9 @@ export default function BlogArticle({ post, onNavigate, onEnquire }: BlogArticle
               next ? "hover:bg-[#f7f7f7]" : "opacity-30 pointer-events-none"
             }`}
           >
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#708090] block mb-2">Newer &rarr;</span>
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#5c6672] block mb-2">Newer &rarr;</span>
             <span className="font-serif text-base sm:text-lg text-black font-light leading-snug line-clamp-2">
-              {next ? next.title : "—"}
+              {next ? next.title : "·"}
             </span>
           </a>
         </div>

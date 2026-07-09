@@ -1,15 +1,15 @@
 # Fantail Weddings
 
-Boutique, founder-led wedding planning for elopements and intimate weddings across the South Island of Aotearoa, New Zealand. Led by Rebecca Brosnahan, with 15+ years of experience. Capacity-limited by design — only a small number of weddings each year, plus elopements. Winner, LUXlife Magazine Global Wedding Awards 2026 (Luxury Destination Wedding Planning Specialists of the Year, New Zealand).
+Boutique, founder-led wedding planning for elopements and intimate weddings across the South Island of Aotearoa, New Zealand. Led by Rebecca Brosnahan, with 15+ years of experience. Capacity-limited by design: only a small number of weddings each year, plus elopements. Winner, LUXlife Magazine Global Wedding Awards 2026 (Luxury Destination Wedding Planning Specialists of the Year, New Zealand).
 
 ## Services
-- Elopements — curated just-the-two-of-you celebrations across the South Island. Planning from NZD $4,300 (vendors and on-the-day costs quoted separately).
-- Intimate Weddings — full-service, concierge-style planning for roughly 20–60 guests. Planning from NZD $8,200; most couples invest NZD $65,000–$230,000 in total across vendors and the celebration.
-- The Wedding Navigator — an online consultancy for NZ couples planning their own wedding: three live calls with Rebecca plus a personalised planning toolkit. NZD $850 + GST.
-- Design, Coordination & Day-of Management — creative direction, styling, and on-the-day management for couples who have done the bulk of their own planning.
+- Elopements: curated just-the-two-of-you celebrations across the South Island. Planning from NZD $4,300 (vendors and on-the-day costs quoted separately).
+- Intimate Weddings: full-service, concierge-style planning for roughly 20–60 guests. Planning from NZD $8,200; most couples invest NZD $65,000–$230,000 in total across vendors and the celebration.
+- The Wedding Navigator: an online consultancy for NZ couples planning their own wedding: three live calls with Rebecca plus a personalised planning toolkit. NZD $850 + GST.
+- Design, Coordination & Day-of Management: creative direction, styling, and on-the-day management for couples who have done the bulk of their own planning.
 
 ## Where we work
-Across the South Island of New Zealand — including Queenstown, Central Otago, the Mackenzie Country (Aoraki / Mt Cook), Fiordland, and the wider Southern Lakes and alpine regions.
+Across the South Island of New Zealand, including Queenstown, Central Otago, the Mackenzie Country (Aoraki / Mt Cook), Banks Peninsula and Akaroa, Fiordland, and the wider Southern Lakes and alpine regions.
 
 ## Good to know
 - Overseas couples can legally marry in New Zealand. A marriage licence costs about NZD $150, takes ~3 working days to process, and is valid for 3 months.
@@ -22,6 +22,8 @@ Across the South Island of New Zealand — including Queenstown, Central Otago, 
 - [The Wedding Navigator](https://fantailweddings.co.nz/the-wedding-navigator/)
 - [Queenstown weddings guide](https://fantailweddings.co.nz/queenstown-wedding-planner/)
 - [Wānaka weddings guide](https://fantailweddings.co.nz/nz-wanaka-wedding-planner/)
+- [Banks Peninsula weddings guide](https://fantailweddings.co.nz/banks-peninsula-weddings/)
+- [Mackenzie Country weddings guide](https://fantailweddings.co.nz/mackenzie-country-weddings/)
 
 ## Full content
 - [Full plain-text content for AI crawlers](https://fantailweddings.co.nz/llms-full.txt)
