@@ -70,33 +70,16 @@ export const SERVICES_DATA: Service[] = [
       "A private planning portal where everything lives in one calm place.",
       "Me on the day, with Meghan alongside when the size calls for her."
     ],
-    investment: "Planning starts from [ NZD $8,200 ]. Most couples invest a total of [ NZD $65,000 to $230,000] across vendors and the celebration itself. For reference, exclusive South Island wedding venues alone typically range from NZD $10,000 to $25,000+, depending on season and inclusions.",
+    investment: "Planning starts from [ NZD $8,800 ]. Most couples invest a total of [ NZD $65,000 to $230,000] across vendors and the celebration itself. For reference, exclusive South Island wedding venues alone typically range from NZD $10,000 to $25,000+, depending on season and inclusions.",
     ctaText: "Begin a Conversation about an Intimate Wedding",
     image: "/assets/images/service-02.webp",
     imageAlt: "Newlyweds walk through a shower of petal confetti thrown by guests at a lakeside South Island wedding, mountains behind.",
     loveNote: "“Rebecca planned a beautiful wedding that was beloved by our guests as well as us. Recurrent compliments have been on the food (Rebecca somehow found an incredible chef, plucked him from obscurity, and brought him to our wedding, who prepared four incredible meals), the venue, which we would never have found on our own and required complex private negotiations to book, and a boat adventure across a lake in Wanaka. We appreciated her versatility and rapid responsiveness to changing weather conditions... .” M&S - Intimate Wedding, January 2025"
   },
   {
-    id: "navigator",
-    number: "03",
-    title: "THE WEDDING NAVIGATOR",
-    subtitle: "For New Zealand couples planning their own wedding, anywhere in the country.",
-    description: "Plenty of NZ couples can plan a beautiful wedding without a full planner running it. You are organised. You have done research. You enjoy the planning, mostly. You do not need someone to make every decision for you. What you might need is someone to hand you the map. The order in which things should happen. The questions worth asking each vendor before you sign. The week-by-week rhythm that turns twelve months of overwhelm into a slow, steady build. The check-in three months out, when you wonder whether you have forgotten something, and the second one six weeks out, when the wee freak-out arrives on schedule.",
-    details: [
-      "Three live calls (a 30-minute onboarding call and two one-hour follow-ups at the milestones that matter).",
-      "A personalised toolkit delivered within a week of the onboarding call: a wedding-specific timeline working backwards from your date, a vendor outreach sequence with the right questions to ask, styling aids matched to your venue and season, and a twelve-week countdown checklist for the final stretch.",
-      "Built around your wedding, not a template. Built from fifteen years of full-service planning, compressed into a shape that suits a couple doing the work themselves."
-    ],
-    investment: "[ NZD $850.00 +gst ]. Paid in two parts, half at booking, half before the second follow-up call. If you start with the Navigator and decide within the first month to switch to full-service planning instead, the fee credits transfer.",
-    ctaText: "Begin a Conversation about the Wedding Navigator",
-    image: "/assets/images/Service-03.webp",
-    imageAlt: "A colourful styled wedding tablescape with scalloped placemats, floral-rimmed plates, striped glassware and garden flowers.",
-    loveNote: "“OMG - the budget now makes sense. Thank you very much for those tips.” B&S - Online Wedding Consultation, January 2026"
-  },
-  {
     id: "design",
-    number: "04",
-    title: "DESIGN, COORDINATION & DAY OF MANAGEMENT",
+    number: "03",
+    title: "DESIGN & DAY OF MANAGEMENT",
     subtitle: "For couples capable of doing the bulk of their planning but wise to engage expertise for the details and design.",
     description: "The best pairing for a couple who have their venue and some vendors but need the guiding eye of a designer and logistics expert. I will help you pull your vision together into a cohesive overall wedding design, coordinate the details and take care of the day-of management so you can simply enjoy.",
     details: [
@@ -107,10 +90,10 @@ export const SERVICES_DATA: Service[] = [
       "Wedding day timeline finalisation and distribution.",
       "Vendor reconfirmation and coordination.",
       "Management of ceremony rehearsal (if applicable).",
-      "Complete oversight on the wedding day - setup, styling, cueing, and flow management.",
+      "Complete management on the wedding day - setup, styling, cueing, and flow management.",
       "Troubleshooting behind the scenes to ensure a smooth and elevated guest experience."
     ],
-    investment: "Planning starts from [ NZD $5,300 ], with all design elements quoted separately to help with budget transparency.",
+    investment: "Planning starts from [ NZD $3,800 ], with all design elements quoted separately to help with budget transparency.",
     ctaText: "Begin a Conversation about Design & Coordination",
     image: "/assets/images/Service-04.webp",
     imageAlt: "A styled wedding place setting with a hand-illustrated menu card, striped linen napkin folded like a rose, and olive-branch detailing.",
