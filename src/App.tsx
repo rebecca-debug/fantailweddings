@@ -874,13 +874,11 @@ export default function App() {
           <div className="lg:col-span-8 space-y-6 text-[15px] text-[#5c6672] leading-relaxed font-light font-sans">
             <p className="text-[15px] text-[#5c6672] leading-relaxed font-light">
               Thank you for being here, I am Rebecca, and I plan a small number of weddings each year on the
-              South Island of Aotearoa, New Zealand. Elopements. Intimate weddings of up to 60 guests. For
-              couples planning their own wedding here, an online consultancy that hands you the map instead of
-              running the journey for you. And, when a celebration calls for it, full design, coordination and
-              day-of management.
+              South Island of Aotearoa, New Zealand. Elopements. Intimate weddings of up to 60 guests. 
+              And, when a celebration calls for it, design coordination and day-of management.
             </p>
             <p className="text-black/85 font-normal tracking-wide">
-              Four different shapes of help. One person. Real care.
+              Three different shapes of help. One person. Real care.
             </p>
           </div>
           <div className="lg:col-span-4 lg:text-right lg:pt-3">
@@ -1000,10 +998,10 @@ export default function App() {
               <RevealHeading as="h3" className="font-serif text-2xl text-black font-normal italic" text="How I got here" amount={0.6} />
               <div className="space-y-6 text-[15px] text-[#5c6672] font-light leading-relaxed">
                 <p>
-                  I built this work the way I want to live my life. Small. Considered. Deeply present. Rooted in a country I love.
+                  I built this work the way I want to live my life. Considered. Deeply present. Rooted in a country I love.
                 </p>
                 <p>
-                  The road here was not a straight one. Thirty years across hospitality in around the world, film production in Auckland, commercial floristry under one of the best florists in New Zealand, event work in Las Vegas, and three years running a converted woolshed venue near Wānaka. Couples who book me get a planner who understands deeply how their day will be remembered, photographed, and felt by their guests.
+                  The road here was not a straight one. Thirty years across hospitality around the world, film production coordantor in Auckland, commercial floristry under one of the best florists in New Zealand, event work in Las Vegas, and three years running a converted woolshed venue near Wānaka. Couples who book me get a planner who understands deeply how their day will be remembered, photographed, and felt by their guests.
                 </p>
                 <p>
                   I plan weddings in the South Island for couples who want their celebration to feel like the most beautiful version of their real life. Not a performance. Not a Pinterest re-creation. The real, slightly imperfect, deeply loved thing.
