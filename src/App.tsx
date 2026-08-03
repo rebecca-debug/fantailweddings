@@ -844,20 +844,20 @@ export default function App() {
               amount={0.4}
             />
             {/* One seamless h1 for SEO: greeting line small, brand line dominant */}
-            <h1 aria-label="Destination Wedding Planning in New Zealand" className="space-y-2">
-              <RevealHeading
-                as="span"
-                className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-white/95 font-light leading-[1.15] tracking-tight block"
-                text="Hello, and Welcome"
-                delay={0.95}
-                amount={0.4}
-              />
-              {/* Fluid size so the whole brand line holds on ONE line from sm upward
-                  (caps at the old 7xl); phones are too narrow for 31 chars, so they wrap. */}
+<h1 aria-label="Destination Wedding Planning, South Island, New Zealand" className="space-y-2">
               <RevealHeading
                 as="span"
                 className="font-serif text-[2rem] sm:text-[min(5.2vw,4.5rem)] sm:whitespace-nowrap text-white font-light leading-[1.08] tracking-tight block"
-                text="Destination Wedding Planning in New Zealand"
+                text="Destination Wedding Planning"
+                delay={0.95}
+                stagger={0.07}
+                amount={0.4}
+                effect="slide"
+              />
+              <RevealHeading
+                as="span"
+                className="font-serif text-[2rem] sm:text-[min(5.2vw,4.5rem)] sm:whitespace-nowrap text-white font-light leading-[1.08] tracking-tight block"
+                text="South Island, New Zealand"
                 delay={1.2}
                 stagger={0.07}
                 amount={0.4}
