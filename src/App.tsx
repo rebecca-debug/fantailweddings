@@ -204,7 +204,7 @@ export default function App() {
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Elopements, intimate weddings to 60 guests, and an online consultancy for couples planning their own wedding. Boutique, capacity-limited wedding planning in Aotearoa New Zealand."
+        "Elopements and intimate weddings for celebrations up to 60 guests. Boutique, capacity-limited wedding planning in Aotearoa New Zealand."
       );
     } else {
       const meta = document.createElement("meta");
@@ -669,18 +669,6 @@ export default function App() {
               )}
             </a>
             <a
-              href={hrefForPage("wedding-navigator")}
-              onClick={(e) => spaNav(e, () => navigate("wedding-navigator"))}
-              className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
-                currentPage === "wedding-navigator" ? "text-black" : "text-[#5c6672] hover:text-black"
-              }`}
-              id="nav-wedding-navigator"
-            >
-              The Wedding Navigator
-              {currentPage === "wedding-navigator" && (
-                <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
-              )}
-            </a>
             <a
               href={hrefForPage("portfolio")}
               onClick={(e) => spaNav(e, () => goToPage("portfolio"))}
