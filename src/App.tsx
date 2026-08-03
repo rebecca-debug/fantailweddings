@@ -768,7 +768,6 @@ export default function App() {
                 {[
                   { label: "Story", fn: () => navigate("home") },
                   { label: "Services", fn: () => navigateTo("services") },
-                  { label: "The Wedding Navigator", fn: () => navigate("wedding-navigator") },
                   { label: "Portfolio", fn: () => goToPage("portfolio") },
                   { label: "FAQ", fn: () => navigateTo("faq") },
                   { label: "Journal", fn: () => openJournalIndex() }
@@ -840,13 +839,13 @@ export default function App() {
             <RevealHeading
               as="span"
               className="text-[10px] md:text-xs tracking-[0.35em] uppercase text-white/90 font-light block"
-              text="South Island, New Zealand"
+              text="Hello, and Welcome"
               delay={0.7}
               stagger={0.04}
               amount={0.4}
             />
             {/* One seamless h1 for SEO: greeting line small, brand line dominant */}
-            <h1 aria-label="Hello, and Welcome to Fantail Weddings New Zealand" className="space-y-2">
+            <h1 aria-label="Destination Wedding Planning in New Zealand" className="space-y-2">
               <RevealHeading
                 as="span"
                 className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-white/95 font-light leading-[1.15] tracking-tight block"
@@ -859,7 +858,7 @@ export default function App() {
               <RevealHeading
                 as="span"
                 className="font-serif text-[2rem] sm:text-[min(5.2vw,4.5rem)] sm:whitespace-nowrap text-white font-light leading-[1.08] tracking-tight block"
-                text="to Fantail Weddings New Zealand"
+                text="Destination Wedding Planning in New Zealand"
                 delay={1.2}
                 stagger={0.07}
                 amount={0.4}
