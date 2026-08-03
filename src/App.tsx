@@ -669,7 +669,6 @@ export default function App() {
               )}
             </a>
             <a
-            <a
               href={hrefForPage("portfolio")}
               onClick={(e) => spaNav(e, () => goToPage("portfolio"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
@@ -1043,7 +1042,7 @@ export default function App() {
           <span className="text-[10px] tracking-[0.3em] uppercase text-black font-light block">
             Shapes of Help
           </span>
-          <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Four ways I can help" />
+          <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Three ways I can help" />
           <p className="text-[15px] font-light text-[#5c6672] leading-relaxed">
             Each one is its own shape of help. The right one depends on where you are coming from, how many 
             people are coming with you, and most of all, how you want the day to feel.
@@ -1214,8 +1213,7 @@ export default function App() {
           </span>
           <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="How the planning year looks" />
           <p className="text-[15px] font-light text-[#5c6672] leading-relaxed">
-            Applies to elopements and intimate weddings. The Wedding Navigator has its own structure of live calls 
-            and follow-up milestones we lay out together.
+            This is the shape of a full planning year, the rhythm elopements and intimate weddings tend to follow.
           </p>
         </div>
 
