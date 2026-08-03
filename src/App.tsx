@@ -732,6 +732,7 @@ export default function App() {
                 </div>
               </div>
             </div>
+            <a
             href="/#contact"
               onClick={(e) => spaNav(e, () => navigateTo("contact"))}
               className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
@@ -750,6 +751,7 @@ export default function App() {
               id="nav-client-login"
             >
               Client Login
+              </nav>
             </button>
           {/* Mobile hamburger */}
           <button
