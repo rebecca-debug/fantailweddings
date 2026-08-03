@@ -732,13 +732,35 @@ export default function App() {
                 </div>
               </div>
             </div>
-            <button
+            href="/#contact"
+              onClick={(e) => spaNav(e, () => navigateTo("contact"))}
+              className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
+                currentPage === "home" && activeSection === "contact" ? "text-black" : "text-[#5c6672] hover:text-black"
+              }`}
+              id="nav-contact"
+            >
+              Contact
+              {currentPage === "home" && activeSection === "contact" && (
+                <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
+              )}
+            </a><button
               onClick={() => setIsLoginOpen(true)}
               className="text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer text-[#5c6672] hover:text-black"
               id="nav-client-login"
             >
               Client Login
-            </button>
+            href="/#contact"
+              onClick={(e) => spaNav(e, () => navigateTo("contact"))}
+              className={`relative pb-1 text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer ${
+                currentPage === "home" && activeSection === "contact" ? "text-black" : "text-[#5c6672] hover:text-black"
+              }`}
+              id="nav-contact"
+            >
+              Contact
+              {currentPage === "home" && activeSection === "contact" && (
+                <motion.span layoutId="nav-underline" className="absolute left-0 right-0 bottom-0 h-px bg-black/40" />
+              )}
+            </a></button>
           </nav>
 
           {/* Mobile hamburger */}
