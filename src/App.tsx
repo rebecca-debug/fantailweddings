@@ -750,9 +750,9 @@ export default function App() {
               className="text-[10px] tracking-[0.25em] uppercase font-light transition cursor-pointer text-[#5c6672] hover:text-black"
               id="nav-client-login"
             >
-              Client Login
-              </nav>
+            Client Login
             </button>
+          </nav>
           {/* Mobile hamburger */}
           <button
             type="button"
