@@ -48,7 +48,7 @@ export const SERVICES_DATA: Service[] = [
       "Voice notes, Loom videos, and personal calls throughout the planning months, along with a personal online portal to keep all planning information safe and easy to view.",
       "Me on the day, quietly present."
     ],
-    investment: "Planning starts from [ NZD $4,300 ]. Vendors and on-the-day costs are quoted separately, so the budget stays transparent.",
+    investment: "Planning starts from [ NZD $3,800 ]. Vendors and on-the-day costs are quoted separately, so the budget stays transparent.",
     ctaText: "Begin a Conversation about an Elopement",
     image: "/assets/images/Service-01.webp",
     imageAlt: "An eloping couple walk hand in hand through alpine grass beside a lake, South Island mountains glowing behind them at golden hour.",
