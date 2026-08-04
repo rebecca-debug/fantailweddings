@@ -1325,13 +1325,15 @@ export default function App() {
 
           {/* Right Column - Beautiful portraits of Rebecca (The Planner) and Jasper */}
           <div className="lg:col-span-5 space-y-6">
-            <RevealImage
-              src="/assets/images/Rebecca-founder.jpg"
-              alt="Rebecca - Creator and Planner"
-              wrapClassName="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm"
-              id="about-founder-img"
-              spotlight
-            />
+           <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm" id="about-founder-video">
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/shorts/ntx5M5YGS94?si=__kjRODKBfX8Bp8X"
+                title="A short hello from Rebecca"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
             <RevealImage
               src="/assets/images/Jasper_and_Rebecca.jpg"
               alt="Jasper & Rebecca"
