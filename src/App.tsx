@@ -1328,7 +1328,7 @@ export default function App() {
            <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm" id="about-founder-video">
               <iframe
                 className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/shorts/ntx5M5YGS94?si=__kjRODKBfX8Bp8X"
+                src="https://www.youtube.com/embed/ntx5M5YGS94"
                 title="A short hello from Rebecca"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
