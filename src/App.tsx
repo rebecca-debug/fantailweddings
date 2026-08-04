@@ -974,7 +974,72 @@ export default function App() {
           </div>
         </motion.div>
       </section>
+      {/* 6. A FEW THINGS ABOUT ME / HUMAN TOUCH PROFILE SECTION */}
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
+          
+          {/* Left Column - Detailed list of facts */}
+          <div className="lg:col-span-7 space-y-10">
+            <div className="space-y-4">
+              <span className="text-[10px] tracking-[0.3em] uppercase text-black font-light block">
+                The Planner
+              </span>
+              <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight pb-2 border-b border-black/10 m-0" text="A few things you might want to know about me" />
+              <p className="text-[13px] italic text-[#5c6672] font-serif font-light">
+                A short list-as-portrait, to trace the real human on the other side of your plans.
+              </p>
+            </div>
 
+            <motion.div
+              className="space-y-6"
+              variants={staggerParent}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.15 }}
+            >
+              {ABOUT_FACTS.map((fact, index) => {
+                const parts = fact.split(". ");
+                const highlight = parts[0];
+                const rest = parts.slice(1).join(". ");
+                return (
+                  <motion.div key={index} variants={revealItem} className="flex gap-4 items-start py-2 border-b border-black/[0.04]">
+                    <span className="font-mono text-[10px] text-black/30 mt-1">
+                      {(index + 1).toString().padStart(2, "0")}
+                    </span>
+                    <p className="text-[13px] text-[#5c6672] font-light leading-relaxed">
+                      <strong className="text-black font-normal text-sm font-serif block sm:inline mr-1">
+                        {highlight}.
+                      </strong>
+                      <span>{rest}</span>
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </div>
+
+          {/* Right Column - Beautiful portraits of Rebecca (The Planner) and Jasper */}
+          <div className="lg:col-span-5 space-y-6">
+           <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm" id="about-founder-video">
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/ntx5M5YGS94"
+                title="A short hello from Rebecca"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <RevealImage
+              src="/assets/images/Jasper_and_Rebecca.jpg"
+              alt="Jasper & Rebecca"
+              wrapClassName="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm"
+              id="about-jasper-rebecca-img"
+              spotlight
+            />
+          </div>
+
+        </div>
+      </section>
       {/* Thin black border divider */}
       <DrawDivider />
 
@@ -1279,72 +1344,7 @@ export default function App() {
         position="center 58%"
       />
 
-      {/* 6. A FEW THINGS ABOUT ME / HUMAN TOUCH PROFILE SECTION */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
-          
-          {/* Left Column - Detailed list of facts */}
-          <div className="lg:col-span-7 space-y-10">
-            <div className="space-y-4">
-              <span className="text-[10px] tracking-[0.3em] uppercase text-black font-light block">
-                The Planner
-              </span>
-              <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight pb-2 border-b border-black/10 m-0" text="A few things you might want to know about me" />
-              <p className="text-[13px] italic text-[#5c6672] font-serif font-light">
-                A short list-as-portrait, to trace the real human on the other side of your plans.
-              </p>
-            </div>
 
-            <motion.div
-              className="space-y-6"
-              variants={staggerParent}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.15 }}
-            >
-              {ABOUT_FACTS.map((fact, index) => {
-                const parts = fact.split(". ");
-                const highlight = parts[0];
-                const rest = parts.slice(1).join(". ");
-                return (
-                  <motion.div key={index} variants={revealItem} className="flex gap-4 items-start py-2 border-b border-black/[0.04]">
-                    <span className="font-mono text-[10px] text-black/30 mt-1">
-                      {(index + 1).toString().padStart(2, "0")}
-                    </span>
-                    <p className="text-[13px] text-[#5c6672] font-light leading-relaxed">
-                      <strong className="text-black font-normal text-sm font-serif block sm:inline mr-1">
-                        {highlight}.
-                      </strong>
-                      <span>{rest}</span>
-                    </p>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </div>
-
-          {/* Right Column - Beautiful portraits of Rebecca (The Planner) and Jasper */}
-          <div className="lg:col-span-5 space-y-6">
-           <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm" id="about-founder-video">
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/ntx5M5YGS94"
-                title="A short hello from Rebecca"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-            <RevealImage
-              src="/assets/images/Jasper_and_Rebecca.jpg"
-              alt="Jasper & Rebecca"
-              wrapClassName="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-sm shadow-sm"
-              id="about-jasper-rebecca-img"
-              spotlight
-            />
-          </div>
-
-        </div>
-      </section>
 
       {/* Thin black border divider */}
       <DrawDivider />
