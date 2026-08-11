@@ -4,99 +4,113 @@ import { Check, ArrowRight } from "lucide-react";
 import { RevealHeading } from "./reveal";
 
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
-const STRIPE_URL = "https://buy.stripe.com/00wdR3cdB1hZbyE2Jm6oo01";
-const EMAIL = "rebecca@fantailweddings.com";
+
+// ── The checkout link the "Book your hour" buttons point to. ──────────────
+// Replace the URL below with the checkout for the new $444 offer once it's set
+// up. If you want the two add-ons (styling direction, second call) to appear as
+// tick-boxes at checkout, that needs an order-bump checkout such as ThriveCart.
+const CHECKOUT_URL = "https://buy.stripe.com/00wdR3cdB1hZbyE2Jm6oo01";
 
 interface WeddingNavigatorProps {
   onNavigate: (path: string) => void;
   onEnquire: () => void;
 }
 
-const CALLS = [
+const STEPS = [
   {
-    n: "Call 1",
-    title: "Onboarding",
-    dur: "30 minutes",
+    n: "i",
+    title: "The call",
     body:
-      "We start here. You tell me about your wedding: the date, the place, the feeling you're going for, and where you're feeling uncertain. I listen carefully. Within a week of this call, your personalised toolkit will arrive."
+      "One hour on Zoom. We talk through where you are, what's booked, what's nagging. You ask me anything. I've done this many times, and for that hour it's all yours, in plain terms."
   },
   {
-    n: "Call 2",
-    title: "Three-Month Check-in",
-    dur: "1 hour",
+    n: "ii",
+    title: "Your plan, mapped",
     body:
-      "This is the call where couples usually wonder whether they've forgotten something. We go through where you are, what's done, what still needs attention, and I'll flag anything that needs to move faster."
+      "Everything we cover, I load into a plan built around your wedding — your dates, your vendors, your order of the day. Not a template you fill in. One filled in with you."
   },
   {
-    n: "Call 3",
-    title: "Six-Week Check-in",
-    dur: "1 hour",
+    n: "iii",
+    title: "A walkthrough you keep",
     body:
-      "The wee freak-out call, as I like to call it. It arrives on schedule for almost every couple. We'll make sure your day-of timeline is solid, your vendors are confirmed, and you know exactly what to do if something shifts."
+      "Then a short recorded video where I take you through it, so when you open it again in three weeks it still makes sense and you know exactly what's next."
   }
 ];
 
-const TOOLKIT = [
-  "A wedding timeline working backwards from your date, so you always know what should be happening now",
-  "A vendor outreach sequence with the right questions to ask before you sign anything",
-  "Styling aids matched to your venue and season",
-  "A 12-week countdown checklist for the final stretch, when everything converges at once"
+const FOR_YOU = [
+  "You're underway — a venue, maybe a vendor or two, and a growing list you're not sure is complete.",
+  "You want a sounding board who's done this before, not someone to take it over.",
+  "You'd rather ask the awkward questions now than find the answer on the day.",
+  "You're planning something warm for the people you love, and you want it to feel considered."
 ];
 
-const RIGHT_FOR_YOU = [
-  "You're planning your own wedding in New Zealand and want expert guidance without handing over full control",
-  "You like making your own decisions, but want someone experienced to check your thinking",
-  "You want a clear roadmap, not a pile of blog posts and Pinterest boards that may or may not apply to you",
-  "You're 9 to 14 months out from your date (though it works with 18 months or 6)"
+const NOT_YET = [
+  "You haven't started, and you're looking for where to begin. We'd talk a little differently.",
+  "You want me to plan and run the whole wedding. That's full planning — a different conversation, and one I'd love to have.",
+  "You're after the cheapest possible answer. This isn't that."
 ];
 
-const STEPS = [
-  "Click the button below and complete your Stripe payment (50% today)",
-  "You'll receive a welcome email from Rebecca within two working days, with a link to book your onboarding call",
-  "We have our first call, 30 minutes, relaxed, your questions welcome",
-  "Your personalised toolkit arrives within 7 days",
-  "Check-in calls at 3 months and 6 weeks out, we stay in step with your planning rhythm"
+const INCLUDED = [
+  "One hour on Zoom, with me",
+  "Your plan, mapped to your wedding",
+  "A recorded walkthrough, yours to keep"
 ];
 
-// Answers drawn from the page's own copy (the Notion source listed the questions only).
+const BUMPS = [
+  {
+    title: "Styling direction",
+    amt: "+ NZD $222",
+    body:
+      "A mood board and a hire list to point you in a clear direction, so the look feels like yours and you're not guessing. This is direction to run with yourself. If you'd like me designing it and running the day, that's my Design & Coordinate service — a different thing."
+  },
+  {
+    title: "A second call",
+    amt: "+ NZD $123",
+    body:
+      "One more hour, later in the process, for when the next wave of questions arrives. It usually does, and it's steadying to know there's a door."
+  }
+];
+
 const FAQS = [
   {
-    q: "How is The Wedding Navigator different from full planning?",
-    a: "Full planning hands the whole show to me. The Navigator hands you the map instead: three live calls and a personalised toolkit so you keep control of your own wedding, with someone who's done this a hundred times checking your thinking along the way."
+    q: "Will an hour really be enough?",
+    a:
+      "For this, yes. You're not starting from nothing — you're checking a plan that's already well along. An hour of focused, experienced attention on the right questions moves you further than another week of second-guessing. And if you'd like more, there's a door for that."
   },
   {
-    q: "How far in advance should I book?",
-    a: "It's at its best when you're 9 to 14 months out from your date, though it works just as well at 18 months, or even 6."
+    q: "Can't I find all this online?",
+    a:
+      "Some of it. The checklists are everywhere. What isn't online is someone looking at your wedding, your vendors and your contracts, and telling you plainly whether you're on track. That's the whole hour."
   },
   {
-    q: "Is this available nationwide?",
-    a: "Yes. The toolkit travels well anywhere in New Zealand and North Island weddings are very welcome. My vendor knowledge is deepest in the South Island, so vendor recommendations are simply lighter the further from it you are."
+    q: "$444 — is it worth it?",
+    a:
+      "You're spending far more than that on a single day, and losing sleep over whether it'll hold together. This is a small amount to know that it will. If you only want the cheapest possible answer, I'm not it, and I'd rather say so now."
   },
   {
-    q: "What if I decide I want full planning after all?",
-    a: "If you start with the Navigator and decide within the first month that you'd like to move to full-service planning instead, your Navigator fee credits across. No money lost, just a change of shape."
-  },
-  {
-    q: "Will I actually talk to Rebecca, or is there a team?",
-    a: "You talk to Rebecca. I work with a small number of couples each year, not out of false scarcity, but because I want to give each one my all."
+    q: "I don't want someone to take over.",
+    a:
+      "Good. Neither do I, not here. This is your wedding to plan. I'm the experienced voice in the room for an hour, telling you where you're right and where to look again."
   }
 ];
 
 function PrimaryCTA({ className = "" }: { className?: string }) {
   return (
     <a
-      href={STRIPE_URL}
+      href={CHECKOUT_URL}
       target="_blank"
       rel="noopener noreferrer"
       className={`group inline-flex items-center justify-center gap-3 bg-[#f3eee2] text-[#412c00] px-8 py-4 text-[11px] sm:text-xs tracking-[0.22em] uppercase font-medium shadow-xl shadow-black/25 hover:bg-white transition active:scale-[0.99] duration-300 ${className}`}
     >
-      Click Here To Book The Wedding Navigator - NZD $425 Today for the deposit
+      Book your hour — NZD $444
       <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={1.5} />
     </a>
   );
 }
 
 export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavigatorProps) {
+  void onNavigate;
+
   useEffect(() => {
     const prevTitle = document.title;
     document.title = "The Wedding Navigator | Fantail Weddings";
@@ -104,7 +118,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
     const prevDesc = meta?.getAttribute("content") || "";
     meta?.setAttribute(
       "content",
-      "The Wedding Navigator by Fantail Weddings: three live calls with Rebecca and a personalised toolkit for couples planning their own New Zealand wedding."
+      "The Wedding Navigator by Fantail Weddings: one hour on Zoom with Rebecca and a plan mapped to your own New Zealand wedding, for couples already underway who want an experienced read on it."
     );
     return () => {
       document.title = prevTitle;
@@ -125,7 +139,6 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           animate={{ scale: 1 }}
           transition={{ duration: 1.6, ease: LUX_EASE }}
         />
-        {/* Base wash + focused vignette behind the text for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/45 to-black/70" />
         <div
           className="absolute inset-0"
@@ -139,34 +152,48 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           style={{ textShadow: "0 2px 20px rgba(0,0,0,0.55)" }}
         >
           <span className="text-[10px] sm:text-xs tracking-[0.4em] uppercase text-white/85 font-light block mb-5">
-            The Wedding Navigator by Fantail Weddings
+            The Wedding Navigator
           </span>
           <RevealHeading
             as="h1"
             className="font-serif text-3xl sm:text-5xl font-light leading-[1.12] tracking-tight mb-6"
-            text="You just don't want to get it wrong."
+            text="You've booked the big things. It's the small ones that wake you at 2am."
             amount={0.3}
           />
           <p className="text-sm sm:text-base font-light text-white/90 leading-[1.85] max-w-xl mx-auto mb-3">
-            You're organised. You've done the research. You actually enjoy the planning, mostly. You don't need
-            someone to run the whole show for you.
+            You're well underway. A venue held, a caterer signed, a photographer you already love. And still there's
+            a quiet voice asking whether you've missed something that only shows up on the day.
           </p>
           <p className="text-sm sm:text-base font-light text-white/90 leading-[1.85] max-w-xl mx-auto mb-9">
-            What you need is someone who's done this a hundred times to hand you the map, stand beside you for a
-            moment, and send you on your way with everything you need.
+            An hour with me, and a plan mapped to your actual wedding, is how that voice goes quiet.
           </p>
           <PrimaryCTA />
+          <div className="mt-4 text-[10px] sm:text-xs tracking-[0.22em] uppercase text-white/70 font-light">
+            One hour on Zoom · NZD $444
+          </div>
         </div>
       </section>
 
-      {/* PITCH + TESTIMONIAL */}
+      {/* THE REAL PROBLEM */}
       <section className="py-24 px-6 max-w-3xl mx-auto text-center">
+        <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">The real problem</span>
         <RevealHeading
           as="h2"
           className="font-serif text-3xl sm:text-4xl font-light tracking-tight mb-8"
-          text="That's The Wedding Navigator."
+          text="You don't need another blank spreadsheet."
         />
-        <figure className="mt-10 border-t border-black/10 pt-10">
+        <p className="text-base text-[#5b6470] font-light leading-[1.9] mb-5">
+          You've read the checklists. You've downloaded the template that promised to hold it all, and it sat there
+          empty, asking you to already know the answers.
+        </p>
+        <p className="text-base text-[#5b6470] font-light leading-[1.9] mb-5">
+          That's the gap. Generic advice can't tell you whether your timeline leaves enough room to get into your gown
+          without rushing, or whether the contract from your caterer covers what you're picturing on the night. It
+          doesn't know your wedding.
+        </p>
+        <p className="text-base text-[#5b6470] font-light leading-[1.9]">I will, an hour in.</p>
+
+        <figure className="mt-14 border-t border-black/10 pt-12">
           <blockquote className="font-serif text-xl sm:text-2xl italic text-black/80 font-light leading-relaxed">
             "OMG, the budget now makes sense. Thank you very much for those tips."
           </blockquote>
@@ -176,162 +203,119 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
         </figure>
       </section>
 
-      {/* WHAT'S INCLUDED - THREE CALLS (white cards on the page grey, like the guide pages) */}
-      <section className="py-20 px-6 border-y border-black/[0.06]">
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-2xl mb-16">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">What's included</span>
+      {/* HOW THE HOUR WORKS */}
+      <section className="py-20 px-6 border-y border-black/[0.06] bg-white">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-14">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">How the hour works</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight leading-snug">
-              Three live calls with Rebecca, built around the moments that matter most.
+              An hour, and everything it surfaces, written down and handed back to you.
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-            {CALLS.map((c) => (
-              <div key={c.n} className="bg-white border border-black/[0.05] p-8 flex flex-col">
-                <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#997700] mb-4">{c.n}</span>
-                <h3 className="font-serif text-xl text-black font-normal mb-1">{c.title}</h3>
-                <span className="font-serif text-sm italic text-black/45 mb-5">{c.dur}</span>
-                <p className="text-sm text-[#5b6470] font-light leading-relaxed">{c.body}</p>
+          <ol className="space-y-0">
+            {STEPS.map((s) => (
+              <li key={s.n} className="grid grid-cols-[auto_1fr] gap-6 sm:gap-8 items-start border-t border-black/[0.08] py-8 last:border-b">
+                <span className="font-serif text-3xl text-[#997700] font-light leading-none w-8 shrink-0">{s.n}</span>
+                <div>
+                  <h3 className="font-serif text-xl text-black font-normal mb-2">{s.title}</h3>
+                  <p className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed">{s.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* WHETHER THIS IS YOURS */}
+      <section className="py-24 px-6 max-w-4xl mx-auto">
+        <div className="text-center mb-14">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">Whether this is yours</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+          <div>
+            <h3 className="text-[11px] tracking-[0.2em] uppercase text-black font-medium mb-7">This is for you if</h3>
+            <ul className="space-y-5">
+              {FOR_YOU.map((t, i) => (
+                <li key={i} className="flex gap-4 items-start">
+                  <Check className="w-4 h-4 mt-1 shrink-0 text-[#997700]" strokeWidth={2} />
+                  <span className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed">{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="md:border-l border-black/10 md:pl-16">
+            <h3 className="text-[11px] tracking-[0.2em] uppercase text-black/50 font-medium mb-7">Not yet, if</h3>
+            <ul className="space-y-5">
+              {NOT_YET.map((t, i) => (
+                <li key={i} className="flex gap-4 items-start">
+                  <span className="mt-2 w-1.5 h-1.5 rounded-full bg-black/20 shrink-0" />
+                  <span className="text-sm sm:text-base text-black/45 font-light leading-relaxed">{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* THE OFFER */}
+      <section className="py-24 px-6">
+        <div className="max-w-3xl mx-auto bg-black text-white p-10 sm:p-16 text-center">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">The Wedding Navigator</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight leading-snug mb-6">
+            An hour, and a plan with your name on it.
+          </h2>
+          <p className="text-sm text-white/70 font-light leading-relaxed max-w-xl mx-auto mb-10">
+            My full planning runs to several thousand. This is the way in for couples who mostly have it handled and
+            want an experienced read on it, before the day arrives.
+          </p>
+          <div className="font-serif text-5xl sm:text-6xl font-light mb-10">NZD $444</div>
+          <ul className="max-w-sm mx-auto space-y-4 border-t border-white/15 pt-8 mb-10 text-left">
+            {INCLUDED.map((t, i) => (
+              <li key={i} className="flex gap-4 items-start">
+                <Check className="w-4 h-4 mt-1 shrink-0 text-[#c9a24b]" strokeWidth={2} />
+                <span className="text-sm text-white/85 font-light">{t}</span>
+              </li>
+            ))}
+          </ul>
+          <PrimaryCTA className="mx-auto" />
+        </div>
+      </section>
+
+      {/* IF IT WOULD HELP — ADD-ONS */}
+      <section className="py-20 px-6 bg-white border-y border-black/[0.06]">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">If it would help</span>
+            <p className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed max-w-xl mx-auto">
+              Two things some couples add. Neither is needed for the hour to be worth it — take them only if they'd
+              genuinely make your life easier.
+            </p>
+          </div>
+          <div className="space-y-0">
+            {BUMPS.map((b, i) => (
+              <div key={i} className="border-t border-black/[0.08] py-8 last:border-b">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1 mb-3">
+                  <h3 className="font-serif text-2xl text-black font-light">{b.title}</h3>
+                  <span className="text-xs tracking-[0.12em] uppercase font-medium text-[#997700] whitespace-nowrap">{b.amt}</span>
+                </div>
+                <p className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed">{b.body}</p>
               </div>
             ))}
           </div>
-
-          {/* Toolkit */}
-          <div className="mt-14 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-            <div className="lg:col-span-5">
-              <h3 className="font-serif text-2xl text-black font-light mb-3">Your Personalised Toolkit</h3>
-              <p className="text-sm italic font-serif text-black/55 mb-4">delivered within 7 days of Call 1</p>
-              <p className="text-sm text-[#5b6470] font-light leading-relaxed">
-                Built around your wedding. Not a template. Built from fifteen years of full-service planning,
-                compressed into a shape that suits a couple doing the work themselves.
-              </p>
-            </div>
-            <ul className="lg:col-span-7 space-y-5">
-              {TOOLKIT.map((t, i) => (
-                <li key={i} className="flex gap-4 items-start border-b border-black/[0.06] pb-5">
-                  <Check className="w-4 h-4 mt-1 shrink-0 text-[#997700]" strokeWidth={2} />
-                  <span className="text-sm text-[#5b6470] font-light leading-relaxed">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </section>
 
-      {/* INVESTMENT */}
-      <section className="py-24 px-6 max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
-          <div className="bg-black text-white p-10 sm:p-14 flex flex-col justify-center">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-5">The investment</span>
-            <div className="font-serif text-4xl sm:text-5xl font-light mb-2">NZD $850 <span className="text-2xl text-white/60">+ GST</span></div>
-            <p className="text-sm text-white/70 font-light mb-8">Paid in two parts.</p>
-            <div className="space-y-4 mb-10">
-              <div className="border-l-2 border-[#997700] pl-4">
-                <div className="text-sm font-normal">50% at booking</div>
-                <div className="text-xs text-white/60 font-light">secures your date and gets us started</div>
-              </div>
-              <div className="border-l-2 border-white/20 pl-4">
-                <div className="text-sm font-normal">50% before your second call</div>
-                <div className="text-xs text-white/60 font-light">once your toolkit is in your hands and you've had time to work with it</div>
-              </div>
-            </div>
-            <PrimaryCTA className="w-full text-center" />
-          </div>
-          <div className="bg-white border border-black/[0.06] p-10 sm:p-14 flex flex-col justify-center">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-5">A note worth knowing</span>
-            <p className="font-serif text-xl sm:text-2xl font-light text-black/85 leading-relaxed">
-              If you start with The Wedding Navigator and decide within the first month that you'd like to move to
-              full-service planning instead, your Navigator fee credits across.
-            </p>
-            <p className="text-sm text-[#5b6470] font-light leading-relaxed mt-5">No money lost. Just a change of shape.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* RIGHT FOR YOU + WHERE I HELP */}
-      <section className="py-20 px-6 bg-white border-y border-black/[0.06]">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          <div className="lg:col-span-7">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">This offer is right for you if…</span>
-            <ul className="space-y-6">
-              {RIGHT_FOR_YOU.map((t, i) => (
-                <li key={i} className="flex gap-4 items-start">
-                  <Check className="w-4 h-4 mt-1 shrink-0 text-[#997700]" strokeWidth={2} />
-                  <span className="text-base text-[#5b6470] font-light leading-relaxed">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="lg:col-span-5 lg:border-l border-black/10 lg:pl-16">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">Where I can help most</span>
-            <p className="text-sm text-[#5b6470] font-light leading-relaxed mb-4">
-              My vendor knowledge is deepest in the South Island: Central Otago, Wānaka, Queenstown, the Mackenzie
-              Country, Marlborough, and Banks Peninsula.
-            </p>
-            <p className="text-sm text-[#5b6470] font-light leading-relaxed">
-              North Island weddings are very welcome, and the toolkit travels well anywhere in New Zealand. Vendor
-              recommendations will simply be lighter the further from the South Island you are.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section className="py-24 px-6 max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">How it works</span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight">Five simple steps</h2>
-        </div>
-        <ol className="space-y-10">
-          {STEPS.map((s, i) => (
-            <li key={i} className="flex gap-6 sm:gap-8 items-start">
-              <span className="font-serif text-3xl sm:text-4xl text-black/15 font-light leading-none w-12 shrink-0">
-                {(i + 1).toString().padStart(2, "0")}
-              </span>
-              <p className="text-base text-[#5b6470] font-light leading-relaxed pt-1">{s}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* READY / CTA */}
-      <section className="py-24 px-6 bg-black text-white text-center">
-        <div className="max-w-2xl mx-auto">
-          <RevealHeading as="h2" className="font-serif text-4xl sm:text-5xl font-light tracking-tight mb-8" text="Ready?" amount={0.4} />
-          <PrimaryCTA className="mx-auto mb-10" />
-          <p className="text-sm text-white/70 font-light mb-2">Or if you'd prefer to ask a question first:</p>
-          <a href={`mailto:${EMAIL}`} className="font-serif text-lg italic text-white hover:text-white/70 transition underline-offset-4 hover:underline">
-            {EMAIL}
-          </a>
-          <p className="text-xs text-white/50 font-light leading-relaxed mt-6 max-w-md mx-auto">
-            I read every email myself, usually with a cup of Earl Grey before the day gets busy. You'll hear back
-            within two working days.
+      {/* A QUIET EXAMPLE — SARA */}
+      <section className="py-24 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-8">A quiet example</span>
+          <p className="font-serif text-xl sm:text-2xl italic text-black/80 font-light leading-[1.6]">
+            When Sara came to me, she'd booked beautifully and was quietly certain she'd overlooked something. What she
+            didn't have was a feel for time — how long it actually takes to get into a gown without rushing, where a
+            first look sits, how those few minutes shape the whole afternoon. We mapped it together. On the day, it
+            flowed, and she got to be in it rather than watching the clock.
           </p>
-        </div>
-      </section>
-
-      {/* ABOUT REBECCA */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-          <div className="lg:col-span-5">
-            <div className="relative aspect-[4/5] w-full overflow-hidden bg-gray-100 rounded-sm shadow-sm">
-              <img src="/assets/images/Rebecca-founder.jpg" alt="Rebecca, founder of Fantail Weddings" className="absolute inset-0 w-full h-full object-cover" referrerPolicy="no-referrer" />
-            </div>
-          </div>
-          <div className="lg:col-span-7">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-5">A few things about me</span>
-            <p className="text-base text-[#5b6470] font-light leading-[1.9] mb-6">
-              Thirty years across hospitality that includes 15 years of wedding planning for destination couples,
-              film production in Auckland, commercial floristry, event work in Las Vegas, and three years running a
-              converted woolshed venue near Wānaka. I understand how a wedding day is remembered, photographed, and
-              felt by the people in the room.
-            </p>
-            <p className="text-base text-[#5b6470] font-light leading-[1.9] mb-8">
-              I work with a small number of couples each year, not out of false scarcity, but because I want to give
-              each one my all.
-            </p>
-            <p className="font-serif text-2xl italic text-black/80 font-light">Every kind of love belongs here.</p>
-          </div>
+          <div className="mt-7 text-[10px] tracking-[0.3em] uppercase text-[#5b6470]">Sara &amp; Mark · married in January</div>
         </div>
       </section>
 
@@ -339,18 +323,45 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
       <section className="py-20 px-6 bg-white border-t border-black/[0.06]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-14">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">Questions couples often ask</span>
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">Before you ask</span>
           </div>
           <div className="space-y-8">
             {FAQS.map((f, i) => (
               <div key={i} className="border-b border-black/10 pb-8">
                 <h3 className="font-serif text-lg sm:text-xl text-black font-normal mb-3">{f.q}</h3>
-                <p className="text-sm text-[#5b6470] font-light leading-relaxed">{f.a}</p>
+                <p className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed">{f.a}</p>
               </div>
             ))}
           </div>
-          <p className="text-center font-serif text-xl italic text-black/70 font-light mt-16">
-            All are welcome here. Every kind of love belongs at a Fantail wedding.
+        </div>
+      </section>
+
+      {/* CLOSE */}
+      <section className="py-24 px-6 bg-black text-white text-center">
+        <div className="max-w-2xl mx-auto">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">One last thing</span>
+          <RevealHeading
+            as="h2"
+            className="font-serif text-4xl sm:text-5xl font-light tracking-tight mb-8"
+            text="Come and talk it through."
+            amount={0.4}
+          />
+          <p className="text-sm sm:text-base text-white/85 font-light leading-[1.9] max-w-xl mx-auto mb-10">
+            If you've read this far, some quiet part of you is already wondering what you've missed. An hour is usually
+            all it takes to answer that. Bring your questions, your half-finished list, the contract you've read four
+            times and still aren't sure about. I'll put the kettle on — Earl Grey, if you're having one — and we'll get
+            you clear.
+          </p>
+          <PrimaryCTA className="mx-auto mb-8" />
+          <p className="text-sm text-white/70 font-light mb-2">Or if you'd rather ask a question first:</p>
+          <button
+            onClick={onEnquire}
+            className="font-serif text-lg italic text-white hover:text-white/70 transition underline-offset-4 hover:underline"
+          >
+            Send me a note
+          </button>
+          <p className="text-xs text-white/45 font-light leading-relaxed mt-8 max-w-md mx-auto">
+            Jasper may make an appearance. He is deeply supportive and completely unhelpful.
           </p>
         </div>
       </section>
