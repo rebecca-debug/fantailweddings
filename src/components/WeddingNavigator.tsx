@@ -21,7 +21,7 @@ const STEPS = [
     n: "i",
     title: "The call",
     body:
-      "One hour on Zoom. We talk through where you are, what's booked, what's nagging. You ask me anything. I've done this many times, and for that hour it's all yours, in plain terms."
+      "One hour on a video call. We talk through where you are, what's booked, what's nagging. You ask me anything. I've done this many times, and for that hour it's all yours, in plain terms."
   },
   {
     n: "ii",
@@ -51,7 +51,7 @@ const NOT_YET = [
 ];
 
 const INCLUDED = [
-  "One hour on Zoom, with me",
+  "One hour on a video call, with me",
   "Your plan, mapped to your wedding",
   "A recorded walkthrough, yours to keep"
 ];
@@ -118,7 +118,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
     const prevDesc = meta?.getAttribute("content") || "";
     meta?.setAttribute(
       "content",
-      "The Wedding Navigator by Fantail Weddings: one hour on Zoom with Rebecca and a plan mapped to your own New Zealand wedding, for couples already underway who want an experienced read on it."
+      "The Wedding Navigator by Fantail Weddings: one hour on a video call with Rebecca and a plan mapped to your own New Zealand wedding, for couples already underway who want an experienced read on it."
     );
     return () => {
       document.title = prevTitle;
@@ -169,7 +169,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           </p>
           <PrimaryCTA />
           <div className="mt-4 text-[10px] sm:text-xs tracking-[0.22em] uppercase text-white/70 font-light">
-            One hour on Zoom · NZD $444
+            One hour on a video call · NZD $444
           </div>
         </div>
       </section>
