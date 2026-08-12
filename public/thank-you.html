@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thank you — The Wedding Navigator | Fantail Weddings</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --paper:#f7f7f7;
+    --cream:#f3eee2;
+    --brown:#412c00;
+    --gold:#997700;
+    --ink:#5b6470;
+  }
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--paper);
+    color:#000;
+    font-family:"Inter",sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .serif{font-family:"Cormorant Garamond",serif;}
+  .eyebrow{
+    font-size:10px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    font-weight:400;
+  }
+
+  /* top black panel */
+  .panel{
+    background:#000;
+    color:#fff;
+    text-align:center;
+    padding:88px 24px 80px;
+  }
+  .panel .inner{max-width:620px;margin:0 auto;}
+  .panel .eyebrow{color:rgba(255,255,255,.6);display:block;margin-bottom:26px;}
+  .panel h1{
+    font-family:"Cormorant Garamond",serif;
+    font-weight:300;
+    font-size:clamp(2.3rem,7vw,3.4rem);
+    line-height:1.12;
+    letter-spacing:.01em;
+    margin-bottom:26px;
+  }
+  .panel p.lead{
+    font-size:1.02rem;
+    color:rgba(255,255,255,.9);
+    line-height:1.85;
+    max-width:30em;
+    margin:0 auto 40px;
+  }
+
+  .cta{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    background:var(--cream);
+    color:var(--brown);
+    text-decoration:none;
+    padding:19px 40px;
+    font-size:12px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    font-weight:500;
+    box-shadow:0 18px 40px rgba(0,0,0,.28);
+    transition:background .3s ease;
+  }
+  .cta:hover,.cta:focus-visible{background:#fff;}
+  .cta .arrow{font-size:1rem;line-height:1;transform:translateY(-1px);}
+  .subcta{
+    margin-top:18px;
+    font-size:10px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.65);
+  }
+
+  /* what happens next */
+  .next{
+    max-width:600px;
+    margin:0 auto;
+    padding:84px 28px 40px;
+    text-align:center;
+  }
+  .next .eyebrow{color:var(--gold);display:block;margin-bottom:32px;}
+  .next p{
+    color:var(--ink);
+    font-size:1.05rem;
+    line-height:1.95;
+    margin-bottom:26px;
+  }
+  .next a{color:var(--brown);text-decoration:underline;text-underline-offset:3px;}
+  .rule{width:44px;height:1px;background:rgba(0,0,0,.15);margin:8px auto 40px;}
+
+  .jasper{
+    font-size:.92rem;
+    color:rgba(0,0,0,.4);
+    font-style:italic;
+    font-family:"Cormorant Garamond",serif;
+    margin-top:6px;
+  }
+
+  footer{
+    text-align:center;
+    padding:48px 24px 60px;
+    border-top:1px solid rgba(0,0,0,.08);
+    margin-top:40px;
+  }
+  footer p{
+    font-size:10px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--ink);
+    line-height:2.2;
+  }
+
+  @media (max-width:560px){
+    .panel{padding:66px 22px 60px;}
+    .next{padding:60px 22px 30px;}
+    .cta{padding:17px 30px;width:100%;max-width:340px;}
+  }
+</style>
+</head>
+<body>
+
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow">The Wedding Navigator</span>
+      <h1>Thank you. Now let's find your hour.</h1>
+      <p class="lead">
+        Your payment has come through, and I'm really glad you're here. The next step is yours — choose a time for
+        our call that suits you, and I'll be there.
+      </p>
+      <a class="cta" href="https://calendar.app.google/T5mZ8JJMUvyEjZin8">
+        Book your call <span class="arrow">&rarr;</span>
+      </a>
+      <div class="subcta">One hour on a video call · at a time that works for you</div>
+    </div>
+  </section>
+
+  <section class="next">
+    <span class="eyebrow">What happens next</span>
+    <div class="rule"></div>
+    <p>
+      Choose your time above. We'll talk for an hour, wherever you are in the world — bring your questions, your
+      half-finished list, the contract you keep re-reading and aren't quite sure about.
+    </p>
+    <p>
+      After we talk, I take everything we covered and map it into a plan built around your wedding: your dates, your
+      vendors, your order of the day. It comes back to you with a short recorded walkthrough, so it still makes sense
+      when you open it again weeks later.
+    </p>
+    <p>
+      If anything comes up before we speak, my inbox is open — <a href="mailto:rebecca@fantailweddings.com">rebecca@fantailweddings.com</a>.
+      Your receipt is on its way from Stripe. I'll have the kettle on. Earl Grey, if you're having one.
+    </p>
+    <p class="jasper">Jasper sends his regards.</p>
+  </section>
+
+  <footer>
+    <p>Fantail Weddings — boutique destination wedding planning<br>South Island of Aotearoa New Zealand</p>
+  </footer>
+
+</body>
+</html>
