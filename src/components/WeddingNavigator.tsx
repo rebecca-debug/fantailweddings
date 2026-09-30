@@ -5,10 +5,9 @@ import { RevealHeading } from "./reveal";
 
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
 
-// ── The checkout link the "Book your hour" buttons point to. ──────────────
-// Replace the URL below with the checkout for the new $444 offer once it's set
-// up. If you want the two add-ons (styling direction, second call) to appear as
-// tick-boxes at checkout, that needs an order-bump checkout such as ThriveCart.
+// ── The checkout link the "Book your Planning Session" buttons point to. ──
+// Replace the URL below with the Stripe checkout for the $890 + GST offer.
+// (The old $444 link and the two add-on products are no longer used.)
 const CHECKOUT_URL = "https://buy.stripe.com/00wdR3cdB1hZbyE2Jm6oo01";
 
 interface WeddingNavigatorProps {
@@ -18,79 +17,70 @@ interface WeddingNavigatorProps {
 
 const STEPS = [
   {
-    n: "i",
-    title: "The call",
+    n: "1",
+    title: "The Planning Session",
     body:
-      "One hour on a video call. We talk through where you are, what's booked, what's nagging. You ask me anything. I've done this many times, and for that hour it's all yours, in plain terms."
+      "One hour, online. We talk through all of it: what you're picturing, what's already booked, and what's keeping you up at night. You leave with clarity, and with your own copy of The Planning Home, a space where your guest list, RSVPs, catering and budget finally live in one place instead of across forty tabs. Not an AI app or a cheap download, but the actual space I use with my high-end clients."
   },
   {
-    n: "ii",
-    title: "Your plan, mapped",
+    n: "2",
+    title: "Your Next Steps video",
     body:
-      "Everything we cover, I load into a plan built around your wedding — your dates, your vendors, your order of the day. Not a template you fill in. One filled in with you."
+      "Within 48 hours, a short recorded walkthrough made just for you: exactly what to do next, in what order, and who I would trust to fill any gaps."
   },
   {
-    n: "iii",
-    title: "A walkthrough you keep",
+    n: "3",
+    title: "Two check-ins while you plan",
     body:
-      "Then a short recorded video where I take you through it, so when you open it again in three weeks it still makes sense and you know exactly what's next."
+      "For the moments you're stuck on a decision and want a second, experienced opinion before you commit. Book it in when you need it most."
+  },
+  {
+    n: "4",
+    title: "The Timeline Build",
+    body:
+      "Around eight weeks before the day, we build your wedding day timeline together, live, vendor by vendor. This is the step that quietly earns its keep. It's where I find what's missing before the day does: the clarity to see you through, calm and relaxed."
+  },
+  {
+    n: "5",
+    title: "Your Day Card",
+    body:
+      "A considered A5 run sheet for the people helping you on the day, with a QR code to the full timeline. So the ones who matter most always know what happens next."
   }
-];
-
-const FOR_YOU = [
-  "You're underway — a venue, maybe a vendor or two, and a growing list you're not sure is complete.",
-  "You want a sounding board who's done this before, not someone to take it over.",
-  "You'd rather ask the awkward questions now than find the answer on the day.",
-  "You're planning something warm for the people you love, and you want it to feel considered."
-];
-
-const NOT_YET = [
-  "You haven't started, and you're looking for where to begin. We'd talk a little differently.",
-  "You want me to plan and run the whole wedding. That's full planning — a different conversation, and one I'd love to have.",
-  "You're after the cheapest possible answer. This isn't that."
 ];
 
 const INCLUDED = [
-  "One hour on a video call, with me",
-  "Your plan, mapped to your wedding",
-  "A recorded walkthrough, yours to keep"
-];
-
-const BUMPS = [
-  {
-    title: "Styling direction",
-    amt: "+ NZD $222",
-    body:
-      "A mood board and a hire list to point you in a clear direction, so the look feels like yours and you're not guessing. This is direction to run with yourself. If you'd like me designing it and running the day, that's my Design & Coordinate service — a different thing."
-  },
-  {
-    title: "A second call",
-    amt: "+ NZD $123",
-    body:
-      "One more hour, later in the process, for when the next wave of questions arrives. It usually does, and it's steadying to know there's a door."
-  }
+  "The Planning Session, online, and your copy of The Planning Home",
+  "Your Next Steps video, within 48 hours",
+  "Two check-ins while you plan, booked when you need them",
+  "The Timeline Build, around eight weeks out",
+  "Your Day Card, to share with the guests and vendors who matter on the day"
 ];
 
 const FAQS = [
   {
-    q: "Will an hour really be enough?",
+    q: "Isn't this just a spreadsheet I could find online?",
     a:
-      "For this, yes. You're not starting from nothing — you're checking a plan that's already well along. An hour of focused, experienced attention on the right questions moves you further than another week of second-guessing. And if you'd like more, there's a door for that."
+      "You can find a hundred blank ones. What you can't download is someone building it around your wedding in real time, then telling you plainly what's missing. The tool matters. The eye on it matters more."
   },
   {
-    q: "Can't I find all this online?",
+    q: "$890 feels like a lot when I'm already watching every dollar.",
     a:
-      "Some of it. The checklists are everywhere. What isn't online is someone looking at your wedding, your vendors and your contracts, and telling you plainly whether you're on track. That's the whole hour."
+      "I understand. You're also spending far more than that on a single day, and losing sleep over whether it will hold together. Much of what I do here is help you spend the rest of your budget well: where it's worth it, where it isn't, and where the quiet \u2018wedding tax\u2019 is creeping in. It tends to pay for itself."
   },
   {
-    q: "$444 — is it worth it?",
+    q: "We don't want someone taking over our wedding.",
     a:
-      "You're spending far more than that on a single day, and losing sleep over whether it'll hold together. This is a small amount to know that it will. If you only want the cheapest possible answer, I'm not it, and I'd rather say so now."
+      "Good. Neither do I. This is your wedding to plan. I'm the experienced voice beside you for the decisions that matter, not a set of hands taking the pen."
   },
   {
-    q: "I don't want someone to take over.",
+    q: "Everyone in my family has an opinion. Can you help with that?",
     a:
-      "Good. Neither do I, not here. This is your wedding to plan. I'm the experienced voice in the room for an hour, telling you where you're right and where to look again."
+      "More than you'd think. A lot of what keeps couples up at night isn't the logistics, it's the noise around them. Part of my job is helping you hold on to the wedding you actually want, kindly and clearly, when the advice is coming from every direction."
+  },
+  {
+    q: "What do I actually walk away with?",
+    a:
+      "A plan built around your wedding, in one place. A recorded walkthrough of exactly what to do next. Two check-ins for when you're stuck. A timeline built with you, vendor by vendor. A Day Card so the people helping always know what's next. And the quiet that comes with it all."
   }
 ];
 
@@ -102,7 +92,7 @@ function PrimaryCTA({ className = "" }: { className?: string }) {
       rel="noopener noreferrer"
       className={`group inline-flex items-center justify-center gap-3 bg-[#f3eee2] text-[#412c00] px-8 py-4 text-[11px] sm:text-xs tracking-[0.22em] uppercase font-medium shadow-xl shadow-black/25 hover:bg-white transition active:scale-[0.99] duration-300 ${className}`}
     >
-      Book your hour — NZD $444
+      Book your Planning Session
       <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-1 transition-transform duration-300" strokeWidth={1.5} />
     </a>
   );
@@ -118,7 +108,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
     const prevDesc = meta?.getAttribute("content") || "";
     meta?.setAttribute(
       "content",
-      "The Wedding Navigator by Fantail Weddings: one hour on a video call with Rebecca and a plan mapped to your own New Zealand wedding, for couples already underway who want an experienced read on it."
+      "The Wedding Navigator by Fantail Weddings: done-with-you planning for couples planning their own New Zealand wedding. A planning session, your own planning space, a next-steps video, two check-ins, and a live timeline build. $890 + GST."
     );
     return () => {
       document.title = prevTitle;
@@ -132,7 +122,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
       <section className="relative h-[64vh] sm:h-[72vh] min-h-[540px] max-h-[760px] flex items-center justify-center overflow-hidden">
         <motion.img
           src="/assets/images/wedding-navigator-hero.webp"
-          alt="A couple holding hands on their wedding day"
+          alt="A couple on their wedding day"
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
           initial={{ scale: 1.08 }}
@@ -157,59 +147,65 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           <RevealHeading
             as="h1"
             className="font-serif text-3xl sm:text-5xl font-light leading-[1.12] tracking-tight mb-6"
-            text="You've booked the big things. It's the small ones that wake you at 2am."
+            text="You've done the research. Now let's make it a plan."
             amount={0.3}
           />
           <p className="text-sm sm:text-base font-light text-white/90 leading-[1.85] max-w-xl mx-auto mb-3">
-            You're well underway. A venue held, a caterer signed, a photographer you already love. And still there's
-            a quiet voice asking whether you've missed something that only shows up on the day.
+            The Wedding Navigator supports couples planning their own wedding, from someone who has spent sixteen years
+            producing New Zealand weddings.
           </p>
           <p className="text-sm sm:text-base font-light text-white/90 leading-[1.85] max-w-xl mx-auto mb-9">
-            An hour with me, and a plan mapped to your actual wedding, is how that voice goes quiet.
+            You make every decision. I make sure nothing falls through the gaps.
           </p>
           <PrimaryCTA />
           <div className="mt-4 text-[10px] sm:text-xs tracking-[0.22em] uppercase text-white/70 font-light">
-            One hour on a video call · NZD $444
+            $890 + GST
           </div>
         </div>
       </section>
 
-      {/* THE REAL PROBLEM */}
+      {/* SOUND FAMILIAR - the problem */}
       <section className="py-24 px-6 max-w-3xl mx-auto text-center">
-        <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">The real problem</span>
+        <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">The reality</span>
         <RevealHeading
           as="h2"
           className="font-serif text-3xl sm:text-4xl font-light tracking-tight mb-8"
-          text="You don't need another blank spreadsheet."
+          text="Sound familiar?"
         />
         <p className="text-base text-[#5b6470] font-light leading-[1.9] mb-5">
-          You've read the checklists. You've downloaded the template that promised to hold it all, and it sat there
-          empty, asking you to already know the answers.
+          Forty tabs open, a group chat full of screenshots, and a nagging feeling you've missed something. Your
+          photographer has asked for a timeline, and you're not sure what one looks like. Your inbox holds three quotes
+          that all say something different. Everyone has an opinion.
         </p>
-        <p className="text-base text-[#5b6470] font-light leading-[1.9] mb-5">
-          That's the gap. Generic advice can't tell you whether your timeline leaves enough room to get into your gown
-          without rushing, or whether the contract from your caterer covers what you're picturing on the night. It
-          doesn't know your wedding.
+        <p className="text-base text-[#5b6470] font-light leading-[1.9]">
+          You are doing the job of a wedding planner, at night, after your actual job, without the shortcuts that only
+          come from having done it many times before.
         </p>
-        <p className="text-base text-[#5b6470] font-light leading-[1.9]">I will, an hour in.</p>
-
-        <figure className="mt-14 border-t border-black/10 pt-12">
-          <blockquote className="font-serif text-xl sm:text-2xl italic text-black/80 font-light leading-relaxed">
-            "OMG, the budget now makes sense. Thank you very much for those tips."
-          </blockquote>
-          <figcaption className="mt-5 text-[10px] tracking-[0.3em] uppercase text-[#997700]">
-            B &amp; S, Online Wedding Consultation, January 2026
-          </figcaption>
-        </figure>
       </section>
 
-      {/* HOW THE HOUR WORKS */}
+      {/* THE SHIFT */}
       <section className="py-20 px-6 border-y border-black/[0.06] bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">The middle ground</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight leading-snug mb-8">
+            You don't need someone to take over. You need someone who has seen it a hundred times.
+          </h2>
+          <p className="text-base text-[#5b6470] font-light leading-[1.9]">
+            There is a middle ground between planning it all alone and handing the whole thing to a planner. That middle
+            ground is where I sit. You keep your wedding: your taste, your budget, your calls. I bring sixteen years of
+            knowing what tends to get forgotten, what a realistic timeline actually looks like, and which question to ask
+            a vendor before you sign. You stay in charge. You just stop guessing.
+          </p>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-14">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">How the hour works</span>
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">How it works</span>
             <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight leading-snug">
-              An hour, and everything it surfaces, written down and handed back to you.
+              Five steps, from the first conversation to the morning of.
             </h2>
           </div>
           <ol className="space-y-0">
@@ -226,34 +222,43 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
         </div>
       </section>
 
-      {/* WHETHER THIS IS YOURS */}
-      <section className="py-24 px-6 max-w-4xl mx-auto">
-        <div className="text-center mb-14">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">Whether this is yours</span>
+      {/* WHAT THIS ISN'T */}
+      <section className="py-20 px-6 border-y border-black/[0.06] bg-white">
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">To be clear</span>
+          <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight mb-8">What this isn't</h2>
+          <p className="text-base text-[#5b6470] font-light leading-[1.9]">
+            I do not contact your vendors, and I am not there on the day. This is not me quietly running your wedding
+            from the wings. You stay in charge of every choice, from the celebrant to the canapés. What changes is that
+            you make those choices with someone experienced beside you, rather than alone at midnight ready to pack it in
+            and elope.
+          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-          <div>
-            <h3 className="text-[11px] tracking-[0.2em] uppercase text-black font-medium mb-7">This is for you if</h3>
-            <ul className="space-y-5">
-              {FOR_YOU.map((t, i) => (
-                <li key={i} className="flex gap-4 items-start">
-                  <Check className="w-4 h-4 mt-1 shrink-0 text-[#997700]" strokeWidth={2} />
-                  <span className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="md:border-l border-black/10 md:pl-16">
-            <h3 className="text-[11px] tracking-[0.2em] uppercase text-black/50 font-medium mb-7">Not yet, if</h3>
-            <ul className="space-y-5">
-              {NOT_YET.map((t, i) => (
-                <li key={i} className="flex gap-4 items-start">
-                  <span className="mt-2 w-1.5 h-1.5 rounded-full bg-black/20 shrink-0" />
-                  <span className="text-sm sm:text-base text-black/45 font-light leading-relaxed">{t}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      </section>
+
+      {/* WHO IT'S FOR */}
+      <section className="py-24 px-6 max-w-3xl mx-auto text-center">
+        <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-6">Whether this is yours</span>
+        <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight mb-8">This is for you if</h2>
+        <p className="text-base text-[#5b6470] font-light leading-[1.9]">
+          You've booked a thing or two, you've got opinions coming at you from every direction, and you'd rather ask the
+          awkward questions now than discover the answer on the day. You are not after a bigger wedding. You are after a
+          calmer one, and the quiet confidence that comes from knowing nothing is slipping through, simply because you
+          didn't know to look for it.
+        </p>
+      </section>
+
+      {/* A QUIET EXAMPLE - SARA */}
+      <section className="py-20 px-6 border-y border-black/[0.06] bg-white">
+        <div className="max-w-2xl mx-auto text-center">
+          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-8">A quiet example</span>
+          <p className="font-serif text-xl sm:text-2xl italic text-black/80 font-light leading-[1.6]">
+            When Sara came to me, she had booked beautifully and was quietly certain she'd overlooked something. What she
+            didn't have was a feel for time: how long it actually takes to get into a gown without rushing, where a first
+            look sits, how those few minutes shape the whole afternoon. We mapped it together. On the day, it flowed, and
+            she got to be in it, rather than watching the clock.
+          </p>
+          <div className="mt-7 text-[10px] tracking-[0.3em] uppercase text-[#5b6470]">Sara and Mark · married in January</div>
         </div>
       </section>
 
@@ -261,66 +266,29 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto bg-black text-white p-10 sm:p-16 text-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">The Wedding Navigator</span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight leading-snug mb-6">
-            An hour, and a plan with your name on it.
+          <h2 className="font-serif text-3xl sm:text-4xl font-light tracking-tight leading-snug mb-10">
+            Everything, from the first conversation to the morning of.
           </h2>
-          <p className="text-sm text-white/70 font-light leading-relaxed max-w-xl mx-auto mb-10">
-            My full planning runs to several thousand. This is the way in for couples who mostly have it handled and
-            want an experienced read on it, before the day arrives.
-          </p>
-          <div className="font-serif text-5xl sm:text-6xl font-light mb-10">NZD $444</div>
-          <ul className="max-w-sm mx-auto space-y-4 border-t border-white/15 pt-8 mb-10 text-left">
+          <ul className="max-w-md mx-auto space-y-4 text-left mb-10">
             {INCLUDED.map((t, i) => (
               <li key={i} className="flex gap-4 items-start">
                 <Check className="w-4 h-4 mt-1 shrink-0 text-[#c9a24b]" strokeWidth={2} />
-                <span className="text-sm text-white/85 font-light">{t}</span>
+                <span className="text-sm sm:text-base text-white/85 font-light">{t}</span>
               </li>
             ))}
           </ul>
+          <div className="font-serif text-5xl sm:text-6xl font-light mb-3">$890</div>
+          <div className="text-[11px] tracking-[0.22em] uppercase text-white/55 font-light mb-8">+ GST</div>
+          <p className="text-sm text-white/70 font-light leading-relaxed max-w-xl mx-auto mb-10">
+            My full planning has always run to several thousand for clients. This is the way in for couples who want that
+            experience and that eye, kept to the parts they actually need.
+          </p>
           <PrimaryCTA className="mx-auto" />
         </div>
       </section>
 
-      {/* IF IT WOULD HELP — ADD-ONS */}
-      <section className="py-20 px-6 bg-white border-y border-black/[0.06]">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">If it would help</span>
-            <p className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed max-w-xl mx-auto">
-              Two things some couples add. Neither is needed for the hour to be worth it — take them only if they'd
-              genuinely make your life easier.
-            </p>
-          </div>
-          <div className="space-y-0">
-            {BUMPS.map((b, i) => (
-              <div key={i} className="border-t border-black/[0.08] py-8 last:border-b">
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline gap-1 mb-3">
-                  <h3 className="font-serif text-2xl text-black font-light">{b.title}</h3>
-                  <span className="text-xs tracking-[0.12em] uppercase font-medium text-[#997700] whitespace-nowrap">{b.amt}</span>
-                </div>
-                <p className="text-sm sm:text-base text-[#5b6470] font-light leading-relaxed">{b.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* A QUIET EXAMPLE — SARA */}
-      <section className="py-24 px-6">
-        <div className="max-w-2xl mx-auto text-center">
-          <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-8">A quiet example</span>
-          <p className="font-serif text-xl sm:text-2xl italic text-black/80 font-light leading-[1.6]">
-            When Sara came to me, she'd booked beautifully and was quietly certain she'd overlooked something. What she
-            didn't have was a feel for time — how long it actually takes to get into a gown without rushing, where a
-            first look sits, how those few minutes shape the whole afternoon. We mapped it together. On the day, it
-            flowed, and she got to be in it rather than watching the clock.
-          </p>
-          <div className="mt-7 text-[10px] tracking-[0.3em] uppercase text-[#5b6470]">Sara &amp; Mark · married in January</div>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section className="py-20 px-6 bg-white border-t border-black/[0.06]">
+      <section className="py-20 px-6 bg-white border-y border-black/[0.06]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-14">
             <span className="text-[10px] tracking-[0.3em] uppercase text-[#997700] font-light block mb-4">Before you ask</span>
@@ -343,14 +311,13 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           <RevealHeading
             as="h2"
             className="font-serif text-4xl sm:text-5xl font-light tracking-tight mb-8"
-            text="Come and talk it through."
+            text="Come and make it a plan."
             amount={0.4}
           />
           <p className="text-sm sm:text-base text-white/85 font-light leading-[1.9] max-w-xl mx-auto mb-10">
-            If you've read this far, some quiet part of you is already wondering what you've missed. An hour is usually
-            all it takes to answer that. Bring your questions, your half-finished list, the contract you've read four
-            times and still aren't sure about. I'll put the kettle on — Earl Grey, if you're having one — and we'll get
-            you clear.
+            If you've read this far, some quiet part of you already knows the research phase is over. The next step isn't
+            another checklist. It's one hour, and a plan that finally holds everything in one place. Bring your questions,
+            your half-finished list, the quotes you can't make sense of. Let's do this.
           </p>
           <PrimaryCTA className="mx-auto mb-8" />
           <p className="text-sm text-white/70 font-light mb-2">Or if you'd rather ask a question first:</p>
@@ -360,9 +327,6 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           >
             Send me a note
           </button>
-          <p className="text-xs text-white/45 font-light leading-relaxed mt-8 max-w-md mx-auto">
-            Jasper may make an appearance. He is deeply supportive and completely unhelpful.
-          </p>
         </div>
       </section>
     </div>
