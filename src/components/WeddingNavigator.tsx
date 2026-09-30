@@ -20,7 +20,7 @@ const STEPS = [
     n: "1",
     title: "The Planning Session",
     body:
-      "One hour, online. We talk through all of it: what you're picturing, what's already booked, and what's keeping you up at night. You leave with clarity, and with your own copy of The Planning Home, a space where your guest list, RSVPs, catering and budget finally live in one place instead of across forty tabs. Not an AI app or a cheap download, but the actual space I use with my high-end clients."
+      "One hour, online. We talk through all of it: what you're picturing, what's already booked, and what's keeping you up at night. You leave with clarity, and with your own copy of The Planning Home, a space where your guest list, RSVPs, catering and budget finally live in one place instead of across forty tabs. Not a template or a download you fill in alone, but the actual working space I use for the weddings I plan myself."
   },
   {
     n: "2",
@@ -317,7 +317,7 @@ export default function WeddingNavigator({ onNavigate, onEnquire }: WeddingNavig
           <p className="text-sm sm:text-base text-white/85 font-light leading-[1.9] max-w-xl mx-auto mb-10">
             If you've read this far, some quiet part of you already knows the research phase is over. The next step isn't
             another checklist. It's one hour, and a plan that finally holds everything in one place. Bring your questions,
-            your half-finished list, the quotes you can't make sense of. Let's do this.
+            your half-finished list, the quotes you can't make sense of. I'll have the kettle on. Earl Grey, if you're having one.
           </p>
           <PrimaryCTA className="mx-auto mb-8" />
           <p className="text-sm text-white/70 font-light mb-2">Or if you'd rather ask a question first:</p>
