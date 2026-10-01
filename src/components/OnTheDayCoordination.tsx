@@ -7,6 +7,7 @@ const LUX_EASE = [0.16, 1, 0.3, 1] as const;
 
 interface OnTheDayCoordinationProps {
   onEnquire: () => void;
+  onNavigate: (path: string) => void;
 }
 
 const STEPS = [
@@ -17,7 +18,7 @@ const STEPS = [
   "I handle packdown and returns at the end, so your last memory of the night is not loading a car in the dark."
 ];
 
-export default function OnTheDayCoordination({ onEnquire }: OnTheDayCoordinationProps) {
+export default function OnTheDayCoordination({ onEnquire, onNavigate }: OnTheDayCoordinationProps) {
   useEffect(() => {
     const prevTitle = document.title;
     document.title = "On-the-Day Coordination | Fantail Weddings";
@@ -107,8 +108,15 @@ export default function OnTheDayCoordination({ onEnquire }: OnTheDayCoordination
           <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">Investment</span>
           <div className="font-serif text-4xl sm:text-5xl font-light mb-4">NZD $1,800</div>
           <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto">
-            On its own. Or NZD $1,200 as an add-on to The Wedding Navigator, if you would like a steady hand both while
-            you plan and on the day.
+            On its own. Or NZD $1,200 as an add-on to{" "}
+            <a
+              href="/the-wedding-navigator/"
+              onClick={(e) => { e.preventDefault(); onNavigate("wedding-navigator"); }}
+              className="underline underline-offset-2 decoration-white/40 hover:decoration-white text-white transition"
+            >
+              The Wedding Navigator
+            </a>
+            , if you would like a steady hand both while you plan and on the day.
           </p>
         </div>
       </section>
