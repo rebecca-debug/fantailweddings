@@ -8,7 +8,7 @@ const LUX_EASE = [0.16, 1, 0.3, 1] as const;
 // ── The checkout link the "Book your Planning Session" buttons point to. ──
 // Replace the URL below with the Stripe checkout for the $890 + GST offer.
 // (The old $444 link and the two add-on products are no longer used.)
-const CHECKOUT_URL = "https://buy.stripe.com/00wdR3cdB1hZbyE2Jm6oo01";
+const CHECKOUT_URL = "https://buy.stripe.com/eVq6oB4L92m35agabO6oo02";
 
 interface WeddingNavigatorProps {
   onNavigate: (path: string) => void;
