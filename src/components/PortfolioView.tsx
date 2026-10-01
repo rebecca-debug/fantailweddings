@@ -272,7 +272,7 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
               <span className="text-[10px] tracking-[5px] uppercase font-mono text-[#5c6672] block mb-2">
                 ARCHIVE ONE
               </span>
-              <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Intimate Gatherings & Elopements" />
+              <RevealHeading as="h3" className="font-serif text-2xl sm:text-3xl text-black font-normal leading-tight" text="Intimate Gatherings" />
               <p className="text-[11px] tracking-widest font-mono uppercase text-black/50 mt-1">
                 South Island Love Stories
               </p>
