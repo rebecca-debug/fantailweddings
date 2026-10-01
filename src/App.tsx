@@ -26,6 +26,8 @@ import { JOURNAL_ARTICLES, getArticleByPage, JournalPage } from "./journal";
 import { JOURNAL_POSTS, POST_PATHS, getPostByPath } from "./journalPosts";
 const BlogArticle = lazy(() => import("./components/BlogArticle"));
 const WeddingNavigator = lazy(() => import("./components/WeddingNavigator"));
+const IntimateWeddings = lazy(() => import("./components/IntimateWeddings"));
+const OnTheDayCoordination = lazy(() => import("./components/OnTheDayCoordination"));
 
 // ---- Shared motion vocabulary (one calm easing + slow, small-travel reveals) ----
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
@@ -204,13 +206,13 @@ export default function App() {
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Elopements and intimate weddings for celebrations up to 60 guests. Boutique, capacity-limited wedding planning in Aotearoa New Zealand."
+        "Intimate weddings for celebrations up to 60 guests. Boutique, capacity-limited wedding planning in Aotearoa New Zealand."
       );
     } else {
       const meta = document.createElement("meta");
       meta.name = "description";
       meta.content =
-        "Elopements, intimate weddings to 60 guests, and an online consultancy for couples planning their own wedding. Boutique, capacity-limited wedding planning in Aotearoa New Zealand.";
+        "Intimate weddings to 60 guests, on-the-day coordination, and an online consultancy for couples planning their own wedding. Boutique, capacity-limited wedding planning in Aotearoa New Zealand.";
       document.head.appendChild(meta);
     }
 
@@ -218,7 +220,7 @@ export default function App() {
     const metaKeywords = document.createElement("meta");
     metaKeywords.name = "keywords";
     metaKeywords.content =
-      "destination wedding New Zealand, South Island wedding planner, Wanaka wedding planner, Queenstown wedding planner, intimate wedding New Zealand, boutique wedding planner, NZ elopement planner, online wedding planner New Zealand, wedding planning consultant NZ, concierge wedding planning";
+      "destination wedding New Zealand, South Island wedding planner, Wanaka wedding planner, Queenstown wedding planner, intimate wedding New Zealand, boutique wedding planner, on the day wedding coordination New Zealand, online wedding planner New Zealand, wedding planning consultant NZ, concierge wedding planning";
     document.head.appendChild(metaKeywords);
 
     // Business / Person / WebSite JSON-LD now lives statically in index.html (crawler-visible
@@ -269,6 +271,8 @@ export default function App() {
     portfolio: "/portfolio/",
     "journal-index": "/journal/",
     "wedding-navigator": "/the-wedding-navigator/",
+    "intimate-weddings": "/intimate-weddings/",
+    "on-the-day-coordination": "/on-the-day-coordination/",
     ...Object.fromEntries(JOURNAL_ARTICLES.map((a) => [a.page, a.route]))
   };
   const pathForPage = (page: string): string =>
@@ -502,30 +506,15 @@ export default function App() {
 
   // Handle service CTA clicks - scroll, select, and highlight
   const handleServiceCTA = (serviceId: string) => {
-    // The Wedding Navigator has its own landing/booking page rather than the contact form.
+    // Each service now has its own landing page.
     if (serviceId === "navigator") {
       navigate("wedding-navigator");
-      return;
-    }
-    let helpTypeValue = "";
-    if (serviceId === "elopement") {
-      helpTypeValue = "Elopement";
     } else if (serviceId === "intimate") {
-      helpTypeValue = "Intimate Wedding (up to 60 guests)";
-    } else if (serviceId === "navigator") {
-      helpTypeValue = "The Wedding Navigator";
+      navigate("intimate-weddings");
     } else if (serviceId === "design") {
-      helpTypeValue = "Design, Coordination & Day-of Management";
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      helpType: helpTypeValue
-    }));
-
-    // Scroll to contact form
-    if (contactFormRef.current) {
-      contactFormRef.current.scrollIntoView({ behavior: "smooth" });
+      navigate("on-the-day-coordination");
+    } else {
+      navigateTo("contact");
     }
   };
 
@@ -884,11 +873,11 @@ export default function App() {
           <div className="lg:col-span-8 space-y-6 text-[15px] text-[#5c6672] leading-relaxed font-light font-sans">
             <p className="text-[15px] text-[#5c6672] leading-relaxed font-light">
               Thank you for being here, I am Rebecca, and I plan a small number of weddings each year on the
-              South Island of Aotearoa, New Zealand. Elopements. Intimate weddings of up to 60 guests. 
+              South Island of Aotearoa, New Zealand. Intimate weddings of up to 60 guests. 
               And, when a celebration calls for it, design coordination and day-of management.
             </p>
             <p className="text-black/85 font-normal tracking-wide">
-              Three different shapes of help. One person. Real care.
+              Two ways to work together. One person. Real care.
             </p>
           </div>
           <div className="lg:col-span-4 lg:text-right lg:pt-3">
@@ -1117,9 +1106,9 @@ export default function App() {
         {/* Intro */}
         <div className="space-y-4 mb-16 max-w-2xl">
           <span className="text-[10px] tracking-[0.3em] uppercase text-black font-light block">
-            Shapes of Help
+            Ways to Work Together
           </span>
-          <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Three ways I can help" />
+          <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="Two ways I can help" />
           <p className="text-[15px] font-light text-[#5c6672] leading-relaxed">
             Each one is its own shape of help. The right one depends on where you are coming from, how many 
             people are coming with you, and most of all, how you want the day to feel.
@@ -1148,7 +1137,7 @@ export default function App() {
                 onClick={() => handleServiceCTA(service.id)}
                 className="text-[10px] tracking-widest uppercase text-black font-medium hover:opacity-75 transition text-left block"
               >
-                {service.id === "navigator" ? "Book The Wedding Navigator Consultation" : "Inquire now"} →
+                Learn more →
               </button>
             </div>
           ))}
@@ -1230,31 +1219,6 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* Included items */}
-                  <div className="space-y-4 border-t border-black/10 pt-8">
-                    <h4 className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold">
-                      What is included
-                    </h4>
-                    <ul className="space-y-3 text-[13px] text-[#5c6672] font-light leading-relaxed pl-1">
-                      {service.details.map((detail, dIdx) => (
-                        <li key={dIdx} className="flex gap-3 align-top">
-                          <span className="text-black/40 font-mono mt-0.5">•</span>
-                          <span>{detail}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Investment */}
-                  <div className="space-y-2 border-t border-black/10 pt-8">
-                    <span className="text-[10px] tracking-[0.25em] uppercase text-black font-semibold block">
-                      Investment
-                    </span>
-                    <p className="text-xs text-black/80 italic font-serif leading-relaxed">
-                      {service.investment}
-                    </p>
-                  </div>
-
                   {/* Plain Link CTA button with underline */}
                   <div className="pt-4">
                     <button
@@ -1262,7 +1226,7 @@ export default function App() {
                       className="group text-[10px] tracking-[0.25em] uppercase text-black border-b border-black pb-1 inline-flex items-center hover:opacity-75 transition text-left font-light"
                       id={`cta-button-${service.id}`}
                     >
-                      {service.id === "navigator" ? "Book The Wedding Navigator Consultation" : service.ctaText} <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                      {service.id === "intimate" ? "Learn more about my Intimate Weddings" : "Learn more about my On-the-Day Coordination"} <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                     </button>
                   </div>
 
@@ -1290,7 +1254,7 @@ export default function App() {
           </span>
           <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight" text="How the planning year looks" />
           <p className="text-[15px] font-light text-[#5c6672] leading-relaxed">
-            This is the shape of a full planning year, the rhythm elopements and intimate weddings tend to follow.
+            This is the shape of a full planning year, the rhythm intimate weddings tend to follow.
           </p>
         </div>
 
@@ -1579,10 +1543,9 @@ export default function App() {
                       className="w-full bg-[#fcfcfc] border border-black/10 focus:border-black px-4 py-3 text-sm text-black font-light outline-none transition rounded-none appearance-none cursor-pointer"
                     >
                       <option value="">-- Please select a shape --</option>
-                      <option value="Elopement">Elopement</option>
                       <option value="Intimate Wedding (up to 60 guests)">Intimate Wedding (up to 60 guests)</option>
                       <option value="The Wedding Navigator">The Wedding Navigator</option>
-                      <option value="Design, Coordination & Day-of Management">Design, Coordination & Day-of Management</option>
+                      <option value="On-the-Day Coordination">On-the-Day Coordination</option>
                       <option value="Not sure yet">Not sure yet</option>
                     </select>
                     {formErrors.helpType && (
@@ -1862,6 +1825,10 @@ export default function App() {
         </>
       ) : currentPage === "portfolio" ? (
         <PortfolioView onBackToHome={navigateTo} />
+      ) : currentPage === "intimate-weddings" ? (
+        <IntimateWeddings onEnquire={() => navigateTo("contact")} />
+      ) : currentPage === "on-the-day-coordination" ? (
+        <OnTheDayCoordination onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "wedding-navigator" ? (
         <WeddingNavigator onNavigate={navigate} onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "journal-index" ? (

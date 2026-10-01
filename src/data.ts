@@ -32,31 +32,8 @@ export interface TimelinePoint {
 
 export const SERVICES_DATA: Service[] = [
   {
-    id: "elopement",
-    number: "01",
-    title: "ELOPEMENTS",
-    subtitle: "For couples coming to Aotearoa, New Zealand, to disappear into a landscape together.",
-    description: "Just the two of you. Maybe a witness or two. Maybe a celebrant whose voice feels like home. Maybe a single photographer who knows when to step back. A Fiordland scree at the end of a long walk. A tarn above Wānaka in late autumn. A Mackenzie ridgeline at first light. The place chooses you as much as you choose it. It is not about doing less. It is about doing exactly the right things and doing them well.",
-    details: [
-      "Marriage licence and overseas paperwork sorted with care.",
-      "Curated location options across the South Island.",
-      "A celebrant matched to your energy.",
-      "Photographer (and optional videographer) from a network built over fifteen years.",
-      "Florals, hair and makeup, transport, dinner reservation.",
-      "Any cultural element you want woven in is treated with the same care as everything else.",
-      "A wet-weather backup you can actually use.",
-      "Voice notes, Loom videos, and personal calls throughout the planning months, along with a personal online portal to keep all planning information safe and easy to view.",
-      "Me on the day, quietly present."
-    ],
-    investment: "Planning starts from [ NZD $3,800 ]. Vendors and on-the-day costs are quoted separately, so the budget stays transparent.",
-    ctaText: "Begin a Conversation about an Elopement",
-    image: "/assets/images/Service-01.webp",
-    imageAlt: "An eloping couple walk hand in hand through alpine grass beside a lake, South Island mountains glowing behind them at golden hour.",
-    loveNote: "“Thank you for creating this itinerary for us, it was so perfectly everything we wanted without knowing it….. Driving into ‘The Hermitage’ with the top down was a dream, and that celebrant was a hoot…..” M&J - Elopement, April 2026"
-  },
-  {
     id: "intimate",
-    number: "02",
+    number: "01",
     title: "INTIMATE WEDDINGS",
     subtitle: "For couples bringing their favourite people to Aotearoa, New Zealand, for a weekend that begins as a wedding day and becomes something more.",
     description: "Twenty people. Thirty. Forty, sometimes sixty. The number sits within that range. The spirit stays the same. Where the welcome dinner becomes a moment of its own. Where the ceremony is held in a Central Otago valley at six o'clock, when the light goes long, and the air softens. Where the dance floor is the size it needs to be, and not one inch bigger.",
@@ -78,23 +55,19 @@ export const SERVICES_DATA: Service[] = [
   },
   {
     id: "design",
-    number: "03",
-    title: "DESIGN & DAY OF MANAGEMENT",
-    subtitle: "For couples capable of doing the bulk of their planning but wise to engage expertise for the details and design.",
-    description: "The best pairing for a couple who have their venue and some vendors but need the guiding eye of a designer and logistics expert. I will help you pull your vision together into a cohesive overall wedding design, coordinate the details and take care of the day-of management so you can simply enjoy.",
+    number: "02",
+    title: "ON-THE-DAY COORDINATION",
+    subtitle: "For couples who have the details handled but want a calm, experienced pair of hands to run the day itself.",
+    description: "By the time your wedding day arrives, you have made a thousand decisions. My job here is to take the whole run of the day off your hands: the setup, the timing, the vendors, and the small fires that get quietly put out before you ever hear about them. You get to be a guest at your own wedding.",
     details: [
-      "Styling consultation and creative direction.",
-      "Mood boards, colour palettes, layout suggestions, and styling concepts.",
-      "Sourcing of speciality rentals, floral concept collaboration, and visual flow recommendations.",
-      "Review of existing plans and enhancements to bring aesthetic cohesion.",
-      "Wedding day timeline finalisation and distribution.",
-      "Vendor reconfirmation and coordination.",
-      "Management of ceremony rehearsal (if applicable).",
-      "Complete management on the wedding day - setup, styling, cueing, and flow management.",
-      "Troubleshooting behind the scenes to ensure a smooth and elevated guest experience."
+      "An onboarding meeting and a simple onboarding form, so I have every detail of what you have built.",
+      "Confirmation of all your vendors: arrival times, what they need, and what they have promised.",
+      "Management of your rehearsal, if you are having one.",
+      "Fifteen hours with you on the day: setup to your plan, keeping the day running to time, and quiet problem-solving.",
+      "Packdown and returns handled at the end of the night."
     ],
-    investment: "Planning starts from [ NZD $3,800 ], with all design elements quoted separately to help with budget transparency.",
-    ctaText: "Begin a Conversation about Design & Coordination",
+    investment: "NZD $1,800 on its own. Or NZD $1,200 as an add-on to The Wedding Navigator.",
+    ctaText: "Begin a conversation about coordination",
     image: "/assets/images/Service-04.webp",
     imageAlt: "A styled wedding place setting with a hand-illustrated menu card, striped linen napkin folded like a rose, and olive-branch detailing.",
     loveNote: ""
@@ -150,7 +123,7 @@ export const ABOUT_FACTS = [
   "I love every flower. Except gerberas. (I am not sorry.)",
   "I drive my car like the race car driver I think I am.",
   "Three nieces. Three very different beauties and personalities. All have my heart",
-  "Jasper, my dog, has a wristwatch for dinner and walks. I am not making that up.",
+  "Jasper, my dog, has a wristwatch for dinner and walks, and I am his loyal live-in maid.",
   "If your idea will not work, I will tell you. If a vendor is not the right match, I will say so. I would rather have a slightly hard conversation in May than a heartbreaking one in November."
 ];
 
@@ -158,12 +131,12 @@ export const FAQ_DATA: FAQ[] = [
   {
     id: "fq-01",
     question: "How far in advance should we book?",
-    answer: "For elopements and intimate weddings, most couples reach out 12 to 18 months ahead. Peak season (late February through April) tends to fill 18 months out. For the Wedding Navigator, most couples book 9 to 14 months out, though the toolkit works whether you have eighteen months or six."
+    answer: "For intimate weddings, most couples reach out 12 to 18 months ahead. Peak season (late February through April) tends to fill 18 months out. For the Wedding Navigator, most couples book 9 to 14 months out, though the toolkit works whether you have eighteen months or six."
   },
   {
     id: "fq-02",
     question: "Where in New Zealand do you work?",
-    answer: "Wānaka, Queenstown, and the wider Central Otago region are where I work most. I also plan elopements in the Mackenzie Country (including Aoraki/Mt Cook), the Marlborough Sounds, Banks Peninsula, and occasionally Fiordland. The Wedding Navigator is available NZ-wide."
+    answer: "Wānaka, Queenstown, and the wider Central Otago region are where I work most. I also work in the Mackenzie Country (including Aoraki/Mt Cook), the Marlborough Sounds, Banks Peninsula, and occasionally Fiordland. The Wedding Navigator is available NZ-wide."
   },
   {
     id: "fq-03",
@@ -173,7 +146,7 @@ export const FAQ_DATA: FAQ[] = [
   {
     id: "fq-04",
     question: "How many couples do you take on each year?",
-    answer: "A small handful. Four to six weddings per year, plus a number of elopements and Wedding Navigator engagements. The number is deliberate."
+    answer: "A small handful. Four to six weddings per year, plus a number of Wedding Navigator and coordination engagements. The number is deliberate."
   },
   {
     id: "fq-05",
@@ -198,7 +171,7 @@ export const FAQ_DATA: FAQ[] = [
   {
     id: "fq-09",
     question: "How is the Wedding Navigator different from full planning?",
-    answer: "Full planning is a year of voice notes, vendor management, design, and on-the-day coordination, with me running the wedding for you. The Wedding Navigator is three calls, a personalised toolkit, and a roadmap. You do the planning. I give you the map and check in twice."
+    answer: "Full planning is a year of voice notes, vendor management, design, and on-the-day coordination, with me running the wedding for you. The Wedding Navigator is a done-with-you offer: a planning session, your own Planning Home, a next-steps video, two check-ins, and a live timeline build about eight weeks out. You do the planning, I make sure nothing falls through the gaps."
   },
   {
     id: "fq-10",
