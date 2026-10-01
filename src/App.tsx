@@ -1828,7 +1828,7 @@ export default function App() {
       ) : currentPage === "intimate-weddings" ? (
         <IntimateWeddings onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "on-the-day-coordination" ? (
-        <OnTheDayCoordination onEnquire={() => navigateTo("contact")} />
+        <OnTheDayCoordination onNavigate={navigate} onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "wedding-navigator" ? (
         <WeddingNavigator onNavigate={navigate} onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "journal-index" ? (
