@@ -2030,7 +2030,7 @@ export default function App() {
                 <form 
                   onSubmit={(e) => { 
                     e.preventDefault(); 
-                    setLoginError("This bespoke client access code was not recognized. Please write to Rebecca directly to secure or reset your code."); 
+                    setLoginError("I don't recognise that access code. Write to me at rebecca@fantailweddings.com and I'll sort it out for you."); 
                   }} 
                   className="space-y-4"
                 >
