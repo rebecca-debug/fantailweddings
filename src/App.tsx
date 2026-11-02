@@ -578,6 +578,11 @@ export default function App() {
     })
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
+        // Tell Google Analytics an enquiry came in (only the type of help, never personal details).
+        const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+        if (typeof gtag === "function") {
+          gtag("event", "generate_lead", { form_name: "contact", help_type: formData.helpType });
+        }
         setSubmitting(false);
         setFormSubmitted(true);
         setFormData({
