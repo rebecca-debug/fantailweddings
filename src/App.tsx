@@ -1632,7 +1632,7 @@ export default function App() {
                       value={formData.story}
                       onChange={handleInputChange}
                       className="w-full bg-[#fcfcfc] border border-black/10 focus:border-black px-4 py-3 text-sm text-black font-light outline-none transition rounded-none"
-                      placeholder="Share your dream workspace or celebration feel..."
+                      placeholder="Tell me a little about what you're imagining..."
                     />
                     {formErrors.story && (
                       <p role="alert" className="text-[10px] text-red-500 font-mono mt-0.5">{formErrors.story}</p>
@@ -1998,7 +1998,7 @@ export default function App() {
 
               <div className="space-y-2 text-center font-sans">
                 <span className="text-[10px] tracking-[0.3em] uppercase text-black font-light block">
-                  BESPOKE PORTALS
+                  YOUR PLANNING SPACE
                 </span>
                 <h3 id="login-modal-title" className="font-serif text-2xl text-black font-light">
                   Client Workspace

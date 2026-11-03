@@ -105,7 +105,7 @@ export default function BentoGallery({ images }: BentoGalleryProps) {
             >
               <img
                 src={src}
-                alt={`Bespoke celebration frame ${index + 1}`}
+                alt={`South Island wedding celebration, photo ${index + 1}`}
                 loading="lazy"
                 decoding="async"
                 draggable={false}

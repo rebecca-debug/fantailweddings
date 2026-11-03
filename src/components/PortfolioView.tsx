@@ -211,7 +211,7 @@ export function InfiniteAutoplaySlider({ images, direction = "left" }: InfiniteA
                 >
                   <img
                     src={imgSrc}
-                    alt={`Bespoke Celebration Frame ${originalIndex + 1}`}
+                    alt={`South Island wedding celebration, photo ${originalIndex + 1}`}
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-contain p-2 select-none pointer-events-none"
                     loading="lazy"
@@ -254,12 +254,12 @@ export default function PortfolioView({ onBackToHome }: PortfolioViewProps) {
       {/* Editorial Page Header */}
       <div className="max-w-7xl mx-auto px-6 mb-16 text-center lg:text-left transition" id="portfolio-page-header">
         <span className="text-[10px] tracking-[0.35em] uppercase text-[#5c6672] font-light block mb-3">
-          Curated South Island Memoirs
+          Recent South Island Weddings
         </span>
         <RevealHeading as="h2" className="font-serif text-4xl sm:text-5xl text-black font-light tracking-tight mb-4" text="The Portfolio" />
         <div className="h-[1px] bg-black/10 w-24 my-6 mx-auto lg:mx-0"></div>
         <p className="text-[15px] font-light text-[#5c6672] max-w-2xl leading-relaxed">
-          I plan, curate and produce weddings for couples who want their celebration to feel like a beautiful, honest conversation. Below are two archives representing the quiet craftsmanship of recent celebrations across a country I love.
+          I plan, design and produce weddings for couples who want their celebration to feel like a beautiful, honest conversation. Below are two archives representing the quiet craftsmanship of recent celebrations across a country I love.
         </p>
       </div>
 
