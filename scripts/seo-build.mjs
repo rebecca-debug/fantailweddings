@@ -111,6 +111,24 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "The Journal", path: "/journal/" }])]
   });
 
+  routes.push({
+    path: "/intimate-weddings/",
+    priority: 0.9,
+    title: "Intimate Weddings | Fantail Weddings",
+    desc: "Full planning for intimate South Island weddings of 20 to 60 guests, in Wānaka, Queenstown, the Mackenzie and Central Otago. With Rebecca of Fantail Weddings.",
+    image: "/assets/images/service-02.webp",
+    jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "Intimate Weddings", path: "/intimate-weddings/" }])]
+  });
+
+  routes.push({
+    path: "/on-the-day-coordination/",
+    priority: 0.9,
+    title: "On-the-Day Coordination | Fantail Weddings",
+    desc: "Experienced on-the-day coordination across the South Island, for couples who have planned their own wedding and want the day itself run calmly and well.",
+    image: "/assets/images/Service-04.webp",
+    jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "On-the-Day Coordination", path: "/on-the-day-coordination/" }])]
+  });
+
   // Location guides - each guide carries its live route in journal.ts
   for (const a of JOURNAL_ARTICLES) {
     const p = a.route;

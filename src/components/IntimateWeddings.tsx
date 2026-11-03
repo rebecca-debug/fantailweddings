@@ -28,7 +28,7 @@ export default function IntimateWeddings({ onEnquire }: IntimateWeddingsProps) {
     const prevDesc = meta?.getAttribute("content") || "";
     meta?.setAttribute(
       "content",
-      "Intimate South Island wedding planning for twenty to sixty guests, around Wānaka, Queenstown, the Mackenzie Basin and Central Otago. Full-service, concierge planning with Rebecca of Fantail Weddings."
+      "Full planning for intimate South Island weddings of 20 to 60 guests, in Wānaka, Queenstown, the Mackenzie and Central Otago. With Rebecca of Fantail Weddings."
     );
     return () => {
       document.title = prevTitle;

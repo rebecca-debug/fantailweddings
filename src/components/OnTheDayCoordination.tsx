@@ -26,7 +26,7 @@ export default function OnTheDayCoordination({ onEnquire, onNavigate }: OnTheDay
     const prevDesc = meta?.getAttribute("content") || "";
     meta?.setAttribute(
       "content",
-      "On-the-day wedding coordination across the South Island of New Zealand. For couples who have planned their own wedding and want a calm, experienced coordinator to run the day itself. With Rebecca of Fantail Weddings."
+      "Experienced on-the-day coordination across the South Island, for couples who have planned their own wedding and want the day itself run calmly and well."
     );
     return () => {
       document.title = prevTitle;
