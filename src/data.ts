@@ -61,12 +61,12 @@ export const SERVICES_DATA: Service[] = [
     description: "By the time your wedding day arrives, you have made a thousand decisions. My job here is to take the whole run of the day off your hands: the setup, the timing, the vendors, and the small fires that get quietly put out before you ever hear about them. You get to be a guest at your own wedding.",
     details: [
       "An onboarding meeting and a simple onboarding form, so I have every detail of what you have built.",
-      "Confirmation of all your vendors: arrival times, what they need, and what they have promised.",
-      "Management of your rehearsal, if you are having one.",
+      "Confirmation of all your vendors: arrival times, what they need, and what they have promised, with the gaps caught early.",
+      "Your rehearsal, run so everyone knows where to stand and when to walk.",
       "Fifteen hours with you on the day: setup to your plan, keeping the day running to time, and quiet problem-solving.",
-      "Packdown and returns handled at the end of the night."
+      "Packdown and returns taken care of afterwards."
     ],
-    investment: "NZD $1,800.",
+    investment: "From NZD $3,000. A timeline build, if you need one, is NZD $760.",
     ctaText: "Begin a conversation about coordination",
     image: "/assets/images/Service-04.webp",
     imageAlt: "A styled wedding place setting with a hand-illustrated menu card, striped linen napkin folded like a rose, and olive-branch detailing.",

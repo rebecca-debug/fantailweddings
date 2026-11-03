@@ -12,10 +12,10 @@ interface OnTheDayCoordinationProps {
 
 const STEPS = [
   "It begins with an onboarding meeting and a simple onboarding form, so I have every detail of what you have built.",
-  "I confirm all of your vendors: arrival times, what they need from you, and what they have promised.",
-  "I manage your rehearsal, if you are having one.",
+  "I confirm all of your vendors: arrival times, what they need from you, and what they have promised. This is where I catch the gaps, while there is still time to fill them.",
+  "I run your rehearsal, so everyone knows where to stand, when to walk, and who has the rings.",
   "On the day, I am with you for fifteen hours: setup to your plan, keeping the day running to time, and solving the problems you never need to know happened.",
-  "I handle packdown and returns at the end, so your last memory of the night is not loading a car in the dark."
+  "I take care of packdown and returns afterwards, so your last memory of the night is not loading a car in the dark."
 ];
 
 export default function OnTheDayCoordination({ onEnquire, onNavigate }: OnTheDayCoordinationProps) {
@@ -106,7 +106,19 @@ export default function OnTheDayCoordination({ onEnquire, onNavigate }: OnTheDay
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto bg-black text-white p-10 sm:p-16 text-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">Investment</span>
-          <div className="font-serif text-4xl sm:text-5xl font-light">NZD $1,800</div>
+          <div className="font-serif text-4xl sm:text-5xl font-light mb-6">From NZD $3,000</div>
+          <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto">
+            Around thirty-four hours of my time: eight before the day, five at your rehearsal, fifteen on the day
+            itself, and six for packdown and returns.
+          </p>
+          <div className="h-[1px] bg-white/15 w-16 my-8 mx-auto"></div>
+          <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto mb-4">
+            I need a finished timeline to run the day well. If yours isn't there yet, I'll build it with you, vendor
+            by vendor, for NZD $760.
+          </p>
+          <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto">
+            A welcome dinner or a slow brunch the morning after? I'll quote for those once I know the details.
+          </p>
         </div>
       </section>
 
