@@ -1,33 +1,40 @@
 # Fantail Weddings
 
-Boutique, founder-led wedding planning for elopements and intimate weddings across the South Island of Aotearoa, New Zealand. Led by Rebecca Brosnahan, with 15+ years of experience. Capacity-limited by design: only a small number of weddings each year, plus elopements. Winner, LUXlife Magazine Global Wedding Awards 2026 (Luxury Destination Wedding Planning Specialists of the Year, New Zealand).
+Boutique wedding planning for intimate weddings of 20 to 60 guests across the South Island of Aotearoa New Zealand, mostly for couples planning from overseas. Founded and run by Rebecca Brosnahan, who has 16+ years in the wedding industry and personally plans every wedding. She takes on a small number of weddings each year, by choice. Winner, LUXlife Magazine Global Wedding Awards 2026 (Luxury Destination Wedding Planning Specialists of the Year, New Zealand).
 
 ## Services
-- Elopements: curated just-the-two-of-you celebrations across the South Island. Planning from NZD $4,300 (vendors and on-the-day costs quoted separately).
-- Intimate Weddings: full-service, concierge-style planning for roughly 20–60 guests. Planning from NZD $8,200; most couples invest NZD $65,000–$230,000 in total across vendors and the celebration.
-- Design, Coordination & Day-of Management: creative direction, styling, and on-the-day management for couples who have done the bulk of their own planning.
+- Intimate Weddings: full planning for 20 to 60 guests, from the first enquiry to the end of the celebration, including venue scouting (with access to private South Island land not found online), vendor selection, multi-day weekend design, guest experience and weather planning. Planning from NZD $8,800 + GST. Most couples invest NZD $65,000 to $230,000 in total across vendors and the celebration. Vendors are paid directly by the couple; Rebecca takes no commissions.
+- On-the-Day Coordination: for couples who have planned their own wedding. An onboarding meeting, confirmation of all vendors, rehearsal management if needed, and fifteen hours on the day from setup to packdown. NZD $1,800 + GST. Requires a finalised wedding-day timeline.
 
-## Where we work
-Across the South Island of New Zealand, including Queenstown, Central Otago, the Mackenzie Country (Aoraki / Mt Cook), Banks Peninsula and Akaroa, Fiordland, and the wider Southern Lakes and alpine regions.
+Fantail Weddings no longer offers elopement planning or online consultations.
+
+## Where Rebecca works
+Wānaka, Queenstown and the wider Central Otago region most often, plus the Mackenzie Country (including Aoraki/Mt Cook), Banks Peninsula and Akaroa, the Marlborough Sounds, and occasionally Fiordland. Based in Christchurch.
 
 ## Good to know
-- Overseas couples can legally marry in New Zealand. A marriage licence costs about NZD $150, takes ~3 working days to process, and is valid for 3 months.
-- Recommended booking lead time: 12–18 months for elopements and intimate weddings; peak season (late February–April) often books ~18 months out.
+- Overseas couples can legally marry in New Zealand. A marriage licence is required: apply at least 3 working days before the wedding; it is valid for 3 months. Current fees: https://www.govt.nz/browse/family-and-whanau/getting-married/get-a-marriage-licence
+- Most couples get in touch 12 to 18 months ahead. Peak season (late February to April) often books around 18 months out.
 
 ## Key pages
 - [Home](https://fantailweddings.co.nz/)
+- [Intimate Weddings](https://fantailweddings.co.nz/intimate-weddings/)
+- [On-the-Day Coordination](https://fantailweddings.co.nz/on-the-day-coordination/)
 - [Portfolio](https://fantailweddings.co.nz/portfolio/)
 - [The Journal](https://fantailweddings.co.nz/journal/)
+- [What I wish every couple knew before booking a wedding planner in New Zealand](https://fantailweddings.co.nz/blog/before-booking-a-wedding-planner-nz/)
 - [Queenstown weddings guide](https://fantailweddings.co.nz/queenstown-wedding-planner/)
 - [Wānaka weddings guide](https://fantailweddings.co.nz/nz-wanaka-wedding-planner/)
 - [Banks Peninsula weddings guide](https://fantailweddings.co.nz/banks-peninsula-weddings/)
 - [Mackenzie Country weddings guide](https://fantailweddings.co.nz/mackenzie-country-weddings/)
+- [Get in touch](https://fantailweddings.co.nz/contact/)
 
 ## Full content
-- [Full plain-text content for AI crawlers](https://fantailweddings.co.nz/llms-full.txt)
+- [Full plain-text content for AI tools](https://fantailweddings.co.nz/llms-full.txt)
 
 ## Contact
 - Email: rebecca@fantailweddings.com
-- Phone: +64 274 672 126
-- YouTube: https://www.youtube.com/@Fantailweddings
+- Phone and WhatsApp: +64 274 672 126
 - Instagram: https://www.instagram.com/fantail_weddings/
+- Pinterest: https://nz.pinterest.com/fantailwed/
+- Facebook: https://www.facebook.com/FantailWeddings
+- YouTube: https://www.youtube.com/@Fantailweddings

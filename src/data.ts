@@ -38,9 +38,9 @@ export const SERVICES_DATA: Service[] = [
     subtitle: "For couples bringing their favourite people to Aotearoa, New Zealand, for a weekend that begins as a wedding day and becomes something more.",
     description: "Twenty people. Thirty. Forty, sometimes sixty. The number sits within that range. The spirit stays the same. Where the welcome dinner becomes a moment of its own. Where the ceremony is held in a Central Otago valley at six o'clock, when the light goes long, and the air softens. Where the dance floor is the size it needs to be, and not one inch bigger.",
     details: [
-      "Full-service, concierge-style planning from your first enquiry to the time we say our fairwells.",
+      "Full-service, concierge-style planning from your first enquiry to the time we say our farewells.",
       "Venue scouting and booking, including the slightly hidden ones I know from years on the ground.",
-      "Vendor curation.",
+      "Vendor selection.",
       "Multi-day weekend design.",
       "Guest experience design, the auntie's chair with arms for her comfort, the gluten-free cake, the welcome notes in every room.",
       "Wet weather plan, wind plan, sun plan, yes, all three.",

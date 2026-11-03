@@ -210,7 +210,7 @@ function renderLlmsFull({ SERVICES_DATA, FAQ_DATA, JOURNAL_ARTICLES, JOURNAL_POS
   const L = [];
   L.push("# Fantail Weddings: Full Content\n");
   L.push(
-    "Boutique, founder-led wedding planning for elopements and intimate weddings across the South Island of Aotearoa, New Zealand. Founder: Rebecca Brosnahan (15+ years). Contact: rebecca@fantailweddings.com, +64 274 672 126.\n"
+    "Boutique wedding planning for intimate weddings of 20 to 60 guests, and on-the-day coordination, across the South Island of Aotearoa New Zealand. Founder: Rebecca Brosnahan (16+ years in the wedding industry). Fantail Weddings no longer offers elopement planning or online consultations; older Journal articles about elopements are kept as general guidance. Contact: rebecca@fantailweddings.com, +64 274 672 126.\n"
   );
   L.push("## Services\n");
   for (const s of SERVICES_DATA) {
