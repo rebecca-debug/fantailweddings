@@ -25,7 +25,6 @@ const JournalIndex = lazy(() => import("./components/JournalIndex"));
 import { JOURNAL_ARTICLES, getArticleByPage, JournalPage } from "./journal";
 import { JOURNAL_POSTS, POST_PATHS, getPostByPath } from "./journalPosts";
 const BlogArticle = lazy(() => import("./components/BlogArticle"));
-const WeddingNavigator = lazy(() => import("./components/WeddingNavigator"));
 const IntimateWeddings = lazy(() => import("./components/IntimateWeddings"));
 const OnTheDayCoordination = lazy(() => import("./components/OnTheDayCoordination"));
 
@@ -270,7 +269,6 @@ export default function App() {
     home: "/",
     portfolio: "/portfolio/",
     "journal-index": "/journal/",
-    "wedding-navigator": "/the-wedding-navigator/",
     "intimate-weddings": "/intimate-weddings/",
     "on-the-day-coordination": "/on-the-day-coordination/",
     ...Object.fromEntries(JOURNAL_ARTICLES.map((a) => [a.page, a.route]))
@@ -507,9 +505,7 @@ export default function App() {
   // Handle service CTA clicks - scroll, select, and highlight
   const handleServiceCTA = (serviceId: string) => {
     // Each service now has its own landing page.
-    if (serviceId === "navigator") {
-      navigate("wedding-navigator");
-    } else if (serviceId === "intimate") {
+    if (serviceId === "intimate") {
       navigate("intimate-weddings");
     } else if (serviceId === "design") {
       navigate("on-the-day-coordination");
@@ -1211,19 +1207,6 @@ export default function App() {
                       </p>
                     </div>
                   )}
-
-                  {service.id === "navigator" && (
-                    <div className="bg-[#f2f2f2] p-6 border-l-2 border-black/20 text-[13px] text-[#5c6672] space-y-2 font-light leading-relaxed">
-                      <p className="text-black/80 font-medium font-serif italic text-sm">An honest note about where I can help most.</p>
-                      <p>
-                        My vendor knowledge is strongest in the South Island, particularly Central Otago, Wānaka, 
-                        Queenstown, the Mackenzie Country, Marlborough, and Banks Peninsula. North Island weddings are 
-                        welcome, and the toolkit travels well, but vendor recommendations will be lighter the further 
-                        from the South Island you are.
-                      </p>
-                    </div>
-                  )}
-
                   {/* Plain Link CTA button with underline */}
                   <div className="pt-4">
                     <button
@@ -1833,8 +1816,6 @@ export default function App() {
         <IntimateWeddings onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "on-the-day-coordination" ? (
         <OnTheDayCoordination onNavigate={navigate} onEnquire={() => navigateTo("contact")} />
-      ) : currentPage === "wedding-navigator" ? (
-        <WeddingNavigator onNavigate={navigate} onEnquire={() => navigateTo("contact")} />
       ) : currentPage === "journal-index" ? (
         <JournalIndex onOpenArticle={openArticle} onOpenPost={navigate} hrefFor={hrefForPage} />
       ) : POST_PATHS.includes(currentPage) ? (

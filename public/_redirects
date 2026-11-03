@@ -3,5 +3,9 @@
 # the per-page <link rel="canonical"> tags — do NOT add forced 301! trailing-slash rules
 # here: Netlify matches them for the slashed form too, which creates a redirect loop.
 
+# Retired offer (Nov 2026): send old links to the home page permanently
+/the-wedding-navigator  /  301
+/thank-you.html  /  301
+
 # SPA fallback — any path without a prerendered file is handled by the client router
 /*  /index.html  200

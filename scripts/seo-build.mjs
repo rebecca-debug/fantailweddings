@@ -87,24 +87,6 @@ const articleSchema = ({ url, headline, description, image, date, section }) => 
   inLanguage: "en-NZ"
 });
 
-const navigatorService = () => ({
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "@id": ORIGIN + "/#service-navigator",
-  name: "The Wedding Navigator: Online Wedding Consultancy",
-  description:
-    "Three live consultancy calls with Rebecca plus a personalised planning toolkit for New Zealand couples planning their own wedding.",
-  provider: { "@type": "ProfessionalService", "@id": ORIGIN + "/#business", name: "Fantail Weddings" },
-  areaServed: { "@type": "Country", "name": "New Zealand" },
-  offers: {
-    "@type": "Offer",
-    price: "850",
-    priceCurrency: "NZD",
-    availability: "https://schema.org/InStock"
-  },
-  url: abs("/the-wedding-navigator/")
-});
-
 // ---- build the full route table ----
 function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
   const routes = [];
@@ -127,18 +109,6 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     image: OG_BANNER,
     preload: false,
     jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "The Journal", path: "/journal/" }])]
-  });
-
-  routes.push({
-    path: "/the-wedding-navigator/",
-    priority: 0.9,
-    title: "The Wedding Navigator | Fantail Weddings",
-    desc: "The Wedding Navigator by Fantail Weddings: three live calls with Rebecca and a personalised toolkit for couples planning their own New Zealand wedding.",
-    image: "/assets/images/wedding-navigator-hero.webp",
-    jsonld: [
-      navigatorService(),
-      breadcrumb([{ name: "Home", path: "/" }, { name: "The Wedding Navigator", path: "/the-wedding-navigator/" }])
-    ]
   });
 
   // Location guides - each guide carries its live route in journal.ts
