@@ -66,7 +66,7 @@ export const SERVICES_DATA: Service[] = [
       "Fifteen hours with you on the day: setup to your plan, keeping the day running to time, and quiet problem-solving.",
       "Packdown and returns handled at the end of the night."
     ],
-    investment: "NZD $1,800 on its own. Or NZD $1,200 as an add-on to The Wedding Navigator.",
+    investment: "NZD $1,800.",
     ctaText: "Begin a conversation about coordination",
     image: "/assets/images/Service-04.webp",
     imageAlt: "A styled wedding place setting with a hand-illustrated menu card, striped linen napkin folded like a rose, and olive-branch detailing.",
@@ -131,12 +131,12 @@ export const FAQ_DATA: FAQ[] = [
   {
     id: "fq-01",
     question: "How far in advance should we book?",
-    answer: "For intimate weddings, most couples reach out 12 to 18 months ahead. Peak season (late February through April) tends to fill 18 months out. For the Wedding Navigator, most couples book 9 to 14 months out, though the toolkit works whether you have eighteen months or six."
+    answer: "For intimate weddings, most couples reach out 12 to 18 months ahead. Peak season (late February through April) tends to fill 18 months out."
   },
   {
     id: "fq-02",
     question: "Where in New Zealand do you work?",
-    answer: "Wānaka, Queenstown, and the wider Central Otago region are where I work most. I also work in the Mackenzie Country (including Aoraki/Mt Cook), the Marlborough Sounds, Banks Peninsula, and occasionally Fiordland. The Wedding Navigator is available NZ-wide."
+    answer: "Wānaka, Queenstown, and the wider Central Otago region are where I work most. I also work in the Mackenzie Country (including Aoraki/Mt Cook), the Marlborough Sounds, Banks Peninsula, and occasionally Fiordland."
   },
   {
     id: "fq-03",
@@ -146,7 +146,7 @@ export const FAQ_DATA: FAQ[] = [
   {
     id: "fq-04",
     question: "How many couples do you take on each year?",
-    answer: "A small handful. Four to six weddings per year, plus a number of Wedding Navigator and coordination engagements. The number is deliberate."
+    answer: "A small handful. Four to six weddings per year, plus a number of coordination engagements. The number is deliberate."
   },
   {
     id: "fq-05",
@@ -167,11 +167,6 @@ export const FAQ_DATA: FAQ[] = [
     id: "fq-08",
     question: "Are LGBTQIA+ couples and rainbow families welcome?",
     answer: "Always. Every kind of love belongs here. Every shape of family. Every faith. Every story. This is non-negotiable for me."
-  },
-  {
-    id: "fq-09",
-    question: "How is the Wedding Navigator different from full planning?",
-    answer: "Full planning is a year of voice notes, vendor management, design, and on-the-day coordination, with me running the wedding for you. The Wedding Navigator is a done-with-you offer: a planning session, your own Planning Home, a next-steps video, two check-ins, and a live timeline build about eight weeks out. You do the planning, I make sure nothing falls through the gaps."
   },
   {
     id: "fq-10",

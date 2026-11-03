@@ -1549,7 +1549,6 @@ export default function App() {
                     >
                       <option value="">-- Please select a shape --</option>
                       <option value="Intimate Wedding (up to 60 guests)">Intimate Wedding (up to 60 guests)</option>
-                      <option value="The Wedding Navigator">The Wedding Navigator</option>
                       <option value="On-the-Day Coordination">On-the-Day Coordination</option>
                       <option value="Not sure yet">Not sure yet</option>
                     </select>
@@ -1895,9 +1894,6 @@ export default function App() {
                 className="hover:text-black transition text-left cursor-pointer"
               >
                 Portfolio
-              </a>
-              <a href={hrefForPage("wedding-navigator")} onClick={(e) => spaNav(e, () => navigate("wedding-navigator"))} className="hover:text-black transition text-left cursor-pointer">
-                The Wedding Navigator
               </a>
               <a href="/#faq" onClick={(e) => spaNav(e, () => navigateTo("faq"))} className="hover:text-black transition text-left cursor-pointer">
                 FAQ

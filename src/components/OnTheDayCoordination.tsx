@@ -106,18 +106,7 @@ export default function OnTheDayCoordination({ onEnquire, onNavigate }: OnTheDay
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto bg-black text-white p-10 sm:p-16 text-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">Investment</span>
-          <div className="font-serif text-4xl sm:text-5xl font-light mb-4">NZD $1,800</div>
-          <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto">
-            On its own. Or NZD $1,200 as an add-on to{" "}
-            <a
-              href="/the-wedding-navigator/"
-              onClick={(e) => { e.preventDefault(); onNavigate("wedding-navigator"); }}
-              className="underline underline-offset-2 decoration-white/40 hover:decoration-white text-white transition"
-            >
-              The Wedding Navigator
-            </a>
-            , if you would like a steady hand both while you plan and on the day.
-          </p>
+          <div className="font-serif text-4xl sm:text-5xl font-light">NZD $1,800</div>
         </div>
       </section>
 
