@@ -106,18 +106,20 @@ export default function OnTheDayCoordination({ onEnquire, onNavigate }: OnTheDay
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto bg-black text-white p-10 sm:p-16 text-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">Investment</span>
-          <div className="font-serif text-4xl sm:text-5xl font-light mb-6">From NZD $3,000</div>
+          <div className="font-serif text-4xl sm:text-5xl font-light mb-6">From NZD $3,600<span className="text-lg sm:text-xl text-white/60 align-middle"> + GST</span></div>
           <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto">
-            Around thirty-four hours of my time: eight before the day, five at your rehearsal, fifteen on the day
-            itself, and six for packdown and returns.
+            From experience, it takes around thirty hours of my time: ten before the day, onboarding everything,
+            confirming your vendors, checking the details and being with you at your rehearsal; fifteen on the day
+            itself; and five for packdown and returns.
           </p>
           <div className="h-[1px] bg-white/15 w-16 my-8 mx-auto"></div>
           <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto mb-4">
             I need a finished timeline to run the day well. If yours isn't there yet, I'll build it with you, vendor
-            by vendor, for NZD $760.
+            by vendor, for NZD $560 + GST.
           </p>
           <p className="text-sm text-white/75 font-light leading-relaxed max-w-md mx-auto">
-            A welcome dinner or a slow brunch the morning after? I'll quote for those once I know the details.
+            Travel and any extra events, such as a welcome dinner, are quoted once I know the details. If your day
+            needs a second pair of hands, Meghan joins me at NZD $75 + GST an hour.
           </p>
         </div>
       </section>

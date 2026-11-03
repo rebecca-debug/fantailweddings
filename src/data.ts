@@ -47,7 +47,7 @@ export const SERVICES_DATA: Service[] = [
       "A private planning portal where everything lives in one calm place.",
       "Me on the day, with Meghan alongside when the size calls for her."
     ],
-    investment: "Planning starts from [ NZD $8,800 ]. Most couples invest a total of [ NZD $65,000 to $230,000] across vendors and the celebration itself. For reference, exclusive South Island wedding venues alone typically range from NZD $10,000 to $25,000+, depending on season and inclusions.",
+    investment: "Planning starts from NZD $8,800 + GST. Most couples invest a total of NZD $65,000 to $230,000 across vendors and the celebration itself. For reference, exclusive South Island wedding venues alone typically range from NZD $10,000 to $25,000+, depending on season and inclusions.",
     ctaText: "Begin a Conversation about an Intimate Wedding",
     image: "/assets/images/service-02.webp",
     imageAlt: "Newlyweds walk through a shower of petal confetti thrown by guests at a lakeside South Island wedding, mountains behind.",
@@ -66,7 +66,7 @@ export const SERVICES_DATA: Service[] = [
       "Fifteen hours with you on the day: setup to your plan, keeping the day running to time, and quiet problem-solving.",
       "Packdown and returns taken care of afterwards."
     ],
-    investment: "From NZD $3,000. A timeline build, if you need one, is NZD $760.",
+    investment: "From NZD $3,600 + GST, for around thirty hours of my time. A timeline build, if you need one, is NZD $560 + GST. Travel and extra events are quoted separately.",
     ctaText: "Begin a conversation about coordination",
     image: "/assets/images/Service-04.webp",
     imageAlt: "A styled wedding place setting with a hand-illustrated menu card, striped linen napkin folded like a rose, and olive-branch detailing.",

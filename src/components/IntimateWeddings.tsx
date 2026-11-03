@@ -134,7 +134,7 @@ export default function IntimateWeddings({ onEnquire }: IntimateWeddingsProps) {
       <section className="py-24 px-6">
         <div className="max-w-3xl mx-auto bg-black text-white p-10 sm:p-16 text-center">
           <span className="text-[10px] tracking-[0.3em] uppercase text-white/60 font-light block mb-6">Investment</span>
-          <div className="font-serif text-4xl sm:text-5xl font-light mb-8">From NZD $8,800</div>
+          <div className="font-serif text-4xl sm:text-5xl font-light mb-8">From NZD $8,800<span className="text-lg sm:text-xl text-white/60 align-middle"> + GST</span></div>
           <p className="text-sm text-white/75 font-light leading-relaxed max-w-xl mx-auto">
             Most couples invest between NZD $65,000 and $230,000 across vendors and the celebration itself. For reference,
             exclusive South Island wedding venues alone typically range from NZD $10,000 to $25,000 and up, depending on
