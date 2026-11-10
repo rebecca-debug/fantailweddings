@@ -23,6 +23,10 @@ function criticalCss(): Plugin {
       } catch {
         return; // no index.html emitted (e.g. non-SPA build) — nothing to do
       }
+      // Keep an unprocessed copy for scripts/seo-build.mjs, which prerenders every page's
+      // content into this shell and then runs Beasties per page, so the inlined critical CSS
+      // matches what is actually on that page. (seo-build deletes this file when done.)
+      await writeFile(resolve(outDir, '.shell.raw.html'), html);
       const beasties = new Beasties({
         path: outDir,
         publicPath: '/',

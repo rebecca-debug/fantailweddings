@@ -29,7 +29,7 @@ export const NEW_POSTS: JournalPost[] = [
       { type: "p", text: `And I want to take a moment, before any logistics, recommendations, or links to anything, to say that this wish is not too much to ask.` },
 
       { type: "h", text: `The internet has a wedding problem` },
-      { type: "p", text: `I have been planning weddings for over fifteen years. I have watched the industry shift, beautifully and not-so-beautifully, into what it is now.` },
+      { type: "p", text: `I have been planning weddings for over sixteen years. I have watched the industry shift, beautifully and not-so-beautifully, into what it is now.` },
       { type: "p", text: `And here is the truth: planning a wedding has never been easier in terms of access, and never harder in terms of noise.` },
       { type: "p", text: `You can find a thousand venues in a single afternoon. You can be inspired, intimidated, comparison-spiralled, and quietly destabilised in the same scroll. You can read 14 articles about "things every bride forgets," each one designed to remind you of something you had not thought about and now cannot stop thinking about.` },
       { type: "p", text: `The algorithm does not know you. It does not know that you are flying from Singapore and have never been to New Zealand. It does not know that the noise it is feeding you is making you anxious rather than informed.` },
@@ -219,12 +219,12 @@ export const NEW_POSTS: JournalPost[] = [
     slug: "before-booking-a-wedding-planner-nz",
     category: "Planning Guide",
     title: "What I Wish Every Couple Knew Before Booking a Wedding Planner in New Zealand",
-    subtitle: "Quiet, honest expertise from a planner who has been doing this for fifteen years",
+    subtitle: "Quiet, honest expertise from a planner who has been doing this for sixteen years",
     date: "2026-06-03",
     dateDisplay: "June 2026",
     hero: "/assets/images/Service-04.jpg",
     excerpt:
-      "Whether you actually need a planner, the four types you'll meet in New Zealand, the eight questions to ask before you book, and an honest take on pricing, from a planner of fifteen years.",
+      "Whether you actually need a planner, the four types you'll meet in New Zealand, the eight questions to ask before you book, and an honest take on pricing, from a planner of sixteen years.",
     blocks: [
       { type: "lede", text: `I am going to do something a little unusual in this post.` },
       { type: "p", text: `I am going to tell you everything I think you should know before you book a wedding planner in New Zealand, including how to tell if you should book me and how to tell if you should book someone else.` },

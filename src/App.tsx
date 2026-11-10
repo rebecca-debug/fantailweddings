@@ -19,14 +19,44 @@ import {
   TimelinePoint,
   FAQ
 } from "./data";
-const PortfolioView = lazy(() => import("./components/PortfolioView"));
-const JournalArticle = lazy(() => import("./components/JournalArticle"));
-const JournalIndex = lazy(() => import("./components/JournalIndex"));
 import { JOURNAL_ARTICLES, getArticleByPage, JournalPage } from "./journal";
 import { JOURNAL_POSTS, POST_PATHS, getPostByPath } from "./journalPosts";
-const BlogArticle = lazy(() => import("./components/BlogArticle"));
-const IntimateWeddings = lazy(() => import("./components/IntimateWeddings"));
-const OnTheDayCoordination = lazy(() => import("./components/OnTheDayCoordination"));
+
+// Code-split pages that can also be loaded ahead of rendering. Pages are prerendered at build
+// time, and the browser must have the current page's code ready before it hydrates that
+// markup; otherwise React throws the prerendered page away and draws it again.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function preloadable<T extends React.ComponentType<any>>(factory: () => Promise<{ default: T }>) {
+  let Loaded: T | null = null;
+  const Lazy = lazy(factory);
+  const Page = (props: React.ComponentProps<T>) =>
+    Loaded ? React.createElement(Loaded, props) : React.createElement(Lazy, props);
+  Page.preload = () =>
+    factory().then((m) => {
+      Loaded = m.default;
+    });
+  return Page;
+}
+
+const PortfolioView = preloadable(() => import("./components/PortfolioView"));
+const JournalArticle = preloadable(() => import("./components/JournalArticle"));
+const JournalIndex = preloadable(() => import("./components/JournalIndex"));
+const BlogArticle = preloadable(() => import("./components/BlogArticle"));
+const IntimateWeddings = preloadable(() => import("./components/IntimateWeddings"));
+const OnTheDayCoordination = preloadable(() => import("./components/OnTheDayCoordination"));
+
+/** Load the code for the page at `pathname` (no-op for the home page). */
+export function preloadPage(pathname: string): Promise<void> {
+  let p = (pathname || "/").split("#")[0].split("?")[0];
+  if (p.length > 1 && !p.endsWith("/")) p += "/";
+  if (p === "/portfolio/") return PortfolioView.preload();
+  if (p === "/journal/") return JournalIndex.preload();
+  if (p === "/intimate-weddings/") return IntimateWeddings.preload();
+  if (p === "/on-the-day-coordination/") return OnTheDayCoordination.preload();
+  if (POST_PATHS.includes(p)) return BlogArticle.preload();
+  if (JOURNAL_ARTICLES.some((a) => a.route === p)) return JournalArticle.preload();
+  return Promise.resolve();
+}
 
 // ---- Shared motion vocabulary (one calm easing + slow, small-travel reveals) ----
 const LUX_EASE = [0.16, 1, 0.3, 1] as const;
@@ -195,7 +225,9 @@ function FullBleedBreak({ src, alt, position = "center" }: { src: string; alt: s
   );
 }
 
-export default function App() {
+// `initialPath` is only passed by the build-time prerender (scripts/seo-build.mjs), which has no
+// window. In the browser the page always comes from the address bar.
+export default function App({ initialPath }: { initialPath?: string } = {}) {
   // SEO and Headings setup
   useEffect(() => {
     document.title = "Fantail Weddings | Boutique Wedding Planning | South Island NZ";
@@ -285,7 +317,11 @@ export default function App() {
   };
 
   const [currentPage, setCurrentPage] = useState<string>(() =>
-    typeof window !== "undefined" ? pageForPath(window.location.pathname) : "home"
+    initialPath !== undefined
+      ? pageForPath(initialPath)
+      : typeof window !== "undefined"
+        ? pageForPath(window.location.pathname)
+        : "home"
   );
 
   // Old standalone pages from the previous site that are now just sections on the home page.
@@ -875,7 +911,7 @@ export default function App() {
             <p className="text-[15px] text-[#5c6672] leading-relaxed font-light">
               Thank you for being here, I am Rebecca, and I plan a small number of weddings each year on the
               South Island of Aotearoa, New Zealand. Intimate weddings of up to 60 guests. 
-              And, when a celebration calls for it, design coordination and day-of management.
+              And, for couples who have planned their own celebration, on-the-day coordination.
             </p>
             <p className="text-black/85 font-normal tracking-wide">
               Two ways to work together. One person. Real care.
@@ -998,7 +1034,7 @@ export default function App() {
                     </span>
                     <p className="text-[13px] text-[#5c6672] font-light leading-relaxed">
                       <strong className="text-black font-normal text-sm font-serif block sm:inline mr-1">
-                        {highlight}.
+                        {highlight.replace(/\.$/, "")}.
                       </strong>
                       <span>{rest}</span>
                     </p>
@@ -1051,7 +1087,7 @@ export default function App() {
             </span>
             <RevealHeading as="h2" className="font-serif text-3xl sm:text-4xl text-black font-light tracking-tight leading-snug" text="Story" />
             <p className="text-[11px] tracking-widest font-light uppercase text-[#5c6672]">
-              how i got here & how we work
+              how i got here & how i work
             </p>
           </div>
 
@@ -1066,7 +1102,7 @@ export default function App() {
                   I built this work the way I want to live my life. Considered. Deeply present. Rooted in a country I love.
                 </p>
                 <p>
-                  The road here was not a straight one. Thirty years across hospitality around the world, film production coordantor in Auckland, commercial floristry under one of the best florists in New Zealand, event work in Las Vegas, and three years running a converted woolshed venue near Wānaka. Couples who book me get a planner who understands deeply how their day will be remembered, photographed, and felt by their guests.
+                  The road here was not a straight one. Thirty years across hospitality around the world, sixteen of them in weddings. Along the way: film production coordinator in Auckland, commercial floristry under one of the best florists in New Zealand, event work in Las Vegas, and three years running a converted woolshed venue near Wānaka. Couples who book me get a planner who understands deeply how their day will be remembered, photographed, and felt by their guests.
                 </p>
                 <p>
                   I plan weddings in the South Island for couples who want their celebration to feel like the most beautiful version of their real life. Not a performance. Not a Pinterest re-creation. The real, slightly imperfect, deeply loved thing.
@@ -1314,11 +1350,6 @@ export default function App() {
             <p className="text-[13px] font-light text-[#5c6672] leading-relaxed">
               The questions couples ask me most about planning a wedding in Aotearoa New Zealand.
             </p>
-            <div className="pt-6 hidden lg:block">
-              <p className="text-[10px] tracking-widest uppercase text-black font-light">
-                * marked with SEO-Page markup schema
-              </p>
-            </div>
           </div>
 
           {/* Accordion list */}

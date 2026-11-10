@@ -5,13 +5,15 @@
 // canonical/schema. This script bakes those into a static per-route index.html, and also
 // regenerates sitemap.xml + llms-full.txt from the same source data (no drift).
 //
-// It intentionally only rewrites <head>. The <body> is still the SPA shell (React fills it),
-// and all the PageSpeed work is preserved: Beasties' inlined critical CSS, the async font/CSS
-// links, WebP + lazy images, and vendor code-splitting are copied verbatim from the built
-// shell. The one adjustment is the LCP hero <link rel=preload>, which is set per-route so an
-// inner page preloads its own hero, not the homepage's.
+// It also prerenders each page's full content into <div id="root"> (src/entry-prerender.tsx),
+// so crawlers and AI bots that don't run JavaScript (GPTBot, ClaudeBot, PerplexityBot) read
+// the real words, not an empty shell. The browser then hydrates that markup (src/main.tsx).
+// Beasties then runs per page, so the inlined critical CSS matches that page's content; the
+// async font/CSS links, WebP + lazy images and vendor code-splitting are unchanged. The LCP
+// hero <link rel=preload> is set per-route so an inner page preloads its own hero.
 
 import { build } from "esbuild";
+import Beasties from "beasties";
 import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 
@@ -45,6 +47,25 @@ async function loadData() {
   const mod = await import("file://" + tmp.replace(/\\/g, "/") + "?t=" + Date.now());
   await rm(tmp, { force: true });
   return mod;
+}
+
+// ---- bundle the prerender entry (App rendered to static HTML) for Node ----
+async function loadRenderer() {
+  const tmp = path.join(ROOT, ".prerender.tmp.mjs");
+  await build({
+    entryPoints: [path.join(ROOT, "src/entry-prerender.tsx")],
+    bundle: true,
+    format: "esm",
+    platform: "node",
+    jsx: "automatic",
+    loader: { ".css": "empty" },
+    packages: "external",
+    outfile: tmp,
+    logLevel: "silent"
+  });
+  const mod = await import("file://" + tmp.replace(/\\/g, "/") + "?t=" + Date.now());
+  await rm(tmp, { force: true });
+  return mod.render;
 }
 
 const escAttr = (s = "") =>
@@ -87,6 +108,32 @@ const articleSchema = ({ url, headline, description, image, date, section }) => 
   inLanguage: "en-NZ"
 });
 
+// Service + Offer schema for the two service pages, so answer engines can quote what each
+// service is and its "from" price accurately (prices are public on the site, + GST).
+const serviceSchema = ({ url, name, description, price }) => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": abs(url) + "#service",
+  name,
+  serviceType: "Wedding planning",
+  description,
+  url: abs(url),
+  provider: { "@id": ORIGIN + "/#business" },
+  areaServed: { "@type": "AdministrativeArea", name: "South Island, New Zealand" },
+  offers: {
+    "@type": "Offer",
+    url: abs(url),
+    priceCurrency: "NZD",
+    priceSpecification: {
+      "@type": "PriceSpecification",
+      minPrice: price,
+      priceCurrency: "NZD",
+      valueAddedTaxIncluded: false
+    },
+    description: `From NZD $${price.toLocaleString("en-NZ")} + GST`
+  }
+});
+
 // ---- build the full route table ----
 function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
   const routes = [];
@@ -95,7 +142,7 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     path: "/portfolio/",
     priority: 0.9,
     title: "Portfolio | Fantail Weddings",
-    desc: "A selection of South Island New Zealand weddings and elopements planned by Fantail Weddings.",
+    desc: "A selection of intimate South Island New Zealand weddings planned and produced by Rebecca of Fantail Weddings.",
     image: OG_BANNER,
     preload: false, // page renders its own lazy gallery; nothing to preload
     jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "Portfolio", path: "/portfolio/" }])]
@@ -105,7 +152,7 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     path: "/journal/",
     priority: 0.9,
     title: "The Journal | Fantail Weddings | South Island Wedding Guides",
-    desc: "Guides and stories on planning a South Island New Zealand wedding: venues, elopements, and destination-wedding advice from Fantail Weddings.",
+    desc: "Guides and stories on planning a South Island New Zealand wedding: venues, logistics, guests and destination-wedding advice from Fantail Weddings.",
     image: OG_BANNER,
     preload: false,
     jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "The Journal", path: "/journal/" }])]
@@ -117,7 +164,15 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     title: "Intimate Weddings | Fantail Weddings",
     desc: "Full planning for intimate South Island weddings of 20 to 60 guests, in Wānaka, Queenstown, the Mackenzie and Central Otago. With Rebecca of Fantail Weddings.",
     image: "/assets/images/service-02.webp",
-    jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "Intimate Weddings", path: "/intimate-weddings/" }])]
+    jsonld: [
+      serviceSchema({
+        url: "/intimate-weddings/",
+        name: "Intimate Weddings: full wedding planning and production",
+        description: "Full-service planning and production for intimate South Island weddings of 20 to 60 guests, mostly for couples planning from overseas: venue scouting including private and unlisted land, vendor selection, multi-day weekend and guest-experience design, weather planning, and Rebecca on the day.",
+        price: 8800
+      }),
+      breadcrumb([{ name: "Home", path: "/" }, { name: "Intimate Weddings", path: "/intimate-weddings/" }])
+    ]
   });
 
   routes.push({
@@ -126,7 +181,15 @@ function buildRoutes({ JOURNAL_POSTS, JOURNAL_ARTICLES }) {
     title: "On-the-Day Coordination | Fantail Weddings",
     desc: "Experienced on-the-day coordination across the South Island, for couples who have planned their own wedding and want the day itself run calmly and well.",
     image: "/assets/images/Service-04.webp",
-    jsonld: [breadcrumb([{ name: "Home", path: "/" }, { name: "On-the-Day Coordination", path: "/on-the-day-coordination/" }])]
+    jsonld: [
+      serviceSchema({
+        url: "/on-the-day-coordination/",
+        name: "On-the-Day Wedding Coordination",
+        description: "On-the-day coordination across the South Island for couples who have planned their own wedding: around 30 hours of Rebecca's time covering vendor confirmations, the rehearsal, the full wedding day, and pack-down. A finalised wedding-day timeline is required (timeline build available from NZD $560 + GST).",
+        price: 3600
+      }),
+      breadcrumb([{ name: "Home", path: "/" }, { name: "On-the-Day Coordination", path: "/on-the-day-coordination/" }])
+    ]
   });
 
   // Location guides - each guide carries its live route in journal.ts
@@ -264,21 +327,47 @@ function renderSitemap(routes) {
 async function main() {
   const data = await loadData();
   const routes = buildRoutes(data);
-  const shell = await readFile(path.join(DIST, "index.html"), "utf8");
+  const render = await loadRenderer();
+  const rawShellPath = path.join(DIST, ".shell.raw.html");
+  const shell = await readFile(rawShellPath, "utf8");
+  if (!shell.includes('<div id="root"></div>')) throw new Error("shell has no empty #root");
 
-  // Per-route static <head> files
-  let pages = 0;
+  const beasties = new Beasties({
+    path: DIST,
+    publicPath: "/",
+    preload: "swap",
+    pruneSource: false,
+    logLevel: "silent"
+  });
+
+  // Fill #root with the prerendered page, then inline that page's critical CSS.
+  const finish = async (headHtml, routePath) => {
+    // Netlify must only detect the hidden static "contact" form in the shell. The visible
+    // React form posts to it via AJAX; if Netlify also saw this copy it would rewrite its
+    // markup (adding a form-name input), which would no longer match on hydration.
+    const body = (await render(routePath)).replace(/ data-netlify="true"/g, "");
+    const html = headHtml.replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+    return beasties.process(html);
+  };
+
+  // Home page (its <head> is the shell's own). Also the SPA fallback for unknown paths,
+  // which the client router renders as the home page too, so the markup still matches.
+  await writeFile(path.join(DIST, "index.html"), await finish(shell, "/"));
+
+  // Per-route static pages: per-route <head> + prerendered content
+  let pages = 1;
   for (const r of routes) {
     const dir = path.join(DIST, r.path.replace(/^\/|\/$/g, ""));
     await mkdir(dir, { recursive: true });
-    await writeFile(path.join(dir, "index.html"), renderHead(shell, r));
+    await writeFile(path.join(dir, "index.html"), await finish(renderHead(shell, r), r.path));
     pages++;
   }
+  await rm(rawShellPath, { force: true });
 
   await writeFile(path.join(DIST, "sitemap.xml"), renderSitemap(routes));
   await writeFile(path.join(DIST, "llms-full.txt"), renderLlmsFull(data));
 
-  console.log(`seo-build: ${pages} per-route pages, sitemap (${routes.length + 1} urls), llms-full.txt`);
+  console.log(`seo-build: ${pages} prerendered pages, sitemap (${routes.length + 1} urls), llms-full.txt`);
 
   await pingIndexNow(routes);
 }

@@ -122,7 +122,7 @@ export const ABOUT_FACTS = [
   "I am a hugger. Just so you know.",
   "I love every flower. Except gerberas. (I am not sorry.)",
   "I drive my car like the race car driver I think I am.",
-  "Three nieces. Three very different beauties and personalities. All have my heart",
+  "Three nieces. Three very different beauties and personalities. All have my heart.",
   "Jasper, my dog, has a wristwatch for dinner and walks, and I am his loyal live-in maid.",
   "If your idea will not work, I will tell you. If a vendor is not the right match, I will say so. I would rather have a slightly hard conversation in May than a heartbreaking one in November."
 ];
@@ -169,17 +169,17 @@ export const FAQ_DATA: FAQ[] = [
     answer: "Always. Every kind of love belongs here. Every shape of family. Every faith. Every story. This is non-negotiable for me."
   },
   {
-    id: "fq-10",
+    id: "fq-09",
     question: "What happens on the day if something goes wrong?",
     answer: "Something usually shifts. Weather, timing, a flight, a flower delivery. Rarely something dramatic. The reason a Fantail day feels calm is that the wet weather plan, the wind plan, and the contingency plan have all been built before you arrive. You may never know what got adjusted."
   },
   {
-    id: "fq-11",
+    id: "fq-10",
     question: "Can you bring in our own vendors, or do you work only with your preferred suppliers?",
-    answer: "Both. I have a vendor network built one coffee at a time over fifteen years, and I will usually recommend from within it. If you have a photographer or stylist you want to fly in from your home country, that is also welcome. I will work alongside them and handle the local logistics."
+    answer: "Both. I have a vendor network built one coffee at a time over sixteen years, and I will usually recommend from within it. If you have a photographer or stylist you want to fly in from your home country, that is also welcome. I will work alongside them and handle the local logistics."
   },
   {
-    id: "fq-12",
+    id: "fq-11",
     question: "Will I actually hear back from Rebecca personally?",
     answer: "Yes. There is no inbox monitored by an assistant. I read every enquiry myself, usually with a cup of Earl Grey in the morning before the day gets busy. You will hear back within two working days."
   }
